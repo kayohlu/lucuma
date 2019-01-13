@@ -1,0 +1,1 @@
+ <%= link "Register", to: Routes.registration_path(@conn, :new) %>

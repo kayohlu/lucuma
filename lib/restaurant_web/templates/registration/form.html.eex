@@ -1,0 +1,17 @@
+<%= form_for @changeset, @action, [as: :registration], fn f -> %>
+  <%= form_group(f, :email) %>
+  <%= form_group(f, :full_name) %>
+  <%= form_group(f, :company_name) %>
+  <%= password_form_group(f, :password) %>
+  <%= password_form_group(f, :password_confirmation) %>
+
+  <div>
+    <%= submit "Register" %>
+  </div>
+<% end %>
+
+<div class="form-row justify-content-center">
+  <div class="form-group col-md-6">
+
+  </div>
+</div>
