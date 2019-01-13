@@ -7,6 +7,9 @@ defmodule Restaurant.Registrations do
   alias Restaurant.Repo
 
   alias Restaurant.Registrations.RegistrationForm
+  alias Restaurant.Registrations.Company
+  alias Restaurant.Registrations.User
+  alias Restaurant.Registrations.WaitList
 
   @doc """
   Creates a registration_form.
@@ -27,9 +30,10 @@ defmodule Restaurant.Registrations do
       registration_form = Ecto.Changeset.apply_changes(changeset)
 
       Repo.transaction(fn ->
-        {:ok, company} = Repo.insert(company_map(registration_form))
-        Repo.insert(restaurant_map(company))
-        {:ok, user} = Repo.insert(user_map(registration_form))
+        {:ok, user} = Repo.insert(user_changeset(registration_form))
+        {:ok, company} = Repo.insert(company_changeset(registration_form))
+        {:ok, restaurant} = Repo.insert(restaurant_changeset(company))
+        Repo.insert(waitlist_changeset(restaurant))
         user
       end)
     else
@@ -51,25 +55,32 @@ defmodule Restaurant.Registrations do
   end
 
 
-  defp company_map(registration_form) do
-    %Restaurant.Registrations.Company{
+  defp company_changeset(registration_form) do
+    Company.changeset(%Company{}, %{
       name: registration_form.company_name,
       contact_email: registration_form.email
-    }
+    })
   end
 
-  defp user_map(registration_form) do
-    %Restaurant.Registrations.User{
+  defp user_changeset(registration_form) do
+    User.changeset(%User{}, %{
       email: registration_form.email,
       full_name: registration_form.full_name,
       password_hash: Comeonin.Bcrypt.hashpwsalt(registration_form.password)
-    }
+    })
   end
 
-  defp restaurant_map(parent_company) do
-    %Restaurant.Registrations.Restaurant{
+  defp restaurant_changeset(parent_company) do
+    Restaurant.Registrations.Restaurant.changeset(%Restaurant.Registrations.Restaurant{}, %{
       name: "Unnamed Restaurant",
       company_id: parent_company.id
-    }
+    })
+  end
+
+  defp waitlist_changeset(restaurant) do
+    WaitList.changeset(%WaitList{}, %{
+      name: "Wait List 1",
+      restaurant_id: restaurant.id
+    })
   end
 end

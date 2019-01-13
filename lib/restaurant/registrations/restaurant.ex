@@ -5,7 +5,7 @@ defmodule Restaurant.Registrations.Restaurant do
 
   schema "restaurants" do
     field :name, :string
-    field :company_id, :id
+    field :company_id, :id, null: false
 
     timestamps()
   end
@@ -13,7 +13,7 @@ defmodule Restaurant.Registrations.Restaurant do
   @doc false
   def changeset(restaurant, attrs) do
     restaurant
-    |> cast(attrs, [:name])
-    |> validate_required([:name])
+    |> cast(attrs, [:name, :company_id])
+    |> validate_required([:name, :company_id])
   end
 end

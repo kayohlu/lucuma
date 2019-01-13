@@ -11,8 +11,8 @@ defmodule Restaurant.Registrations.User do
   end
 
   @doc false
-  def changeset(registration, attrs) do
-    registration
+  def changeset(user, attrs) do
+    user
     |> cast(attrs, [:email, :full_name, :password_hash])
     |> validate_required([:email, :full_name, :password_hash])
   end

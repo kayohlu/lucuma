@@ -1,0 +1,26 @@
+<h1>Listing Wait lists</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for wait_list <- @wait_lists do %>
+    <tr>
+      <td><%= wait_list.name %></td>
+
+      <td>
+        <%= link "Show", to: Routes.wait_list_path(@conn, :show, wait_list) %>
+        <%= link "Edit", to: Routes.wait_list_path(@conn, :edit, wait_list) %>
+        <%= link "Delete", to: Routes.wait_list_path(@conn, :delete, wait_list), method: :delete, data: [confirm: "Are you sure?"] %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Wait list", to: Routes.wait_list_path(@conn, :new) %></span>

@@ -46,5 +46,14 @@ defmodule Restaurant.Repo.Migrations.CreateUsers do
       timestamps()
     end
     create index(:restaurants, [:company_id])
+
+
+    create table(:wait_lists) do
+      add :name, :string
+      add :restaurant_id, references(:restaurants, on_delete: :nothing)
+
+      timestamps()
+    end
+    create index(:wait_lists, [:restaurant_id])
   end
 end
