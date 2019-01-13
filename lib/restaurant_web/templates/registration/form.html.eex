@@ -6,7 +6,7 @@
   <%= password_form_group(f, :password_confirmation) %>
 
   <div>
-    <%= submit "Register" %>
+    <%= submit "Register", class: "btn btn-primary" %>
   </div>
 <% end %>
 
