@@ -8,6 +8,8 @@ defmodule Restaurant.Registrations.Company do
     field :name, :string
 
     timestamps()
+
+    has_many :users, Restaurant.Registrations.User
   end
 
   @doc false

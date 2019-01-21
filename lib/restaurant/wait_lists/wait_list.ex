@@ -8,6 +8,8 @@ defmodule Restaurant.WaitLists.WaitList do
     field :restaurant_id, :id
 
     timestamps()
+
+    has_many :stand_bys, Restaurant.WaitLists.StandBy
   end
 
   @doc false

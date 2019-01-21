@@ -7,19 +7,8 @@ defmodule Restaurant.WaitLists do
   alias Restaurant.Repo
 
   alias Restaurant.WaitLists.WaitList
+  alias Restaurant.WaitLists.StandBy
 
-  @doc """
-  Returns the list of wait_lists.
-
-  ## Examples
-
-      iex> list_wait_lists()
-      [%WaitList{}, ...]
-
-  """
-  def list_wait_lists do
-    Repo.all(WaitList)
-  end
 
   @doc """
   Gets a single wait_list.
@@ -35,58 +24,15 @@ defmodule Restaurant.WaitLists do
       ** (Ecto.NoResultsError)
 
   """
-  def get_wait_list!(id), do: Repo.get!(WaitList, id)
-
-  @doc """
-  Creates a wait_list.
-
-  ## Examples
-
-      iex> create_wait_list(%{field: value})
-      {:ok, %WaitList{}}
-
-      iex> create_wait_list(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_wait_list(attrs \\ %{}) do
-    %WaitList{}
-    |> WaitList.changeset(attrs)
-    |> Repo.insert()
+  def get_wait_list!(id) do
+    Repo.get!(WaitList, id) |> Repo.preload(:stand_bys)
   end
 
-  @doc """
-  Updates a wait_list.
 
-  ## Examples
-
-      iex> update_wait_list(wait_list, %{field: new_value})
-      {:ok, %WaitList{}}
-
-      iex> update_wait_list(wait_list, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_wait_list(%WaitList{} = wait_list, attrs) do
-    wait_list
-    |> WaitList.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
-  Deletes a WaitList.
-
-  ## Examples
-
-      iex> delete_wait_list(wait_list)
-      {:ok, %WaitList{}}
-
-      iex> delete_wait_list(wait_list)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_wait_list(%WaitList{} = wait_list) do
-    Repo.delete(wait_list)
+  def add_stand_by(%StandBy{} = stand_by_attrs) do
+    %StandBy{}
+    |> StandBy.changeset(stand_by_attrs)
+    |> Repo.insert
   end
 
   @doc """

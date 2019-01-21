@@ -1,26 +1,32 @@
-<h1>Listing Wait lists</h1>
+<div class="row">
+  <div class="col mb-2">
+     <%= link "Add Person", to: Routes.stand_by_path(@conn, :new), class: "btn btn-primary" %>
+  </div>
+</div>
 
-<table>
+<div class="row">
+  <div class="col">
+<table class="table table-bordered">
   <thead>
     <tr>
       <th>Name</th>
-
-      <th></th>
+      <th>Contact Number</th>
+      <th>Party Size</th>
+      <th>Estimated Wait Time</th>
+      <th>Notes</th>
     </tr>
   </thead>
   <tbody>
-<%= for wait_list <- @wait_lists do %>
-    <tr>
-      <td><%= wait_list.name %></td>
-
-      <td>
-        <%= link "Show", to: Routes.wait_list_path(@conn, :show, wait_list) %>
-        <%= link "Edit", to: Routes.wait_list_path(@conn, :edit, wait_list) %>
-        <%= link "Delete", to: Routes.wait_list_path(@conn, :delete, wait_list), method: :delete, data: [confirm: "Are you sure?"] %>
-      </td>
-    </tr>
-<% end %>
+    <%= for stand_by <- @wait_list.stand_bys do %>
+      <tr>
+        <td><%= stand_by.name %></td>
+        <td><%= stand_by.contact_phone_number %></td>
+        <td><%= stand_by.party_size %></td>
+        <td><%= stand_by.estimated_wait_time %></td>
+        <td><%= stand_by.notes %></td>
+      </tr>
+    <% end %>
   </tbody>
 </table>
-
-<span><%= link "New Wait list", to: Routes.wait_list_path(@conn, :new) %></span>
+  </div>
+</div>

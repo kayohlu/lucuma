@@ -30,8 +30,9 @@ defmodule Restaurant.Registrations do
       registration_form = Ecto.Changeset.apply_changes(changeset)
 
       Repo.transaction(fn ->
-        {:ok, user} = Repo.insert(user_changeset(registration_form))
+        IO.inspect(company_changeset(registration_form))
         {:ok, company} = Repo.insert(company_changeset(registration_form))
+        {:ok, user} = Repo.insert(user_changeset(registration_form, company))
         {:ok, restaurant} = Repo.insert(restaurant_changeset(company))
         Repo.insert(waitlist_changeset(restaurant))
         user
@@ -56,17 +57,15 @@ defmodule Restaurant.Registrations do
 
 
   defp company_changeset(registration_form) do
-    Company.changeset(%Company{}, %{
-      name: registration_form.company_name,
-      contact_email: registration_form.email
-    })
+    Company.changeset(%Company{}, %{name: registration_form.company_name, contact_email: registration_form.email})
   end
 
-  defp user_changeset(registration_form) do
+  defp user_changeset(registration_form, company) do
     User.changeset(%User{}, %{
       email: registration_form.email,
       full_name: registration_form.full_name,
-      password_hash: Comeonin.Bcrypt.hashpwsalt(registration_form.password)
+      password_hash: Comeonin.Bcrypt.hashpwsalt(registration_form.password),
+      company_id: company.id
     })
   end
 

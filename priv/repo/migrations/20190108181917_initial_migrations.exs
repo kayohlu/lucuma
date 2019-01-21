@@ -2,6 +2,22 @@ defmodule Restaurant.Repo.Migrations.CreateUsers do
   use Ecto.Migration
 
   def change do
+    create table(:companies) do
+      add :name, :string, null: false
+      add :contact_email, :string, null: false
+
+      timestamps()
+    end
+
+    create table(:restaurants) do
+      add :name, :string, null: false
+      add :company_id, references(:companies, on_delete: :nothing), null: false
+
+      timestamps()
+    end
+    create index(:restaurants, [:company_id])
+
+
     create table(:users) do
       add :email, :string, null: false
       add :full_name, :string, null: false
@@ -26,26 +42,13 @@ defmodule Restaurant.Repo.Migrations.CreateUsers do
       add :confirmation_sent_at, :utc_datetime
       # rememberable
       add :remember_created_at, :utc_datetime
-      timestamps()
-    end
-    create unique_index(:users, [:email])
 
 
-    create table(:companies) do
-      add :name, :string, null: false
-      add :contact_email, :string, null: false
-
-      timestamps()
-    end
-
-
-    create table(:restaurants) do
-      add :name, :string, null: false
       add :company_id, references(:companies, on_delete: :nothing), null: false
 
       timestamps()
     end
-    create index(:restaurants, [:company_id])
+    create unique_index(:users, [:email])
 
 
     create table(:wait_lists) do
@@ -55,5 +58,17 @@ defmodule Restaurant.Repo.Migrations.CreateUsers do
       timestamps()
     end
     create index(:wait_lists, [:restaurant_id])
+
+    create table(:stand_bys) do
+      add :restaurant_id, references(:restaurants, on_delete: :nothing)
+      add :wait_list_id, references(:wait_lists, on_delete: :nothing), null: false
+      add :name, :string
+      add :contact_phone_number, :string
+      add :party_size, :integer
+      add :estimated_wait_time, :integer
+      add :notes, :string
+
+      timestamps()
+    end
   end
 end
