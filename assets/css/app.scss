@@ -2,3 +2,12 @@
 
 @import "bootstrap_overrides";
 @import "~bootstrap/scss/bootstrap";
+
+
+.highcharts-credits {
+  display: none;
+}
+
+.card-header {
+  background-color: white;
+}

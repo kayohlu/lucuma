@@ -1,0 +1,5 @@
+<h1>Edit Stand by</h1>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.stand_by_path(@conn, :update, @stand_by)) %>
+
+<span><%= link "Back", to: Routes.stand_by_path(@conn, :index) %></span>

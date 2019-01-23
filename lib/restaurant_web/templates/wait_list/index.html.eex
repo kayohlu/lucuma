@@ -1,32 +1,57 @@
-<div class="row">
-  <div class="col mb-2">
-     <%= link "Add Person", to: Routes.stand_by_path(@conn, :new), class: "btn btn-primary" %>
+<h2 class="mb-4">Wait-List</h2>
+
+<div class="card">
+  <div class="card-header">
+    Summary
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col">
+        <%= content_tag(:div, nil, [{:data, [party_size_breakdown: Jason.encode!(@party_breakdown)]}, style: "min-width: 300px; height: 155px; max-width: 100%; margin: 0 auto", id: "party-size-container"]) %>
+      </div>
+      <div class="col text-center align-self-center">
+        <h1 class="display-1 d-inline">20</h1><small class="text-muted">mins</small>
+        <p class="text-muted">Average Wait Time</p>
+      </div>
+      <div class="col text-center align-self-center">
+        <h1 class="display-1 d-inline"><%= length(@wait_list.stand_bys) %></h1>
+        <p class="text-muted">People Waiting</p>
+      </div>
+    </div>
   </div>
 </div>
 
-<div class="row">
-  <div class="col">
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Contact Number</th>
-      <th>Party Size</th>
-      <th>Estimated Wait Time</th>
-      <th>Notes</th>
-    </tr>
-  </thead>
-  <tbody>
-    <%= for stand_by <- @wait_list.stand_bys do %>
-      <tr>
-        <td><%= stand_by.name %></td>
-        <td><%= stand_by.contact_phone_number %></td>
-        <td><%= stand_by.party_size %></td>
-        <td><%= stand_by.estimated_wait_time %></td>
-        <td><%= stand_by.notes %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<div class="card mt-4">
+  <div class="card-body">
+    <ul class="list-inline">
+      <li class="list-inline-item">
+        <%= link to: Routes.stand_by_path(@conn, :new), class: "btn btn-primary" do %>
+          <i class="far fa-plus-square"></i>
+          Add Person
+        <% end %>
+      </li>
+    </ul>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Contact Number</th>
+          <th>Party Size</th>
+          <th>Estimated Wait Time</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= for stand_by <- @wait_list.stand_bys do %>
+        <tr>
+          <td><%= stand_by.name %></td>
+          <td><%= stand_by.contact_phone_number %></td>
+          <td><%= stand_by.party_size %></td>
+          <td><%= stand_by.estimated_wait_time %></td>
+          <td><%= stand_by.notes %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
   </div>
 </div>

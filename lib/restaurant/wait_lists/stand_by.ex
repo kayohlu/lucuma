@@ -17,7 +17,7 @@ defmodule Restaurant.WaitLists.StandBy do
   @doc false
   def changeset(standby, attrs) do
     standby
-    |> cast(attrs, [:name, :contact_phone_number, :party_size, :estimated_wait_time, :notes])
-    |> validate_required([:name, :contact_phone_number, :party_size, :estimated_wait_time, :notes])
+    |> cast(attrs, [:name, :contact_phone_number, :party_size, :estimated_wait_time, :notes, :wait_list_id])
+    |> validate_required([:name, :contact_phone_number, :party_size, :estimated_wait_time, :notes, :wait_list_id])
   end
 end

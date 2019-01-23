@@ -43,4 +43,16 @@ defmodule RestaurantWeb.FormHelpers do
       content_tag(:div, translate_error(error), class: "invalid-feedback")
     end)
   end
+
+  defmacro form_groupm(form, field, opts \\ [], do: block) do
+    quote do
+      content_tag(:div, class: "form-group") do
+        [
+          label(form, field, class: "control-label"),
+          unquote(block),
+          error_tag(form, field)
+        ]
+      end
+    end
+  end
 end

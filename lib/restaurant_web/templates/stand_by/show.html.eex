@@ -1,0 +1,33 @@
+<h1>Show Stand by</h1>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @stand_by.name %>
+  </li>
+
+  <li>
+    <strong>Contact phone number:</strong>
+    <%= @stand_by.contact_phone_number %>
+  </li>
+
+  <li>
+    <strong>Party size:</strong>
+    <%= @stand_by.party_size %>
+  </li>
+
+  <li>
+    <strong>Estimated wait time:</strong>
+    <%= @stand_by.estimated_wait_time %>
+  </li>
+
+  <li>
+    <strong>Notes:</strong>
+    <%= @stand_by.notes %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.stand_by_path(@conn, :edit, @stand_by) %></span>
+<span><%= link "Back", to: Routes.stand_by_path(@conn, :index) %></span>

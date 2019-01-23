@@ -40,6 +40,6 @@ defmodule RestaurantWeb.Router do
     delete "/signout", SessionController, :delete
     resources "/dashboard", DashboardController, only: [:index]
     resources "/waitlist", WaitListController, only: [:index]
-    resources "/stand_bys", StandByController, only: [:new]
+    resources "/stand_bys", StandByController, only: [:new, :create]
   end
 end
