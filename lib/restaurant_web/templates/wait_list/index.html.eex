@@ -6,8 +6,8 @@
   </div>
   <div class="card-body">
     <div class="row">
-      <div class="col">
-        <%= content_tag(:div, nil, [{:data, [party_size_breakdown: Jason.encode!(@party_breakdown)]}, style: "min-width: 300px; height: 155px; max-width: 100%; margin: 0 auto", id: "party-size-container"]) %>
+      <div class="col party-size-summary-chart__wrapper">
+        <%= content_tag(:div, nil, [{:data, [party_size_breakdown: Jason.encode!(@party_breakdown)]}, class: "party-size-summary-chart__chart", id: "party-size-container"]) %>
       </div>
       <div class="col text-center align-self-center">
         <h1 class="display-1 d-inline">20</h1><small class="text-muted">mins</small>

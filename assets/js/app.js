@@ -10,10 +10,21 @@ import css from "../css/app.scss"
 // Import dependencies
 //
 import "phoenix_html"
-var $ = require("jquery");
-// window.$ = $;
+
+import $ from "jquery"
+window.$ = $;
+
 import 'bootstrap'
+
 import Highcharts from "highcharts"
+
+import Cleave from 'cleave.js'
+
+import * as intlTelInput from 'intl-tel-input';
+// import "intl-tel-input/build/js/utils"
+
+import 'select2';
+import 'select2/dist/css/select2.css';
 
 // Import local files
 //
@@ -36,6 +47,7 @@ $(function() {
     return colors;
   }());
 
+if ($('#party-size-container').length > 0) {
 Highcharts.chart('party-size-container', {
     chart: {
       type: 'column'
@@ -93,4 +105,26 @@ Highcharts.chart('party-size-container', {
         }
     }]
   });
+
+}
+
+
+ if (document.querySelector("#input-phone")) {
+  var input = document.querySelector("#input-phone");
+  var instance = intlTelInput(input, {
+    initialCountry: "auto",
+    nationalMode: false,
+    geoIpLookup: function(success, failure) {
+      $.get("https://ipinfo.io", function() {}, "jsonp").always(function(resp) {
+        var countryCode = (resp && resp.country) ? resp.country : "";
+        console.log(countryCode);
+        success(countryCode);
+      });
+    }
+  });
+  console.log(instance)
+}
+
+  $('.select2-dropdown').select2();
+
 });

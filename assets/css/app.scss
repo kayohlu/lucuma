@@ -2,12 +2,30 @@
 
 @import "bootstrap_overrides";
 @import "~bootstrap/scss/bootstrap";
+@import "~intl-tel-input/build/css/intlTelInput.css";
 
 
 .highcharts-credits {
   display: none;
 }
 
+.intl-tel-input {
+  display: block;
+}
+
 .card-header {
   background-color: white;
+}
+
+.party-size-summary-chart {
+  &__wrapper {
+    height: 155px;
+  }
+
+  &__chart {
+    min-width: 300px;
+    height: 150px;
+    max-width: 100%;
+    margin: 0 auto;
+  }
 }

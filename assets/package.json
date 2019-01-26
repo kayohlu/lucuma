@@ -7,14 +7,19 @@
   },
   "dependencies": {
     "bootstrap": "^4.2.1",
+    "cleave.js": "^1.4.7",
+    "file-loader": "^3.0.1",
     "highcharts": "^7.0.2",
+    "intl-tel-input": "^14.0.7",
     "jquery": "^3.3.1",
     "node-sass": "^4.11.0",
     "phoenix": "file:../deps/phoenix",
     "phoenix_html": "file:../deps/phoenix_html",
     "popper.js": "^1.14.6",
     "postcss-loader": "^3.0.0",
-    "sass-loader": "^7.1.0"
+    "sass-loader": "^7.1.0",
+    "select2": "^4.0.6-rc.1",
+    "svg-url-loader": "^2.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",

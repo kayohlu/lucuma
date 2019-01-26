@@ -21,6 +21,16 @@ module.exports = (env, options) => ({
   },
   module: {
     rules: [
+
+            {
+        test: /\.(jpg|png|gif)$/,
+        loader: "file-loader",
+        options: {
+          name: "[name].[ext]",
+          outputPath: "../../static/images/",
+          publicPath: "../images/"
+        }
+      },
       {
         test: /\.js$/,
         exclude: /node_modules/,

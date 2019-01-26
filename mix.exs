@@ -20,7 +20,7 @@ defmodule Restaurant.MixProject do
   def application do
     [
       mod: {Restaurant.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :ex_phone_number]
     ]
   end
 
@@ -46,7 +46,9 @@ defmodule Restaurant.MixProject do
       {:dialyxir, "~> 1.0.0-rc.4", only: [:dev], runtime: false},
       {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false},
       {:comeonin, "~> 4.1"},
-      {:bcrypt_elixir, "~> 0.12"}
+      {:bcrypt_elixir, "~> 0.12"},
+      {:countries, "~> 1.5"},
+      {:ex_phone_number, "~> 0.1"}
     ]
   end
 
