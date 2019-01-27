@@ -9,13 +9,12 @@
   <%= phone_form_group(f, :contact_phone_number) %>
   <%= number_form_group(f, :party_size) %>
 
-  <%= form_group_custom(f, :estimated_wait_time) do %>
-    <div class="input-group">
-      <%= number_input(f, :estimated_wait_time, class: input_field_classes(f, :estimated_wait_time)) %>
-      <div class="input-group-append">
-        <span class="input-group-text" >minutes</span>
-      </div>
+  <%= input_group(f, :estimated_wait_time) do %>
+    <%= number_input(f, :estimated_wait_time, class: input_field_classes(f, :estimated_wait_time)) %>
+    <div class="input-group-append">
+      <span class="input-group-text" >minutes</span>
     </div>
+    <%= error_tag(f, :estimated_wait_time) %>
   <% end %>
 
   <%= form_group_custom(f, :notes) do %>
@@ -25,4 +24,8 @@
   <div>
     <%= submit "Add", class: "btn btn-primary btn-block" %>
   </div>
+  <div class="mt-3">
+    <%= link "Back to Wait-List", to: "#", class: "btn btn-secondary btn-block" %>
+  </div>
 <% end %>
+

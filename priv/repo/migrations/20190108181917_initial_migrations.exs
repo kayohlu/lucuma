@@ -67,6 +67,8 @@ defmodule Restaurant.Repo.Migrations.CreateUsers do
       add :party_size, :integer
       add :estimated_wait_time, :integer
       add :notes, :string
+      add :wait_finished_at, :utc_datetime
+      add :notified_at, :utc_datetime
 
       timestamps()
     end

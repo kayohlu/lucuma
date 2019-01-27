@@ -18,13 +18,7 @@ import 'bootstrap'
 
 import Highcharts from "highcharts"
 
-import Cleave from 'cleave.js'
-
 import * as intlTelInput from 'intl-tel-input';
-// import "intl-tel-input/build/js/utils"
-
-import 'select2';
-import 'select2/dist/css/select2.css';
 
 // Import local files
 //
@@ -122,9 +116,6 @@ Highcharts.chart('party-size-container', {
       });
     }
   });
-  console.log(instance)
 }
-
-  $('.select2-dropdown').select2();
 
 });

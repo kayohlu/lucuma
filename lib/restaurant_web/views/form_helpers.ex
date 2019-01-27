@@ -21,6 +21,17 @@ defmodule RestaurantWeb.FormHelpers do
     end
   end
 
+  def input_group(form, field, opts \\ [], do: block) do
+    content_tag(:div, class: "form-group") do
+      [
+        label(form, field, class: "control-label"),
+        content_tag(:div, class: "input-group") do
+          block
+        end
+      ]
+    end
+  end
+
   def form_group_custom(form, field, opts \\ [], do: block) do
     content_tag(:div, class: "form-group") do
       [

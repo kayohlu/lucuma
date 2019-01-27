@@ -10,6 +10,6 @@
     <div class="header">
       Error
     </div>
-    <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+    <span class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></span>
   </div>
 <% end %>
