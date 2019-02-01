@@ -10,7 +10,7 @@
         <%= content_tag(:div, nil, [{:data, [party_size_breakdown: Jason.encode!(@party_breakdown)]}, class: "party-size-summary-chart__chart", id: "party-size-container"]) %>
       </div>
       <div class="col text-center align-self-center">
-        <h1 class="display-1 d-inline">20</h1><small class="text-muted">mins</small>
+        <h1 class="display-1 d-inline"><%= @average_wait_time %></h1><small class="text-muted">mins</small>
         <p class="text-muted">Average Wait Time</p>
       </div>
       <div class="col text-center align-self-center">
@@ -26,32 +26,44 @@
     <ul class="list-inline">
       <li class="list-inline-item">
         <%= link to: Routes.stand_by_path(@conn, :new), class: "btn btn-primary" do %>
-          <i class="far fa-plus-square"></i>
+        <i class="far fa-plus-square"></i>
           Add Person
         <% end %>
       </li>
     </ul>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Contact Number</th>
-          <th>Party Size</th>
-          <th>Estimated Wait Time</th>
-          <th>Notes</th>
-        </tr>
-      </thead>
-      <tbody>
-        <%= for stand_by <- @wait_list.stand_bys do %>
-        <tr>
-          <td><%= stand_by.name %></td>
-          <td><%= stand_by.contact_phone_number %></td>
-          <td><%= stand_by.party_size %></td>
-          <td><%= stand_by.estimated_wait_time %></td>
-          <td><%= stand_by.notes %></td>
-        </tr>
-        <% end %>
-      </tbody>
-    </table>
+    <ul class="list-group list-group-flush">
+      <%= for stand_by <- @wait_list.stand_bys do %>
+      <div class="list-group-item">
+        <div class="d-flex w-100 justify-content-between">
+          <div class="flex-fill">
+            <h5 class="mb-1"><%= stand_by.name %></h5>
+            <ul class="list-inline">
+              <li class="list-inline-item"><small class="text-muted"><i class='fas fa-users'></i> <%= stand_by.party_size %></small></li>
+              <li class="list-inline-item"><small class="text-muted"><i class="fas fa-mobile"></i> <%= stand_by.contact_phone_number %></small></li>
+              <li class="list-inline-item"><small class="text-muted"><i class="fas fa-clock"></i> <%= stand_by.estimated_wait_time %> mins</small></li>
+            </ul>
+          </div>
+          <div class="d-flex flex-fill align-items-center justify-content-end">
+            <%= if is_nil(stand_by.notified_at) do %>
+              <%= link "Notify", to: Routes.stand_bys_notification_path(@conn, :create, stand_by_id: stand_by.id), method: :post, class: "ml-1 btn btn-warning" %>
+            <% else %>
+              <button type="button" class="ml-1 btn btn-warning disabled">Notified</button>
+            <% end %>
+            <%= if is_nil(stand_by.attended_at) do %>
+              <%= link "Arrive", to: Routes.stand_bys_attendance_path(@conn, :create, stand_by_id: stand_by.id), method: :post, class: "ml-1 btn btn-success" %>
+            <% else %>
+              <button type="button" class="ml-1 btn btn-success disabled">Arrived</button>
+            <% end %>
+            <%= if is_nil(stand_by.no_show_at) do %>
+              <%= link "No Show", to: Routes.stand_bys_no_show_path(@conn, :create, stand_by_id: stand_by.id), method: :post, class: "ml-1 btn btn-danger" %>
+            <% else %>
+              <button type="button" class="ml-1 btn btn-danger disabled">No Show</button>
+            <% end %>
+
+          </div>
+        </div>
+      </div>
+      <% end %>
+    </ul>
   </div>
 </div>

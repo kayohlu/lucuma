@@ -42,4 +42,12 @@ defmodule RestaurantWeb.Router do
     resources "/waitlist", WaitListController, only: [:index]
     resources "/stand_bys", StandByController, only: [:new, :create]
   end
+
+  scope "/stand_bys", RestaurantWeb.StandBys, as: :stand_bys do
+    pipe_through :protected
+
+    resources "/notifications", NotificationController, only: [:create]
+    resources "/attendances", AttendanceController, only: [:create]
+    resources "/no_shows", NoShowController, only: [:create]
+  end
 end

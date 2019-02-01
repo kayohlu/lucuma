@@ -73,3 +73,6 @@ config :restaurant, Restaurant.Repo,
   database: "restaurant_dev",
   hostname: "localhost",
   pool_size: 10
+
+config :ex_twilio, account_sid:   {:system, "TWILIO_ACCOUNT_SID"},
+                   auth_token:    {:system, "TWILIO_AUTH_TOKEN"}

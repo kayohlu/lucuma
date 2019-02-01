@@ -10,6 +10,9 @@ defmodule Restaurant.WaitLists.StandBy do
     field :notes, :string
     field :party_size, :integer
     field :wait_list_id, :integer
+    field :notified_at, :utc_datetime
+    field :attended_at, :utc_datetime
+    field :no_show_at, :utc_datetime
 
     timestamps()
   end
@@ -17,7 +20,7 @@ defmodule Restaurant.WaitLists.StandBy do
   @doc false
   def changeset(standby, attrs) do
     standby
-    |> cast(attrs, [:name, :contact_phone_number, :party_size, :estimated_wait_time, :notes, :wait_list_id])
+    |> cast(attrs, [:name, :contact_phone_number, :party_size, :estimated_wait_time, :notes, :wait_list_id, :notified_at, :attended_at, :no_show_at])
     |> validate_required([:name, :contact_phone_number, :party_size, :estimated_wait_time, :notes, :wait_list_id])
     |> validate_phone_number(:contact_phone_number)
   end
