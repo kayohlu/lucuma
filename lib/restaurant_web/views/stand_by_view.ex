@@ -1,3 +1,3 @@
-defmodule RestaurantWeb.StandByView do
-  use RestaurantWeb, :view
+defmodule HoldUpWeb.StandByView do
+  use HoldUpWeb, :view
 end

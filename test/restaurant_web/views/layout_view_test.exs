@@ -1,3 +1,3 @@
-defmodule RestaurantWeb.LayoutViewTest do
-  use RestaurantWeb.ConnCase, async: true
+defmodule HoldUpWeb.LayoutViewTest do
+  use HoldUpWeb.ConnCase, async: true
 end

@@ -1,4 +1,4 @@
-defmodule RestaurantWeb.ErrorHelpers do
+defmodule HoldUpWeb.ErrorHelpers do
   @moduledoc """
   Conveniences for translating and building error messages.
   """
@@ -36,9 +36,9 @@ defmodule RestaurantWeb.ErrorHelpers do
     # should be written to the errors.po file. The :count option is
     # set by Ecto and indicates we should also apply plural rules.
     if count = opts[:count] do
-      Gettext.dngettext(RestaurantWeb.Gettext, "errors", msg, msg, count, opts)
+      Gettext.dngettext(HoldUpWeb.Gettext, "errors", msg, msg, count, opts)
     else
-      Gettext.dgettext(RestaurantWeb.Gettext, "errors", msg, opts)
+      Gettext.dgettext(HoldUpWeb.Gettext, "errors", msg, opts)
     end
   end
 end

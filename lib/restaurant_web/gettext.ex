@@ -1,11 +1,11 @@
-defmodule RestaurantWeb.Gettext do
+defmodule HoldUpWeb.Gettext do
   @moduledoc """
   A module providing Internationalization with a gettext-based API.
 
   By using [Gettext](https://hexdocs.pm/gettext),
   your module gains a set of macros for translations, for example:
 
-      import RestaurantWeb.Gettext
+      import HoldUpWeb.Gettext
 
       # Simple translation
       gettext("Here is the string to translate")
@@ -20,5 +20,5 @@ defmodule RestaurantWeb.Gettext do
 
   See the [Gettext Docs](https://hexdocs.pm/gettext) for detailed usage.
   """
-  use Gettext, otp_app: :restaurant
+  use Gettext, otp_app: :hold_up
 end

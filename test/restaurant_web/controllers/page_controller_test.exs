@@ -1,5 +1,5 @@
-defmodule RestaurantWeb.PageControllerTest do
-  use RestaurantWeb.ConnCase
+defmodule HoldUpWeb.PageControllerTest do
+  use HoldUpWeb.ConnCase
 
   test "GET /", %{conn: conn} do
     conn = get(conn, "/")

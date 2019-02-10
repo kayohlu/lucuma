@@ -7,15 +7,15 @@
 # General application configuration
 use Mix.Config
 
-config :restaurant,
-  ecto_repos: [Restaurant.Repo]
+config :hold_up,
+  ecto_repos: [HoldUp.Repo]
 
 # Configures the endpoint
-config :restaurant, RestaurantWeb.Endpoint,
+config :hold_up, HoldUpWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "lLy5QMpqK1F/HGZMKhlUuQiYjw55Mj30C3J4v2C4Celns19UMTZjKi2xUyBYLVv8",
-  render_errors: [view: RestaurantWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Restaurant.PubSub, adapter: Phoenix.PubSub.PG2]
+  render_errors: [view: HoldUpWeb.ErrorView, accepts: ~w(html json)],
+  pubsub: [name: HoldUp.PubSub, adapter: Phoenix.PubSub.PG2]
 
 # Configures Elixir's Logger
 config :logger, :console,

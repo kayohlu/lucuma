@@ -1,3 +1,3 @@
-defmodule RestaurantWeb.PageViewTest do
-  use RestaurantWeb.ConnCase, async: true
+defmodule HoldUpWeb.PageViewTest do
+  use HoldUpWeb.ConnCase, async: true
 end

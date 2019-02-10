@@ -1,7 +1,7 @@
-defmodule RestaurantWeb.RegistrationControllerTest do
-  use RestaurantWeb.ConnCase
+defmodule HoldUpWeb.RegistrationControllerTest do
+  use HoldUpWeb.ConnCase
 
-  alias Restaurant.Registrations
+  alias HoldUp.Registrations
 
   @create_attrs %{email: "some email", full_name: "some full_name", password: "some password", password_confirmation: "some password_confirmation"}
   @update_attrs %{email: "some updated email", full_name: "some updated full_name", password: "some updated password", password_confirmation: "some updated password_confirmation"}

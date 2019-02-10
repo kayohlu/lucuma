@@ -1,10 +1,10 @@
-defmodule Restaurant.RegistrationsTest do
-  use Restaurant.DataCase
+defmodule HoldUp.RegistrationsTest do
+  use HoldUp.DataCase
 
-  alias Restaurant.Registrations
+  alias HoldUp.Registrations
 
   describe "users" do
-    alias Restaurant.Registrations.Registration
+    alias HoldUp.Registrations.Registration
 
     @valid_attrs %{email: "some email", full_name: "some full_name", password: "some password", password_confirmation: "some password_confirmation"}
     @update_attrs %{email: "some updated email", full_name: "some updated full_name", password: "some updated password", password_confirmation: "some updated password_confirmation"}

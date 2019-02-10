@@ -1,11 +1,11 @@
-defmodule RestaurantWeb.FormHelpers do
+defmodule HoldUpWeb.FormHelpers do
   @moduledoc """
   Conveniences for working with forms.
   """
 
   import Phoenix.HTML.Form
   import Phoenix.HTML.Tag
-  import RestaurantWeb.ErrorHelpers
+  import HoldUpWeb.ErrorHelpers
 
   @doc """
   Generates a form group div for forms.

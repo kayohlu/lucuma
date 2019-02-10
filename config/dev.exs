@@ -6,7 +6,7 @@ use Mix.Config
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with webpack to recompile .js and .css sources.
-config :restaurant, RestaurantWeb.Endpoint,
+config :hold_up, HoldUpWeb.Endpoint,
   http: [port: 4000],
   debug_errors: true,
   code_reloader: true,
@@ -46,13 +46,13 @@ config :restaurant, RestaurantWeb.Endpoint,
 # different ports.
 
 # Watch static and templates for browser reloading.
-config :restaurant, RestaurantWeb.Endpoint,
+config :hold_up, HoldUpWeb.Endpoint,
   live_reload: [
     patterns: [
       ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
       ~r{priv/gettext/.*(po)$},
-      ~r{lib/restaurant_web/views/.*(ex)$},
-      ~r{lib/restaurant_web/templates/.*(eex)$}
+      ~r{lib/hold_up_web/views/.*(ex)$},
+      ~r{lib/hold_up_web/templates/.*(eex)$}
     ]
   ]
 
@@ -67,10 +67,10 @@ config :phoenix, :stacktrace_depth, 20
 config :phoenix, :plug_init_mode, :runtime
 
 # Configure your database
-config :restaurant, Restaurant.Repo,
+config :hold_up, HoldUp.Repo,
   username: "postgres",
   password: "postgres",
-  database: "restaurant_dev",
+  database: "hold_up_dev",
   hostname: "localhost",
   pool_size: 10
 

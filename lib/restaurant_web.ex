@@ -1,12 +1,12 @@
-defmodule RestaurantWeb do
+defmodule HoldUpWeb do
   @moduledoc """
   The entrypoint for defining your web interface, such
   as controllers, views, channels and so on.
 
   This can be used in your application as:
 
-      use RestaurantWeb, :controller
-      use RestaurantWeb, :view
+      use HoldUpWeb, :controller
+      use HoldUpWeb, :view
 
   The definitions below will be executed for every view,
   controller, etc, so keep them short and clean, focused
@@ -19,19 +19,19 @@ defmodule RestaurantWeb do
 
   def controller do
     quote do
-      use Phoenix.Controller, namespace: RestaurantWeb
+      use Phoenix.Controller, namespace: HoldUpWeb
 
       import Plug.Conn
-      import RestaurantWeb.Gettext
-      alias RestaurantWeb.Router.Helpers, as: Routes
+      import HoldUpWeb.Gettext
+      alias HoldUpWeb.Router.Helpers, as: Routes
     end
   end
 
   def view do
     quote do
       use Phoenix.View,
-        root: "lib/restaurant_web/templates",
-        namespace: RestaurantWeb
+        root: "lib/hold_up_web/templates",
+        namespace: HoldUpWeb
 
       # Import convenience functions from controllers
       import Phoenix.Controller, only: [get_flash: 1, get_flash: 2, view_module: 1]
@@ -39,10 +39,10 @@ defmodule RestaurantWeb do
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
 
-      import RestaurantWeb.ErrorHelpers
-      import RestaurantWeb.FormHelpers
-      import RestaurantWeb.Gettext
-      alias RestaurantWeb.Router.Helpers, as: Routes
+      import HoldUpWeb.ErrorHelpers
+      import HoldUpWeb.FormHelpers
+      import HoldUpWeb.Gettext
+      alias HoldUpWeb.Router.Helpers, as: Routes
     end
   end
 
@@ -57,7 +57,7 @@ defmodule RestaurantWeb do
   def channel do
     quote do
       use Phoenix.Channel
-      import RestaurantWeb.Gettext
+      import HoldUpWeb.Gettext
     end
   end
 

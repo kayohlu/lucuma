@@ -1,8 +1,8 @@
-defmodule RestaurantWeb.SessionController do
-  use RestaurantWeb, :controller
+defmodule HoldUpWeb.SessionController do
+  use HoldUpWeb, :controller
 
-  alias Restaurant.Accounts
-  alias Restaurant.Accounts.User
+  alias HoldUp.Accounts
+  alias HoldUp.Accounts.User
   alias Comeonin.Bcrypt
 
   def new(conn, _params) do

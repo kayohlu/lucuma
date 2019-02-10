@@ -1,4 +1,4 @@
-# Restaurant
+# HoldUp
 
 To start your Phoenix server:
 

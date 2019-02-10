@@ -1,15 +1,15 @@
-defmodule Restaurant.Registrations do
+defmodule HoldUp.Registrations do
   @moduledoc """
   The Registrations context.
   """
 
   import Ecto.Query, warn: false
-  alias Restaurant.Repo
+  alias HoldUp.Repo
 
-  alias Restaurant.Registrations.RegistrationForm
-  alias Restaurant.Registrations.Company
-  alias Restaurant.Registrations.User
-  alias Restaurant.Registrations.WaitList
+  alias HoldUp.Registrations.RegistrationForm
+  alias HoldUp.Registrations.Company
+  alias HoldUp.Registrations.User
+  alias HoldUp.Registrations.WaitList
 
   @doc """
   Creates a registration_form.
@@ -33,8 +33,8 @@ defmodule Restaurant.Registrations do
         IO.inspect(company_changeset(registration_form))
         {:ok, company} = Repo.insert(company_changeset(registration_form))
         {:ok, user} = Repo.insert(user_changeset(registration_form, company))
-        {:ok, restaurant} = Repo.insert(restaurant_changeset(company))
-        Repo.insert(waitlist_changeset(restaurant))
+        {:ok, business} = Repo.insert(business_changeset(company))
+        Repo.insert(waitlist_changeset(business))
         user
       end)
     else
@@ -69,17 +69,17 @@ defmodule Restaurant.Registrations do
     })
   end
 
-  defp restaurant_changeset(parent_company) do
-    Restaurant.Registrations.Restaurant.changeset(%Restaurant.Registrations.Restaurant{}, %{
-      name: "Unnamed Restaurant",
+  defp business_changeset(parent_company) do
+    HoldUp.Registrations.Business.changeset(%HoldUp.Registrations.Business{}, %{
+      name: "Unnamed Business",
       company_id: parent_company.id
     })
   end
 
-  defp waitlist_changeset(restaurant) do
+  defp waitlist_changeset(business) do
     WaitList.changeset(%WaitList{}, %{
       name: "Wait List 1",
-      restaurant_id: restaurant.id
+      business_id: business.id
     })
   end
 end

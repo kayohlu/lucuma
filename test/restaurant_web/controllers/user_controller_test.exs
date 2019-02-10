@@ -1,7 +1,7 @@
-defmodule RestaurantWeb.UserControllerTest do
-  use RestaurantWeb.ConnCase
+defmodule HoldUpWeb.UserControllerTest do
+  use HoldUpWeb.ConnCase
 
-  alias Restaurant.Accounts
+  alias HoldUp.Accounts
 
   @create_attrs %{confirmation_sent_at: "2010-04-17T14:00:00Z", confirmation_token: "some confirmation_token", confirmed_at: "2010-04-17T14:00:00Z", email: "some email", full_name: "some full_name", password_hash: "some password_hash", reset_password_token: "some reset_password_token"}
   @update_attrs %{confirmation_sent_at: "2011-05-18T15:01:01Z", confirmation_token: "some updated confirmation_token", confirmed_at: "2011-05-18T15:01:01Z", email: "some updated email", full_name: "some updated full_name", password_hash: "some updated password_hash", reset_password_token: "some updated reset_password_token"}

@@ -1,4 +1,4 @@
-defmodule Restaurant.Registrations.User do
+defmodule HoldUp.Registrations.User do
   use Ecto.Schema
   import Ecto.Changeset
 

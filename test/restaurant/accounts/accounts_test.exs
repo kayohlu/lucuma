@@ -1,10 +1,10 @@
-defmodule Restaurant.AccountsTest do
-  use Restaurant.DataCase
+defmodule HoldUp.AccountsTest do
+  use HoldUp.DataCase
 
-  alias Restaurant.Accounts
+  alias HoldUp.Accounts
 
   describe "users" do
-    alias Restaurant.Accounts.User
+    alias HoldUp.Accounts.User
 
     @valid_attrs %{confirmation_sent_at: "2010-04-17T14:00:00Z", confirmation_token: "some confirmation_token", confirmed_at: "2010-04-17T14:00:00Z", email: "some email", full_name: "some full_name", password_hash: "some password_hash", reset_password_token: "some reset_password_token"}
     @update_attrs %{confirmation_sent_at: "2011-05-18T15:01:01Z", confirmation_token: "some updated confirmation_token", confirmed_at: "2011-05-18T15:01:01Z", email: "some updated email", full_name: "some updated full_name", password_hash: "some updated password_hash", reset_password_token: "some updated reset_password_token"}

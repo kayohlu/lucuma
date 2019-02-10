@@ -1,8 +1,8 @@
-defmodule RestaurantWeb.StandByController do
-  use RestaurantWeb, :controller
+defmodule HoldUpWeb.StandByController do
+  use HoldUpWeb, :controller
 
-  alias Restaurant.WaitLists
-  alias Restaurant.WaitLists.StandBy
+  alias HoldUp.WaitLists
+  alias HoldUp.WaitLists.StandBy
 
   def new(conn, _params) do
     changeset = WaitLists.change_stand_by(%StandBy{})

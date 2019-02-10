@@ -1,8 +1,8 @@
-defmodule RestaurantWeb.RegistrationController do
-  use RestaurantWeb, :controller
+defmodule HoldUpWeb.RegistrationController do
+  use HoldUpWeb, :controller
 
-  alias Restaurant.Registrations
-  alias Restaurant.Registrations.RegistrationForm
+  alias HoldUp.Registrations
+  alias HoldUp.Registrations.RegistrationForm
 
   @type schema :: Ecto.Schema.t
   @type conn :: Plug.Conn.t
@@ -20,7 +20,7 @@ defmodule RestaurantWeb.RegistrationController do
       {:ok, user} ->
         conn
         |> put_session(:current_user_id, user.id)
-        |> put_flash(:info, "That's it. Your registration is now complete. We've created an initial default restaurant for you.")
+        |> put_flash(:info, "That's it. Your registration is now complete. We've created an initial default hold_up for you.")
         |> redirect(to: Routes.dashboard_path(conn, :index))
 
       {:error, %Ecto.Changeset{} = changeset} ->

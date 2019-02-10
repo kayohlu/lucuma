@@ -1,4 +1,4 @@
-defmodule Restaurant.WaitLists.Messenger do
+defmodule HoldUp.WaitLists.Messenger do
   def send_message(destination_phone_number, message_body) do
     [twilio_number_data] = ExTwilio.IncomingPhoneNumber.all
 

@@ -1,14 +1,14 @@
-defmodule Restaurant.WaitLists do
+defmodule HoldUp.WaitLists do
   @moduledoc """
   The WaitLists context.
   """
 
   import Ecto.Query, warn: false
-  alias Restaurant.Repo
+  alias HoldUp.Repo
 
-  alias Restaurant.WaitLists.WaitList
-  alias Restaurant.WaitLists.StandBy
-  alias Restaurant.WaitLists.Messenger
+  alias HoldUp.WaitLists.WaitList
+  alias HoldUp.WaitLists.StandBy
+  alias HoldUp.WaitLists.Messenger
 
   @doc """
   Gets a single wait_list.

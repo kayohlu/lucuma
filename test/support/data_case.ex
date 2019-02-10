@@ -1,4 +1,4 @@
-defmodule Restaurant.DataCase do
+defmodule HoldUp.DataCase do
   @moduledoc """
   This module defines the setup for tests requiring
   access to the application's data layer.
@@ -16,20 +16,20 @@ defmodule Restaurant.DataCase do
 
   using do
     quote do
-      alias Restaurant.Repo
+      alias HoldUp.Repo
 
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
-      import Restaurant.DataCase
+      import HoldUp.DataCase
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Restaurant.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(HoldUp.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Restaurant.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(HoldUp.Repo, {:shared, self()})
     end
 
     :ok

@@ -1,10 +1,10 @@
-defmodule Restaurant.CompaniesTest do
-  use Restaurant.DataCase
+defmodule HoldUp.CompaniesTest do
+  use HoldUp.DataCase
 
-  alias Restaurant.Companies
+  alias HoldUp.Companies
 
   describe "companies" do
-    alias Restaurant.Companies.Company
+    alias HoldUp.Companies.Company
 
     @valid_attrs %{contact_email: "some contact_email", name: "some name"}
     @update_attrs %{contact_email: "some updated contact_email", name: "some updated name"}

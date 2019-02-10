@@ -1,5 +1,5 @@
-defmodule RestaurantWeb.ErrorView do
-  use RestaurantWeb, :view
+defmodule HoldUpWeb.ErrorView do
+  use HoldUpWeb, :view
 
   # If you want to customize a particular status code
   # for a certain format, you may uncomment below.

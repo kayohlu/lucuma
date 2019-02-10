@@ -1,3 +1,3 @@
-defmodule RestaurantWeb.RegistrationView do
-  use RestaurantWeb, :view
+defmodule HoldUpWeb.RegistrationView do
+  use HoldUpWeb, :view
 end

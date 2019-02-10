@@ -1,8 +1,8 @@
-defmodule RestaurantWeb.WaitListController do
-  use RestaurantWeb, :controller
+defmodule HoldUpWeb.WaitListController do
+  use HoldUpWeb, :controller
 
-  alias Restaurant.WaitLists
-  alias Restaurant.WaitLists.WaitList
+  alias HoldUp.WaitLists
+  alias HoldUp.WaitLists.WaitList
 
   def index(conn, _params) do
     wait_list = WaitLists.get_wait_list!(1)

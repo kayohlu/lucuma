@@ -1,7 +1,7 @@
-defmodule RestaurantWeb.StandBys.NotificationController do
-  use RestaurantWeb, :controller
+defmodule HoldUpWeb.StandBys.NotificationController do
+  use HoldUpWeb, :controller
 
-  alias Restaurant.WaitLists
+  alias HoldUp.WaitLists
 
   def create(conn, params) do
     WaitLists.notify_stand_by(params["stand_by_id"])

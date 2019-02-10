@@ -1,3 +1,3 @@
-defmodule RestaurantWeb.LayoutView do
-  use RestaurantWeb, :view
+defmodule HoldUpWeb.LayoutView do
+  use HoldUpWeb, :view
 end

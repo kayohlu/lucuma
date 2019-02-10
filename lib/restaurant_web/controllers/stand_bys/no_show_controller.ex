@@ -1,7 +1,7 @@
-defmodule RestaurantWeb.StandBys.NoShowController do
-  use RestaurantWeb, :controller
+defmodule HoldUpWeb.StandBys.NoShowController do
+  use HoldUpWeb, :controller
 
-  alias Restaurant.WaitLists
+  alias HoldUp.WaitLists
 
   def create(conn, params) do
     WaitLists.mark_as_no_show(params["stand_by_id"])

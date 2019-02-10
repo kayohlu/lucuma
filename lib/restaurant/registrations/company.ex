@@ -1,4 +1,4 @@
-defmodule Restaurant.Registrations.Company do
+defmodule HoldUp.Registrations.Company do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -9,7 +9,7 @@ defmodule Restaurant.Registrations.Company do
 
     timestamps()
 
-    has_many :users, Restaurant.Registrations.User
+    has_many :users, HoldUp.Registrations.User
   end
 
   @doc false

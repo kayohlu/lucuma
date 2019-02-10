@@ -1,3 +1,3 @@
-defmodule RestaurantWeb.WaitListView do
-  use RestaurantWeb, :view
+defmodule HoldUpWeb.WaitListView do
+  use HoldUpWeb, :view
 end

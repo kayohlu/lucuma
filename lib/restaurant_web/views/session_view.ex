@@ -1,3 +1,3 @@
-defmodule RestaurantWeb.SessionView do
-  use RestaurantWeb, :view
+defmodule HoldUpWeb.SessionView do
+  use HoldUpWeb, :view
 end

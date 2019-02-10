@@ -1,12 +1,12 @@
-defmodule Restaurant.Accounts do
+defmodule HoldUp.Accounts do
   @moduledoc """
   The Accounts context.
   """
 
   import Ecto.Query, warn: false
-  alias Restaurant.Repo
+  alias HoldUp.Repo
 
-  alias Restaurant.Accounts.User
+  alias HoldUp.Accounts.User
 
   @doc """
   Returns the list of users.

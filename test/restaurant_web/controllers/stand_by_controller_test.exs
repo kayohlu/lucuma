@@ -1,7 +1,7 @@
-defmodule RestaurantWeb.StandByControllerTest do
-  use RestaurantWeb.ConnCase
+defmodule HoldUpWeb.StandByControllerTest do
+  use HoldUpWeb.ConnCase
 
-  alias Restaurant.WaitLists
+  alias HoldUp.WaitLists
 
   @create_attrs %{contact_phone_number: "some contact_phone_number", estimated_wait_time: 42, name: "some name", notes: "some notes", party_size: 42}
   @update_attrs %{contact_phone_number: "some updated contact_phone_number", estimated_wait_time: 43, name: "some updated name", notes: "some updated notes", party_size: 43}

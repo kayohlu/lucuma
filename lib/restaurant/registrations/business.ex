@@ -1,9 +1,9 @@
-defmodule Restaurant.Registrations.Restaurant do
+defmodule HoldUp.Registrations.Business do
   use Ecto.Schema
   import Ecto.Changeset
 
 
-  schema "restaurants" do
+  schema "businesses" do
     field :name, :string
     field :company_id, :id, null: false
 
@@ -11,8 +11,8 @@ defmodule Restaurant.Registrations.Restaurant do
   end
 
   @doc false
-  def changeset(restaurant, attrs) do
-    restaurant
+  def changeset(hold_up, attrs) do
+    hold_up
     |> cast(attrs, [:name, :company_id])
     |> validate_required([:name, :company_id])
   end

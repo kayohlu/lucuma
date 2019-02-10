@@ -1,4 +1,4 @@
-defmodule RestaurantWeb.ChannelCase do
+defmodule HoldUpWeb.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
@@ -21,15 +21,15 @@ defmodule RestaurantWeb.ChannelCase do
       use Phoenix.ChannelTest
 
       # The default endpoint for testing
-      @endpoint RestaurantWeb.Endpoint
+      @endpoint HoldUpWeb.Endpoint
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Restaurant.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(HoldUp.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Restaurant.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(HoldUp.Repo, {:shared, self()})
     end
 
     :ok

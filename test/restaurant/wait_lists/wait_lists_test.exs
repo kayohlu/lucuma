@@ -1,10 +1,10 @@
-defmodule Restaurant.WaitListsTest do
-  use Restaurant.DataCase
+defmodule HoldUp.WaitListsTest do
+  use HoldUp.DataCase
 
-  alias Restaurant.WaitLists
+  alias HoldUp.WaitLists
 
   describe "wait_lists" do
-    alias Restaurant.WaitLists.WaitList
+    alias HoldUp.WaitLists.WaitList
 
     @valid_attrs %{name: "some name"}
     @update_attrs %{name: "some updated name"}

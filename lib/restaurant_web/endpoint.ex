@@ -1,7 +1,7 @@
-defmodule RestaurantWeb.Endpoint do
-  use Phoenix.Endpoint, otp_app: :restaurant
+defmodule HoldUpWeb.Endpoint do
+  use Phoenix.Endpoint, otp_app: :hold_up
 
-  socket "/socket", RestaurantWeb.UserSocket,
+  socket "/socket", HoldUpWeb.UserSocket,
     websocket: true,
     longpoll: false
 
@@ -11,7 +11,7 @@ defmodule RestaurantWeb.Endpoint do
   # when deploying your static files in production.
   plug Plug.Static,
     at: "/",
-    from: :restaurant,
+    from: :hold_up,
     gzip: false,
     only: ~w(css fonts images js favicon.ico robots.txt)
 
@@ -39,8 +39,8 @@ defmodule RestaurantWeb.Endpoint do
   # Set :encryption_salt if you would also like to encrypt it.
   plug Plug.Session,
     store: :cookie,
-    key: "_restaurant_key",
+    key: "_hold_up_key",
     signing_salt: "a8qXPAHf"
 
-  plug RestaurantWeb.Router
+  plug HoldUpWeb.Router
 end

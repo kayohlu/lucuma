@@ -1,7 +1,7 @@
-defmodule RestaurantWeb.Plugs.Authentication do
+defmodule HoldUpWeb.Plugs.Authentication do
   import Plug.Conn
   import Phoenix.Controller
-  alias Restaurant.Accounts
+  alias HoldUp.Accounts
   alias PushWeb.Router.Helpers
 
   def authenticate_user(conn, _params) do

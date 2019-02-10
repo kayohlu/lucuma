@@ -1,7 +1,7 @@
-defmodule RestaurantWeb.DashboardControllerTest do
-  use RestaurantWeb.ConnCase
+defmodule HoldUpWeb.DashboardControllerTest do
+  use HoldUpWeb.ConnCase
 
-  alias Restaurant.Dashboards
+  alias HoldUp.Dashboards
 
   @create_attrs %{x: "some x"}
   @update_attrs %{x: "some updated x"}

@@ -1,4 +1,4 @@
-defmodule Restaurant.WaitLists.StandBy do
+defmodule HoldUp.WaitLists.StandBy do
   use Ecto.Schema
   import Ecto.Changeset
 

@@ -1,4 +1,4 @@
-defmodule Restaurant.Accounts.User do
+defmodule HoldUp.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
 

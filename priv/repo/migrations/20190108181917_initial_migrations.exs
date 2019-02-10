@@ -1,4 +1,4 @@
-defmodule Restaurant.Repo.Migrations.CreateUsers do
+defmodule HoldUp.Repo.Migrations.CreateUsers do
   use Ecto.Migration
 
   def change do
@@ -9,13 +9,13 @@ defmodule Restaurant.Repo.Migrations.CreateUsers do
       timestamps()
     end
 
-    create table(:restaurants) do
+    create table(:businesses) do
       add :name, :string, null: false
       add :company_id, references(:companies, on_delete: :nothing), null: false
 
       timestamps()
     end
-    create index(:restaurants, [:company_id])
+    create index(:businesses, [:company_id])
 
 
     create table(:users) do
@@ -53,14 +53,15 @@ defmodule Restaurant.Repo.Migrations.CreateUsers do
 
     create table(:wait_lists) do
       add :name, :string
-      add :restaurant_id, references(:restaurants, on_delete: :nothing)
+      add :business_id, references(:businesses, on_delete: :nothing)
+      add :notification_sms_body, :string
 
       timestamps()
     end
-    create index(:wait_lists, [:restaurant_id])
+    create index(:wait_lists, [:business_id])
 
     create table(:stand_bys) do
-      add :restaurant_id, references(:restaurants, on_delete: :nothing)
+      add :business_id, references(:businesses, on_delete: :nothing)
       add :wait_list_id, references(:wait_lists, on_delete: :nothing), null: false
       add :name, :string
       add :contact_phone_number, :string

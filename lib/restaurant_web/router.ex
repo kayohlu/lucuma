@@ -1,7 +1,7 @@
-defmodule RestaurantWeb.Router do
-  use RestaurantWeb, :router
+defmodule HoldUpWeb.Router do
+  use HoldUpWeb, :router
 
-  import RestaurantWeb.Plugs.Authentication
+  import HoldUpWeb.Plugs.Authentication
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -23,10 +23,10 @@ defmodule RestaurantWeb.Router do
     plug :put_secure_browser_headers
     plug :authenticate_user
 
-    plug :put_layout, {RestaurantWeb.LayoutView, :logged_in}
+    plug :put_layout, {HoldUpWeb.LayoutView, :logged_in}
   end
 
-  scope "/", RestaurantWeb do
+  scope "/", HoldUpWeb do
     pipe_through :browser
 
     get "/", PageController, :index
@@ -34,7 +34,7 @@ defmodule RestaurantWeb.Router do
     resources "/sessions", SessionController, only: [:new, :create]
   end
 
-  scope "/", RestaurantWeb do
+  scope "/", HoldUpWeb do
     pipe_through :protected
 
     delete "/signout", SessionController, :delete
@@ -43,7 +43,7 @@ defmodule RestaurantWeb.Router do
     resources "/stand_bys", StandByController, only: [:new, :create]
   end
 
-  scope "/stand_bys", RestaurantWeb.StandBys, as: :stand_bys do
+  scope "/stand_bys", HoldUpWeb.StandBys, as: :stand_bys do
     pipe_through :protected
 
     resources "/notifications", NotificationController, only: [:create]

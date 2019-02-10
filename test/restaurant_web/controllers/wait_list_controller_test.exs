@@ -1,7 +1,7 @@
-defmodule RestaurantWeb.WaitListControllerTest do
-  use RestaurantWeb.ConnCase
+defmodule HoldUpWeb.WaitListControllerTest do
+  use HoldUpWeb.ConnCase
 
-  alias Restaurant.WaitLists
+  alias HoldUp.WaitLists
 
   @create_attrs %{name: "some name"}
   @update_attrs %{name: "some updated name"}

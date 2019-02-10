@@ -1,8 +1,8 @@
-defmodule RestaurantWeb.UserController do
-  use RestaurantWeb, :controller
+defmodule HoldUpWeb.UserController do
+  use HoldUpWeb, :controller
 
-  alias Restaurant.Accounts
-  alias Restaurant.Accounts.User
+  alias HoldUp.Accounts
+  alias HoldUp.Accounts.User
 
   def index(conn, _params) do
     users = Accounts.list_users()
