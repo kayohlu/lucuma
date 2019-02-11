@@ -1,11 +1,11 @@
-defmodule HoldUp.WaitLists.SmsSetting do
+defmodule HoldUp.Waitlists.SmsSetting do
   use Ecto.Schema
   import Ecto.Changeset
 
 
   schema "sms_settings" do
     field :message_content, :string
-    field :wait_list_id, :id
+    field :waitlist_id, :id
 
     timestamps()
   end

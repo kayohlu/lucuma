@@ -1,13 +1,13 @@
 defmodule HoldUpWeb.StandBys.NotificationController do
   use HoldUpWeb, :controller
 
-  alias HoldUp.WaitLists
+  alias HoldUp.Waitlists
 
   def create(conn, params) do
-    wait_list = WaitLists.get_wait_list!(1)
-    WaitLists.notify_stand_by(wait_list.id, params["stand_by_id"])
+    waitlist = Waitlists.get_waitlist!(1)
+    Waitlists.notify_stand_by(waitlist.id, params["stand_by_id"])
 
     conn
-      |> redirect(to: Routes.wait_list_path(conn, :index))
+      |> redirect(to: Routes.waitlist_path(conn, :index))
   end
 end

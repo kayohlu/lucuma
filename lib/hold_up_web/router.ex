@@ -39,7 +39,7 @@ defmodule HoldUpWeb.Router do
 
     delete "/signout", SessionController, :delete
     resources "/dashboard", DashboardController, only: [:index]
-    resources "/waitlist", WaitListController, only: [:index]
+    resources "/waitlist", WaitlistController, only: [:index]
     resources "/stand_bys", StandByController, only: [:new, :create]
   end
 

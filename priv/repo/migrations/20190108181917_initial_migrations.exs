@@ -51,18 +51,18 @@ defmodule HoldUp.Repo.Migrations.CreateUsers do
     create unique_index(:users, [:email])
 
 
-    create table(:wait_lists) do
+    create table(:waitlists) do
       add :name, :string
       add :business_id, references(:businesses, on_delete: :nothing)
       add :notification_sms_body, :string
 
       timestamps()
     end
-    create index(:wait_lists, [:business_id])
+    create index(:waitlists, [:business_id])
 
     create table(:stand_bys) do
       add :business_id, references(:businesses, on_delete: :nothing)
-      add :wait_list_id, references(:wait_lists, on_delete: :nothing), null: false
+      add :waitlist_id, references(:waitlists, on_delete: :nothing), null: false
       add :name, :string
       add :contact_phone_number, :string
       add :party_size, :integer
@@ -77,10 +77,10 @@ defmodule HoldUp.Repo.Migrations.CreateUsers do
 
     create table(:sms_settings) do
       add :message_content, :string
-      add :wait_list_id, references(:wait_lists, on_delete: :nothing)
+      add :waitlist_id, references(:waitlists, on_delete: :nothing)
 
       timestamps()
     end
-    create index(:sms_settings, [:wait_list_id])
+    create index(:sms_settings, [:waitlist_id])
   end
 end

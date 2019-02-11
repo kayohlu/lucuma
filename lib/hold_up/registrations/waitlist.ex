@@ -1,9 +1,9 @@
-defmodule HoldUp.Registrations.WaitList do
+defmodule HoldUp.Registrations.Waitlist do
   use Ecto.Schema
   import Ecto.Changeset
 
 
-  schema "wait_lists" do
+  schema "waitlists" do
     field :name, :string
     field :business_id, :id, null: false
 
@@ -11,8 +11,8 @@ defmodule HoldUp.Registrations.WaitList do
   end
 
   @doc false
-  def changeset(wait_list, attrs) do
-    wait_list
+  def changeset(waitlist, attrs) do
+    waitlist
     |> cast(attrs, [:name, :business_id])
     |> validate_required([:name, :business_id])
   end

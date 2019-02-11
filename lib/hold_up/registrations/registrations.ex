@@ -9,7 +9,7 @@ defmodule HoldUp.Registrations do
   alias HoldUp.Registrations.RegistrationForm
   alias HoldUp.Registrations.Company
   alias HoldUp.Registrations.User
-  alias HoldUp.Registrations.WaitList
+  alias HoldUp.Registrations.Waitlist
   alias HoldUp.Registrations.SmsSetting
 
   @doc """
@@ -35,8 +35,8 @@ defmodule HoldUp.Registrations do
         {:ok, company} = Repo.insert(company_changeset(registration_form))
         {:ok, user} = Repo.insert(user_changeset(registration_form, company))
         {:ok, business} = Repo.insert(business_changeset(company))
-        {:ok, wait_list} = Repo.insert(waitlist_changeset(business))
-        {:ok, sms_settings} = Repo.insert(sms_settings_changeset(wait_list))
+        {:ok, waitlist} = Repo.insert(waitlist_changeset(business))
+        {:ok, sms_settings} = Repo.insert(sms_settings_changeset(waitlist))
         user
       end)
     else
@@ -79,15 +79,15 @@ defmodule HoldUp.Registrations do
   end
 
   defp waitlist_changeset(business) do
-    WaitList.changeset(%WaitList{}, %{
+    Waitlist.changeset(%Waitlist{}, %{
       name: "Wait List 1",
       business_id: business.id
     })
   end
 
-  defp sms_settings_changeset(wait_list) do
+  defp sms_settings_changeset(waitlist) do
     SmsSetting.changeset(%SmsSetting{}, %{
-      wait_list_id: wait_list.id,
+      waitlist_id: waitlist.id,
       message_content: """
       Hello Guest,
 

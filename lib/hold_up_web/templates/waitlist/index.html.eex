@@ -14,7 +14,7 @@
         <p class="text-muted">Average Wait Time</p>
       </div>
       <div class="col text-center align-self-center">
-        <h1 class="display-1 d-inline"><%= length(@wait_list.stand_bys) %></h1>
+        <h1 class="display-1 d-inline"><%= length(@waitlist.stand_bys) %></h1>
         <p class="text-muted">People Waiting</p>
       </div>
     </div>
@@ -32,7 +32,7 @@
       </li>
     </ul>
     <ul class="list-group list-group-flush">
-      <%= for stand_by <- @wait_list.stand_bys do %>
+      <%= for stand_by <- @waitlist.stand_bys do %>
       <div class="list-group-item">
         <div class="d-flex w-100 justify-content-between">
           <div class="flex-fill">

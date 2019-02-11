@@ -1,21 +1,21 @@
 defmodule HoldUpWeb.StandByController do
   use HoldUpWeb, :controller
 
-  alias HoldUp.WaitLists
-  alias HoldUp.WaitLists.StandBy
+  alias HoldUp.Waitlists
+  alias HoldUp.Waitlists.StandBy
 
   def new(conn, _params) do
-    changeset = WaitLists.change_stand_by(%StandBy{})
+    changeset = Waitlists.change_stand_by(%StandBy{})
     render(conn, "new.html", changeset: changeset)
   end
 
   def create(conn, %{"stand_by" => stand_by_params}) do
-    wait_list = WaitLists.get_wait_list!(1)
-    case WaitLists.create_stand_by(wait_list.id, stand_by_params) do
+    waitlist = Waitlists.get_waitlist!(1)
+    case Waitlists.create_stand_by(waitlist.id, stand_by_params) do
       {:ok, stand_by} ->
         conn
         |> put_flash(:info, "Stand by created successfully.")
-        |> redirect(to: Routes.wait_list_path(conn, :index))
+        |> redirect(to: Routes.waitlist_path(conn, :index))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
@@ -23,20 +23,20 @@ defmodule HoldUpWeb.StandByController do
   end
 
   def show(conn, %{"id" => id}) do
-    stand_by = WaitLists.get_stand_by!(id)
+    stand_by = Waitlists.get_stand_by!(id)
     render(conn, "show.html", stand_by: stand_by)
   end
 
   def edit(conn, %{"id" => id}) do
-    stand_by = WaitLists.get_stand_by!(id)
-    changeset = WaitLists.change_stand_by(stand_by)
+    stand_by = Waitlists.get_stand_by!(id)
+    changeset = Waitlists.change_stand_by(stand_by)
     render(conn, "edit.html", stand_by: stand_by, changeset: changeset)
   end
 
   def update(conn, %{"id" => id, "stand_by" => stand_by_params}) do
-    stand_by = WaitLists.get_stand_by!(id)
+    stand_by = Waitlists.get_stand_by!(id)
 
-    case WaitLists.update_stand_by(stand_by, stand_by_params) do
+    case Waitlists.update_stand_by(stand_by, stand_by_params) do
       {:ok, stand_by} ->
         conn
         |> put_flash(:info, "Stand by updated successfully.")
@@ -48,8 +48,8 @@ defmodule HoldUpWeb.StandByController do
   end
 
   def delete(conn, %{"id" => id}) do
-    stand_by = WaitLists.get_stand_by!(id)
-    {:ok, _stand_by} = WaitLists.delete_stand_by(stand_by)
+    stand_by = Waitlists.get_stand_by!(id)
+    {:ok, _stand_by} = Waitlists.delete_stand_by(stand_by)
 
     conn
     |> put_flash(:info, "Stand by deleted successfully.")

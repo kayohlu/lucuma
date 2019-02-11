@@ -1,4 +1,4 @@
-defmodule HoldUp.WaitLists.Messenger do
+defmodule HoldUp.Waitlists.Messenger do
   def send_message(destination_phone_number, message_body) do
     case Mix.env do
       :prod ->

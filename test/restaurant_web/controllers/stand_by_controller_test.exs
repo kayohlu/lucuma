@@ -1,14 +1,14 @@
 defmodule HoldUpWeb.StandByControllerTest do
   use HoldUpWeb.ConnCase
 
-  alias HoldUp.WaitLists
+  alias HoldUp.Waitlists
 
   @create_attrs %{contact_phone_number: "some contact_phone_number", estimated_wait_time: 42, name: "some name", notes: "some notes", party_size: 42}
   @update_attrs %{contact_phone_number: "some updated contact_phone_number", estimated_wait_time: 43, name: "some updated name", notes: "some updated notes", party_size: 43}
   @invalid_attrs %{contact_phone_number: nil, estimated_wait_time: nil, name: nil, notes: nil, party_size: nil}
 
   def fixture(:stand_by) do
-    {:ok, stand_by} = WaitLists.create_stand_by(@create_attrs)
+    {:ok, stand_by} = Waitlists.create_stand_by(@create_attrs)
     stand_by
   end
 

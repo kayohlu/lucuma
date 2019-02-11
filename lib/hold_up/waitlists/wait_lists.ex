@@ -1,37 +1,37 @@
-defmodule HoldUp.WaitLists do
+defmodule HoldUp.Waitlists do
   @moduledoc """
-  The WaitLists context.
+  The Waitlists context.
   """
 
   import Ecto.Query, warn: false
   alias HoldUp.Repo
 
-  alias HoldUp.WaitLists.WaitList
-  alias HoldUp.WaitLists.StandBy
-  alias HoldUp.WaitLists.Messenger
-  alias HoldUp.WaitLists.SmsSetting
+  alias HoldUp.Waitlists.Waitlist
+  alias HoldUp.Waitlists.StandBy
+  alias HoldUp.Waitlists.Messenger
+  alias HoldUp.Waitlists.SmsSetting
 
   @doc """
-  Gets a single wait_list.
+  Gets a single waitlist.
 
   Raises `Ecto.NoResultsError` if the Wait list does not exist.
 
   ## Examples
 
-      iex> get_wait_list!(123)
-      %WaitList{}
+      iex> get_waitlist!(123)
+      %Waitlist{}
 
-      iex> get_wait_list!(456)
+      iex> get_waitlist!(456)
       ** (Ecto.NoResultsError)
 
   """
-  def get_wait_list!(id) do
+  def get_waitlist!(id) do
     # This method does two queries because of the preload.
 
     stand_bys_query = from s in StandBy,
                         where: is_nil(s.attended_at) and is_nil(s.no_show_at)
 
-    Repo.one(from w in WaitList, preload: [stand_bys: ^stand_bys_query])
+    Repo.one(from w in Waitlist, preload: [stand_bys: ^stand_bys_query])
   end
 
   def get_stand_by!(id) do
@@ -56,9 +56,9 @@ defmodule HoldUp.WaitLists do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_stand_by(wait_list_id, attrs \\ %{}) do
+  def create_stand_by(waitlist_id, attrs \\ %{}) do
     %StandBy{}
-    |> StandBy.changeset(Map.put(attrs, "wait_list_id", wait_list_id))
+    |> StandBy.changeset(Map.put(attrs, "waitlist_id", waitlist_id))
     |> Repo.insert()
   end
 
@@ -114,9 +114,9 @@ defmodule HoldUp.WaitLists do
     Enum.map(grouped, fn {k, v} -> %{ name: k, y: length(v) } end)
   end
 
-  def notify_stand_by(wait_list_id, stand_by_id) do
+  def notify_stand_by(waitlist_id, stand_by_id) do
     stand_by = get_stand_by!(stand_by_id)
-    body = Repo.get!(SmsSetting, wait_list_id).message_content
+    body = Repo.get!(SmsSetting, waitlist_id).message_content
     send_sms_task = Task.start(fn -> Messenger.send_message(stand_by.contact_phone_number, body) end)
     update_stand_by(stand_by, %{notified_at: DateTime.utc_now})
   end
@@ -131,10 +131,10 @@ defmodule HoldUp.WaitLists do
     update_stand_by(stand_by, %{no_show_at: DateTime.utc_now})
   end
 
-  def calculate_average_wait_time(wait_list_id) do
+  def calculate_average_wait_time(waitlist_id) do
     {:ok, start_of_today} = NaiveDateTime.new(Date.utc_today,  ~T[00:00:00])
     db_result = Repo.one(from s in StandBy,
-      where: not is_nil(s.notified_at) and s.wait_list_id == ^wait_list_id and s.inserted_at > ^start_of_today,
+      where: not is_nil(s.notified_at) and s.waitlist_id == ^waitlist_id and s.inserted_at > ^start_of_today,
       select: avg(s.notified_at - s.inserted_at))
 
     case db_result do

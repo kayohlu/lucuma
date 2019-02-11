@@ -1,4 +1,4 @@
-defmodule HoldUp.WaitLists.StandBy do
+defmodule HoldUp.Waitlists.StandBy do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -9,7 +9,7 @@ defmodule HoldUp.WaitLists.StandBy do
     field :name, :string
     field :notes, :string
     field :party_size, :integer
-    field :wait_list_id, :integer
+    field :waitlist_id, :integer
     field :notified_at, :utc_datetime
     field :attended_at, :utc_datetime
     field :no_show_at, :utc_datetime
@@ -20,8 +20,8 @@ defmodule HoldUp.WaitLists.StandBy do
   @doc false
   def changeset(standby, attrs) do
     standby
-    |> cast(attrs, [:name, :contact_phone_number, :party_size, :estimated_wait_time, :notes, :wait_list_id, :notified_at, :attended_at, :no_show_at])
-    |> validate_required([:name, :contact_phone_number, :party_size, :estimated_wait_time, :notes, :wait_list_id])
+    |> cast(attrs, [:name, :contact_phone_number, :party_size, :estimated_wait_time, :notes, :waitlist_id, :notified_at, :attended_at, :no_show_at])
+    |> validate_required([:name, :contact_phone_number, :party_size, :estimated_wait_time, :notes, :waitlist_id])
     |> validate_phone_number(:contact_phone_number)
   end
 

@@ -1,13 +1,13 @@
-defmodule HoldUpWeb.WaitListController do
+defmodule HoldUpWeb.WaitlistController do
   use HoldUpWeb, :controller
 
-  alias HoldUp.WaitLists
-  alias HoldUp.WaitLists.WaitList
+  alias HoldUp.Waitlists
+  alias HoldUp.Waitlists.Waitlist
 
   def index(conn, _params) do
-    wait_list = WaitLists.get_wait_list!(1)
-    party_breakdown = WaitLists.party_size_breakdown(wait_list.stand_bys)
-    average_wait_time = WaitLists.calculate_average_wait_time(wait_list.id)
-    render(conn, "index.html", wait_list: wait_list, party_breakdown: party_breakdown, average_wait_time: average_wait_time)
+    waitlist = Waitlists.get_waitlist!(1)
+    party_breakdown = Waitlists.party_size_breakdown(waitlist.stand_bys)
+    average_wait_time = Waitlists.calculate_average_wait_time(waitlist.id)
+    render(conn, "index.html", waitlist: waitlist, party_breakdown: party_breakdown, average_wait_time: average_wait_time)
   end
 end
