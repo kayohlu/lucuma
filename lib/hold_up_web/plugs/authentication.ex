@@ -2,7 +2,7 @@ defmodule HoldUpWeb.Plugs.Authentication do
   import Plug.Conn
   import Phoenix.Controller
   alias HoldUp.Accounts
-  alias PushWeb.Router.Helpers
+  alias HoldUpWeb.Router.Helpers
 
   def authenticate_user(conn, _params) do
     user = Accounts.get_user!(get_session(conn, :current_user_id))

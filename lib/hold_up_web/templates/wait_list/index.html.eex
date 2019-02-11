@@ -47,7 +47,7 @@
             <%= if is_nil(stand_by.notified_at) do %>
               <%= link "Notify", to: Routes.stand_bys_notification_path(@conn, :create, stand_by_id: stand_by.id), method: :post, class: "ml-1 btn btn-warning" %>
             <% else %>
-              <button type="button" class="ml-1 btn btn-warning disabled">Notified</button>
+              <%= link "Notify Again", to: Routes.stand_bys_notification_path(@conn, :create, stand_by_id: stand_by.id), method: :post, class: "ml-1 btn btn-warning" %>
             <% end %>
             <%= if is_nil(stand_by.attended_at) do %>
               <%= link "Arrive", to: Routes.stand_bys_attendance_path(@conn, :create, stand_by_id: stand_by.id), method: :post, class: "ml-1 btn btn-success" %>

@@ -10,6 +10,7 @@ defmodule HoldUp.Registrations do
   alias HoldUp.Registrations.Company
   alias HoldUp.Registrations.User
   alias HoldUp.Registrations.WaitList
+  alias HoldUp.Registrations.SmsSetting
 
   @doc """
   Creates a registration_form.
@@ -34,7 +35,8 @@ defmodule HoldUp.Registrations do
         {:ok, company} = Repo.insert(company_changeset(registration_form))
         {:ok, user} = Repo.insert(user_changeset(registration_form, company))
         {:ok, business} = Repo.insert(business_changeset(company))
-        Repo.insert(waitlist_changeset(business))
+        {:ok, wait_list} = Repo.insert(waitlist_changeset(business))
+        {:ok, sms_settings} = Repo.insert(sms_settings_changeset(wait_list))
         user
       end)
     else
@@ -80,6 +82,20 @@ defmodule HoldUp.Registrations do
     WaitList.changeset(%WaitList{}, %{
       name: "Wait List 1",
       business_id: business.id
+    })
+  end
+
+  defp sms_settings_changeset(wait_list) do
+    SmsSetting.changeset(%SmsSetting{}, %{
+      wait_list_id: wait_list.id,
+      message_content: """
+      Hello Guest,
+
+      It's your turn!
+
+      Regards,
+      Your friendly staff
+      """
     })
   end
 end

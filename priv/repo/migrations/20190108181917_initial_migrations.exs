@@ -74,5 +74,13 @@ defmodule HoldUp.Repo.Migrations.CreateUsers do
 
       timestamps()
     end
+
+    create table(:sms_settings) do
+      add :message_content, :string
+      add :wait_list_id, references(:wait_lists, on_delete: :nothing)
+
+      timestamps()
+    end
+    create index(:sms_settings, [:wait_list_id])
   end
 end

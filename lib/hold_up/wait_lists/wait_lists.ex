@@ -9,6 +9,7 @@ defmodule HoldUp.WaitLists do
   alias HoldUp.WaitLists.WaitList
   alias HoldUp.WaitLists.StandBy
   alias HoldUp.WaitLists.Messenger
+  alias HoldUp.WaitLists.SmsSetting
 
   @doc """
   Gets a single wait_list.
@@ -113,9 +114,9 @@ defmodule HoldUp.WaitLists do
     Enum.map(grouped, fn {k, v} -> %{ name: k, y: length(v) } end)
   end
 
-  def notify_stand_by(stand_by_id) do
+  def notify_stand_by(wait_list_id, stand_by_id) do
     stand_by = get_stand_by!(stand_by_id)
-    body = "hello #{stand_by.name}, your table is ready for you now."
+    body = Repo.get!(SmsSetting, wait_list_id).message_content
     send_sms_task = Task.start(fn -> Messenger.send_message(stand_by.contact_phone_number, body) end)
     update_stand_by(stand_by, %{notified_at: DateTime.utc_now})
   end

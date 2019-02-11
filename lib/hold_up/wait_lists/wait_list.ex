@@ -5,7 +5,7 @@ defmodule HoldUp.WaitLists.WaitList do
 
   schema "wait_lists" do
     field :name, :string
-    field :hold_up_id, :id
+    field :business_id, :id
     field :notification_sms_body, :string
 
     timestamps()
