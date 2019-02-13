@@ -20,7 +20,7 @@ defmodule HoldUpWeb.RegistrationController do
       {:ok, user} ->
         conn
         |> put_session(:current_user_id, user.id)
-        |> put_flash(:info, "That's it. Your registration is now complete. We've created an initial default hold_up for you.")
+        |> put_flash(:info, "That's it. Your registration is complete. We've created an initial default waitlist for you.")
         |> redirect(to: Routes.dashboard_path(conn, :index))
 
       {:error, %Ecto.Changeset{} = changeset} ->

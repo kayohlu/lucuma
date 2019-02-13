@@ -15,7 +15,11 @@
 <body>
   <main role="main">
     <%= render "navigation.html", conn: @conn %>
-    <%= Map.get(assigns, :inner_layout) || render @view_module, @view_template, assigns %>
+    <%= if is_nil(Map.get(assigns, :inner_layout)) do %>
+      <%= render @view_module, @view_template, assigns %>
+    <% else %>
+     <%= Map.get(assigns, :inner_layout) %>
+    <% end %>
   </main>
 
   <!-- /container -->

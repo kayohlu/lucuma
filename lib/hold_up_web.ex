@@ -41,6 +41,7 @@ defmodule HoldUpWeb do
 
       import HoldUpWeb.ErrorHelpers
       import HoldUpWeb.FormHelpers
+      import HoldUpWeb.NavigationHelpers
       import HoldUpWeb.Gettext
       alias HoldUpWeb.Router.Helpers, as: Routes
     end

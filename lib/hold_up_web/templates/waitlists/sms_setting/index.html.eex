@@ -1,1 +1,10 @@
-ihello sms settings
+<% IO.inspect @changeset %>
+<%= form_for @changeset, Routes.waitlists_sms_setting_path(@conn, :update, @sms_setting.id), [method: :put], fn f -> %>
+  <%= form_group_custom(f, :message_content) do %>
+    <%= textarea(f, :message_content, class: input_field_classes(f, :notes)) %>
+  <% end %>
+
+  <div>
+    <%= submit "Save", class: "btn btn-primary btn-block" %>
+  </div>
+<% end %>

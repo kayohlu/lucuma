@@ -80,6 +80,12 @@ defmodule HoldUp.Waitlists do
     |> Repo.update()
   end
 
+  def update_sms_setting(%SmsSetting{} = sms_setting, attrs) do
+    sms_setting
+    |> SmsSetting.changeset(attrs)
+    |> Repo.update()
+  end
+
   @doc """
   Deletes a StandBy.
 
@@ -141,5 +147,9 @@ defmodule HoldUp.Waitlists do
       %Postgrex.Interval{days: _d, months: _m, secs: seconds} -> round(seconds / 60)
       _ -> 0
     end
+  end
+
+  def change_sms_setting(%SmsSetting{} = sms_setting) do
+    SmsSetting.changeset(sms_setting, %{})
   end
 end

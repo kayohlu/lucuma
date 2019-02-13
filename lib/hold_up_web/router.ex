@@ -46,7 +46,7 @@ defmodule HoldUpWeb.Router do
     pipe_through :protected
 
     resources "/", WaitlistController, only: [:index]
-    resources "/sms_settings", SmsSettingController, only: [:index]
+    resources "/sms_settings", SmsSettingController, only: [:index, :update]
   end
 
   scope "/stand_bys", HoldUpWeb.StandBys, as: :stand_bys do
