@@ -1,5 +1,7 @@
-defmodule HoldUpWeb.WaitlistController do
+defmodule HoldUpWeb.Waitlists.WaitlistController do
   use HoldUpWeb, :controller
+
+  plug :put_layout, :waitlist
 
   alias HoldUp.Waitlists
   alias HoldUp.Waitlists.Waitlist
