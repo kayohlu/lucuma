@@ -1,8 +1,11 @@
 defmodule HoldUpWeb.Router do
   use HoldUpWeb, :router
 
-  import HoldUpWeb.Plugs.Authentication
   import HoldUpWeb.Plugs.RedirectLoggedIn
+  import HoldUpWeb.Plugs.Authentication
+  import HoldUpWeb.Plugs.CurrentCompany
+  import HoldUpWeb.Plugs.CurrentBusiness
+
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -24,10 +27,13 @@ defmodule HoldUpWeb.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    plug :authenticate_user
+    plug :authenticated?
+    plug :assign_current_company
+    plug :assign_current_business
 
     plug :put_layout, {HoldUpWeb.LayoutView, :logged_in}
   end
+
 
   scope "/", HoldUpWeb do
     pipe_through :browser
@@ -45,12 +51,14 @@ defmodule HoldUpWeb.Router do
     resources "/stand_bys", StandByController, only: [:new, :create]
   end
 
+
   scope "/waitlist", HoldUpWeb.Waitlists, as: :waitlists do
     pipe_through :protected
 
     resources "/", WaitlistController, only: [:index]
     resources "/sms_settings", SmsSettingController, only: [:index, :update]
   end
+
 
   scope "/stand_bys", HoldUpWeb.StandBys, as: :stand_bys do
     pipe_through :protected

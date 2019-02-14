@@ -7,37 +7,19 @@ defmodule HoldUp.Accounts do
   alias HoldUp.Repo
 
   alias HoldUp.Accounts.User
+  alias HoldUp.Accounts.Company
+  alias HoldUp.Accounts.Business
 
-  @doc """
-  Returns the list of users.
 
-  ## Examples
-
-      iex> list_users()
-      [%User{}, ...]
-
-  """
   def list_users do
     Repo.all(User)
   end
 
-  @doc """
-  Gets a single user.
-
-  Raises `Ecto.NoResultsError` if the User does not exist.
-
-  ## Examples
-
-      iex> get_user!(123)
-      %User{}
-
-      iex> get_user!(456)
-      ** (Ecto.NoResultsError)
-
-  """
   def get_user!(id), do: Repo.get!(User, id)
 
   def get_user(id), do: Repo.get(User, id)
+
+  def get_current_company(user), do: Repo.get(Company, user.company_id)
 
   @doc """
   Creates a user.
@@ -75,18 +57,6 @@ defmodule HoldUp.Accounts do
     |> Repo.update()
   end
 
-  @doc """
-  Deletes a User.
-
-  ## Examples
-
-      iex> delete_user(user)
-      {:ok, %User{}}
-
-      iex> delete_user(user)
-      {:error, %Ecto.Changeset{}}
-
-  """
   def delete_user(%User{} = user) do
     Repo.delete(user)
   end
@@ -104,9 +74,24 @@ defmodule HoldUp.Accounts do
     User.changeset(user, %{})
   end
 
+  def get_user_by(email) do
+    query = from user in HoldUp.Accounts.User,
+            join: company in HoldUp.Accounts.Company,
+            where: company.id == user.company_id,
+            join: businesses in HoldUp.Accounts.Business,
+            where: businesses.company_id == company.id,
+            where: user.email == ^email,
+            preload: [company: {company, businesses: businesses}]
 
-  def get_user_by_email(email) do
-    User
-    |> Repo.get_by(email: email)
+
+    Repo.one(query)
+  end
+
+  def get_current_business_for_user(user) do
+    query = from businesses in HoldUp.Accounts.Business,
+            where: businesses.company_id == ^user.company_id
+
+
+    Repo.one(query)
   end
 end

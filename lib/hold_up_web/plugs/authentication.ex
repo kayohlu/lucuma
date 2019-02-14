@@ -4,7 +4,7 @@ defmodule HoldUpWeb.Plugs.Authentication do
   alias HoldUp.Accounts
   alias HoldUpWeb.Router.Helpers
 
-  def authenticate_user(conn, _params) do
+  def authenticated?(conn, _params) do
     with {:ok, current_user_id} <- fetch_current_user_id(conn),
          {:ok, user } <- fetch_current_user(current_user_id)
     do
