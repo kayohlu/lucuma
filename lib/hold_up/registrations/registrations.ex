@@ -31,7 +31,6 @@ defmodule HoldUp.Registrations do
       registration_form = Ecto.Changeset.apply_changes(changeset)
 
       Repo.transaction(fn ->
-        IO.inspect(company_changeset(registration_form))
         {:ok, company} = Repo.insert(company_changeset(registration_form))
         {:ok, user} = Repo.insert(user_changeset(registration_form, company))
         {:ok, business} = Repo.insert(business_changeset(company))
@@ -89,7 +88,7 @@ defmodule HoldUp.Registrations do
     SmsSetting.changeset(%SmsSetting{}, %{
       waitlist_id: waitlist.id,
       message_content: """
-      Hello Guest,
+      Hello [[NAME]],
 
       It's your turn!
 

@@ -8,6 +8,6 @@ defmodule HoldUpWeb.StandBys.NotificationController do
     Waitlists.notify_stand_by(waitlist.id, params["stand_by_id"])
 
     conn
-      |> redirect(to: Routes.waitlist_path(conn, :index))
+      |> redirect(to: Routes.waitlists_waitlist_path(conn, :index))
   end
 end

@@ -15,7 +15,7 @@ defmodule HoldUpWeb.StandByController do
       {:ok, stand_by} ->
         conn
         |> put_flash(:info, "Stand by created successfully.")
-        |> redirect(to: Routes.waitlist_path(conn, :index))
+        |> redirect(to: Routes.waitlists_waitlist_path(conn, :index))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)

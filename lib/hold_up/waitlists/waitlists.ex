@@ -122,7 +122,9 @@ defmodule HoldUp.Waitlists do
 
   def notify_stand_by(waitlist_id, stand_by_id) do
     stand_by = get_stand_by!(stand_by_id)
-    body = Repo.get!(SmsSetting, waitlist_id).message_content
+    body =
+      Repo.get!(SmsSetting, waitlist_id).message_content |> String.replace("[[NAME]]", stand_by.name)
+
     send_sms_task = Task.start(fn -> Messenger.send_message(stand_by.contact_phone_number, body) end)
     update_stand_by(stand_by, %{notified_at: DateTime.utc_now})
   end
