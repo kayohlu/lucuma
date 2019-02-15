@@ -74,6 +74,8 @@ defmodule HoldUp.Repo.Migrations.CreateUsers do
 
       timestamps()
     end
+    create index(:stand_bys, [:business_id])
+    create index(:stand_bys, [:waitlist_id])
 
     create table(:sms_settings) do
       add :message_content, :string
@@ -82,5 +84,16 @@ defmodule HoldUp.Repo.Migrations.CreateUsers do
       timestamps()
     end
     create index(:sms_settings, [:waitlist_id])
+
+    create table(:sms_notifications) do
+      add :stand_by_id, references(:stand_bys, on_delete: :nothing)
+      add :message_content, :string
+      add :recipient_phone_number, :string
+      add :delivered_at, :utc_datetime
+      add :failed_at, :utc_datetime
+
+      timestamps()
+    end
+    create index(:sms_notifications, [:stand_by_id])
   end
 end
