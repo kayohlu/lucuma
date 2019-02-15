@@ -43,6 +43,12 @@ defmodule HoldUpWeb.Router do
     resources "/sessions", SessionController, only: [:new, :create]
   end
 
+  scope "/callbacks", HoldUpWeb do
+    pipe_through :browser
+
+    resources "/sms_statuses/", SmsStatusController, only: [:create]
+  end
+
   scope "/", HoldUpWeb do
     pipe_through :protected
 

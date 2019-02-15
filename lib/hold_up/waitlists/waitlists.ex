@@ -8,28 +8,15 @@ defmodule HoldUp.Waitlists do
 
   alias HoldUp.Waitlists.Waitlist
   alias HoldUp.Waitlists.StandBy
-  alias HoldUp.Waitlists.Messenger
+  alias HoldUp.Waitlists.Notifier
   alias HoldUp.Waitlists.SmsSetting
 
-  @doc """
-  Gets a single waitlist.
-
-  Raises `Ecto.NoResultsError` if the Wait list does not exist.
-
-  ## Examples
-
-      iex> get_waitlist!(123)
-      %Waitlist{}
-
-      iex> get_waitlist!(456)
-      ** (Ecto.NoResultsError)
-
-  """
   def get_waitlist!(id) do
     # This method does two queries because of the preload.
 
-    stand_bys_query = from s in StandBy,
-                        where: is_nil(s.attended_at) and is_nil(s.no_show_at)
+    stand_bys_query =
+      from s in StandBy,
+        where: is_nil(s.attended_at) and is_nil(s.no_show_at)
 
     Repo.one(from w in Waitlist, preload: [stand_bys: ^stand_bys_query])
   end
@@ -41,7 +28,7 @@ defmodule HoldUp.Waitlists do
   def add_stand_by(%StandBy{} = stand_by_attrs) do
     %StandBy{}
     |> StandBy.changeset(stand_by_attrs)
-    |> Repo.insert
+    |> Repo.insert()
   end
 
   @doc """
@@ -117,33 +104,41 @@ defmodule HoldUp.Waitlists do
 
   def party_size_breakdown(stand_bys) do
     grouped = Enum.group_by(stand_bys, fn x -> x.party_size end, fn x -> x.id end)
-    Enum.map(grouped, fn {k, v} -> %{ name: k, y: length(v) } end)
+    Enum.map(grouped, fn {k, v} -> %{name: k, y: length(v)} end)
   end
 
   def notify_stand_by(waitlist_id, stand_by_id) do
     stand_by = get_stand_by!(stand_by_id)
-    body =
-      Repo.get!(SmsSetting, waitlist_id).message_content |> String.replace("[[NAME]]", stand_by.name)
 
-    send_sms_task = Task.start(fn -> Messenger.send_message(stand_by.contact_phone_number, body) end)
-    update_stand_by(stand_by, %{notified_at: DateTime.utc_now})
+    body =
+      Repo.get!(SmsSetting, waitlist_id).message_content
+      |> String.replace("[[NAME]]", stand_by.name)
+
+    Notifier.send_sms(stand_by.contact_phone_number, body)
+    update_stand_by(stand_by, %{notified_at: DateTime.utc_now()})
   end
 
   def mark_as_attended(stand_by_id) do
     stand_by = get_stand_by!(stand_by_id)
-    update_stand_by(stand_by, %{attended_at: DateTime.utc_now})
+    update_stand_by(stand_by, %{attended_at: DateTime.utc_now()})
   end
 
   def mark_as_no_show(stand_by_id) do
     stand_by = get_stand_by!(stand_by_id)
-    update_stand_by(stand_by, %{no_show_at: DateTime.utc_now})
+    update_stand_by(stand_by, %{no_show_at: DateTime.utc_now()})
   end
 
   def calculate_average_wait_time(waitlist_id) do
-    {:ok, start_of_today} = NaiveDateTime.new(Date.utc_today,  ~T[00:00:00])
-    db_result = Repo.one(from s in StandBy,
-      where: not is_nil(s.notified_at) and s.waitlist_id == ^waitlist_id and s.inserted_at > ^start_of_today,
-      select: avg(s.notified_at - s.inserted_at))
+    {:ok, start_of_today} = NaiveDateTime.new(Date.utc_today(), ~T[00:00:00])
+
+    db_result =
+      Repo.one(
+        from s in StandBy,
+          where:
+            not is_nil(s.notified_at) and s.waitlist_id == ^waitlist_id and
+              s.inserted_at > ^start_of_today,
+          select: avg(s.notified_at - s.inserted_at)
+      )
 
     case db_result do
       %Postgrex.Interval{days: _d, months: _m, secs: seconds} -> round(seconds / 60)
