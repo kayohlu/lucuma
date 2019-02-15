@@ -16,7 +16,7 @@ defmodule HoldUp.Waitlists.Waitlist do
   @doc false
   def changeset(waitlist, attrs) do
     waitlist
-    |> cast(attrs, [:name, :notification_sms_body])
-    |> validate_required([:name])
+    |> cast(attrs, [:name, :business_id, :notification_sms_body])
+    |> validate_required([:name, :business_id])
   end
 end

@@ -7,10 +7,11 @@ defmodule HoldUp.Registrations do
   alias HoldUp.Repo
 
   alias HoldUp.Registrations.RegistrationForm
-  alias HoldUp.Registrations.Company
-  alias HoldUp.Registrations.User
-  alias HoldUp.Registrations.Waitlist
-  alias HoldUp.Registrations.SmsSetting
+  alias HoldUp.Accounts.Company
+  alias HoldUp.Accounts.User
+  alias HoldUp.Accounts.Business
+  alias HoldUp.Waitlists.Waitlist
+  alias HoldUp.Waitlists.SmsSetting
 
   @doc """
   Creates a registration_form.
@@ -71,7 +72,7 @@ defmodule HoldUp.Registrations do
   end
 
   defp business_changeset(parent_company) do
-    HoldUp.Registrations.Business.changeset(%HoldUp.Registrations.Business{}, %{
+    Business.changeset(%Business{}, %{
       name: "Unnamed Business",
       company_id: parent_company.id
     })

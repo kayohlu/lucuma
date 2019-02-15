@@ -10,7 +10,9 @@ defmodule HoldUpWeb.Plugs.Authentication do
     do
       %{ conn | :assigns => Map.put(conn.assigns, :current_user, user) }
     else
-      {:not_found, _} -> redirect_to_root(conn)
+      {:not_found, _} -> conn
+                         |> delete_session(:current_user_id)
+                         |> redirect_to_root
     end
   end
 
