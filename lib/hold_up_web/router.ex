@@ -44,9 +44,9 @@ defmodule HoldUpWeb.Router do
   end
 
   scope "/callbacks", HoldUpWeb do
-    pipe_through :browser
+    pipe_through :api
 
-    resources "/sms_statuses/", SmsStatusController, only: [:create]
+    resources "/sms_statuses/:sms_notification_id", SmsStatusController, only: [:create]
   end
 
   scope "/", HoldUpWeb do

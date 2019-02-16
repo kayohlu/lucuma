@@ -8,7 +8,7 @@ defmodule HoldUp.Waitlists do
 
   alias HoldUp.Waitlists.Waitlist
   alias HoldUp.Waitlists.StandBy
-  alias HoldUp.Waitlists.Notifier
+  alias HoldUp.Notifications.Notifier
   alias HoldUp.Waitlists.SmsSetting
 
   def get_waitlist!(id) do
@@ -114,7 +114,7 @@ defmodule HoldUp.Waitlists do
       Repo.get!(SmsSetting, waitlist_id).message_content
       |> String.replace("[[NAME]]", stand_by.name)
 
-    Notifier.send_sms(stand_by.contact_phone_number, body)
+    Notifier.send_sms(stand_by.contact_phone_number, body, stand_by.id)
     update_stand_by(stand_by, %{notified_at: DateTime.utc_now()})
   end
 
