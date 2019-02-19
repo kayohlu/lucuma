@@ -41,9 +41,10 @@ body {
   .navbar-nav {
     .nav-link {
       padding: 0.5rem 1.5rem;
+      color: #a5a5a5;
 
       &.active {
-        background-color: #f5f9fc;
+        background-color: $body-bg;
         border-radius: 3px 3px 0 0;
         color: $body-color;
       }

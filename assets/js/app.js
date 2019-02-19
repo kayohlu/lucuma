@@ -26,20 +26,13 @@ import * as intlTelInput from 'intl-tel-input';
 // import socket from "./socket"
 
 $(function() {
-  // Build the chart
-  // Make monochrome colors
-  var pieColors = (function () {
-    var colors = [],
-    base = Highcharts.getOptions().colors[0],
-    i;
-
-    for (i = 0; i < 10; i += 1) {
-      // Start out with a darkened base color (negative brighten), and end
-      // up with a much brighter color
-      colors.push(Highcharts.Color(base).brighten((i - 3) / 7).get());
-    }
-    return colors;
-  }());
+  Highcharts.setOptions({
+      chart: {
+          style: {
+              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";'
+          }
+      }
+  });
 
 if ($('#party-size-container').length > 0) {
 Highcharts.chart('party-size-container', {

@@ -24,7 +24,7 @@
     <ul class="list-inline">
       <li class="list-inline-item">
         <%= link to: Routes.stand_by_path(@conn, :new), class: "btn btn-primary" do %>
-        <i class="far fa-plus-square"></i>
+        <i class="fas fa-plus"></i>
           Add Person
         <% end %>
       </li>
