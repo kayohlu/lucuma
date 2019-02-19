@@ -51,7 +51,7 @@ Highcharts.chart('party-size-container', {
         type: 'category',
         labels: {
           useHTML: true,
-          format: "{value} <i class='fas fa-users'></i>",
+          format: "<i class='fas fa-users'></i> {value}",
         },
         title: {
           text: "Party Size Summary",
