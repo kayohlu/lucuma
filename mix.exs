@@ -49,7 +49,8 @@ defmodule HoldUp.MixProject do
       {:bcrypt_elixir, "~> 0.12"},
       {:countries, "~> 1.5"},
       {:ex_phone_number, "~> 0.1"},
-      {:ex_twilio, "~> 0.7.0"}
+      {:ex_twilio, "~> 0.7.0"},
+      {:gen_stage, "~> 0.14"}
     ]
   end
 

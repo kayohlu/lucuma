@@ -11,9 +11,12 @@ defmodule HoldUp.Application do
       # Start the Ecto repository
       HoldUp.Repo,
       # Start the endpoint when the application starts
-      HoldUpWeb.Endpoint
+      HoldUpWeb.Endpoint,
       # Starts a worker by calling: HoldUp.Worker.start_link(arg)
       # {HoldUp.Worker, arg},
+      {HoldUp.Notifications.NotificationProducer, [0]},
+      {HoldUp.Notifications.NotificationConsumer, []},
+      {Task.Supervisor, name: HoldUp.NotifierSupervisor}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

@@ -8,7 +8,7 @@ defmodule HoldUp.Waitlists do
 
   alias HoldUp.Waitlists.Waitlist
   alias HoldUp.Waitlists.StandBy
-  alias HoldUp.Notifications.Notifier
+  alias HoldUp.Notifications
   alias HoldUp.Waitlists.SmsSetting
 
   def get_waitlist!(id) do
@@ -103,8 +103,8 @@ defmodule HoldUp.Waitlists do
   end
 
   def party_size_breakdown(stand_bys) do
-    grouped = Enum.group_by(stand_bys, fn x -> x.party_size end, fn x -> x.id end)
-    Enum.map(grouped, fn {k, v} -> %{name: k, y: length(v)} end)
+    Enum.group_by(stand_bys, fn x -> x.party_size end, fn x -> x.id end)
+    |> Enum.map(fn {k, v} -> %{name: k, y: length(v)} end)
   end
 
   def notify_stand_by(waitlist_id, stand_by_id) do
@@ -114,7 +114,7 @@ defmodule HoldUp.Waitlists do
       Repo.get!(SmsSetting, waitlist_id).message_content
       |> String.replace("[[NAME]]", stand_by.name)
 
-    Notifier.send_sms(stand_by.contact_phone_number, body, stand_by.id)
+    Notifications.send_sms_notification(stand_by.contact_phone_number, body, stand_by.id)
     update_stand_by(stand_by, %{notified_at: DateTime.utc_now()})
   end
 

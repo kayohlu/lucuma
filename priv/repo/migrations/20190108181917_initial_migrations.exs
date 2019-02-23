@@ -89,8 +89,8 @@ defmodule HoldUp.Repo.Migrations.CreateUsers do
       add :stand_by_id, references(:stand_bys, on_delete: :nothing)
       add :message_content, :string
       add :recipient_phone_number, :string
-      add :delivered_at, :utc_datetime
-      add :failed_at, :utc_datetime
+      add :status, :string
+      add :retries, :integer, default: 0
 
       timestamps()
     end

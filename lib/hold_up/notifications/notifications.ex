@@ -17,4 +17,19 @@ defmodule HoldUp.Notifications do
     |> SmsNotification.changeset(attrs)
     |> Repo.update()
   end
+
+  def send_sms_notification(recipient_phone_number, message_content, stand_by_id) do
+    result =
+      create_sms_notification(%{
+        stand_by_id: stand_by_id,
+        message_content: message_content,
+        recipient_phone_number: recipient_phone_number
+      })
+
+    if {:ok, sms_notification} = result do
+      HoldUp.Notifications.NotificationProducer.send_sms_async()
+    end
+
+    result
+  end
 end

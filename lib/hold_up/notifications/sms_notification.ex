@@ -5,8 +5,8 @@ defmodule HoldUp.Notifications.SmsNotification do
   schema "sms_notifications" do
     field :message_content, :string
     field :recipient_phone_number, :string
-    field :delivered_at, :utc_datetime
-    field :failed_at, :utc_datetime
+    field :status, :string, default: "for_delivery"
+    field :retries, :integer, default: 0
 
     belongs_to :stand_by, HoldUp.Waitlists.StandBy
 
@@ -16,7 +16,7 @@ defmodule HoldUp.Notifications.SmsNotification do
   @doc false
   def changeset(sms_setting, attrs) do
     sms_setting
-    |> cast(attrs, [:message_content, :recipient_phone_number, :delivered_at, :failed_at, :stand_by_id])
-    |> validate_required([:message_content, :recipient_phone_number, :stand_by_id])
+    |> cast(attrs, [:message_content, :recipient_phone_number, :stand_by_id, :status, :retries])
+    |> validate_required([:message_content, :recipient_phone_number, :stand_by_id, :status, :retries])
   end
 end
