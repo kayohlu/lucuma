@@ -94,6 +94,8 @@ defmodule HoldUp.Notifications.NotificationConsumer do
     IO.inspect task_monitor_reference
     IO.inspect reason
 
+    Notifications.update_sms_notification(sms_notification, %{status: "for_delivery"})
+
     {:noreply, [], state}
   end
 
