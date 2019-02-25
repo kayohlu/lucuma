@@ -42,7 +42,6 @@ defmodule HoldUpWeb.FormHelpers do
     end
   end
 
-
   def password_form_group(form, field, opts \\ []) do
     content_tag(:div, class: "form-group") do
       [
@@ -82,7 +81,7 @@ defmodule HoldUpWeb.FormHelpers do
   end
 
   defp errors_for_input?(form, field) do
-     Enum.any?(Keyword.get_values(form.errors, field), fn error ->
+    Enum.any?(Keyword.get_values(form.errors, field), fn error ->
       content_tag(:div, translate_error(error), class: "invalid-feedback")
     end)
   end

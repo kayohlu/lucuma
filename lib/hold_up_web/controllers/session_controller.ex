@@ -9,7 +9,7 @@ defmodule HoldUpWeb.SessionController do
     render(conn, "new.html")
   end
 
-  def create(conn, %{ "session" => params}) do
+  def create(conn, %{"session" => params}) do
     potential_user = Accounts.get_user_by_email(params["email"])
 
     case Bcrypt.check_pass(potential_user, params["password"]) do
@@ -19,7 +19,8 @@ defmodule HoldUpWeb.SessionController do
         |> put_session(:current_company_id, user.company.id)
         |> put_session(:current_business_id, hd(user.company.businesses).id)
         |> redirect(to: Routes.dashboard_path(conn, :index))
-     {:error, user} ->
+
+      {:error, user} ->
         render(conn, "new.html")
     end
   end

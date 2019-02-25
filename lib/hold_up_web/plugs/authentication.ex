@@ -6,13 +6,13 @@ defmodule HoldUpWeb.Plugs.Authentication do
 
   def authenticated?(conn, _params) do
     with {:ok, current_user_id} <- fetch_current_user_id(conn),
-         {:ok, user } <- fetch_current_user(current_user_id)
-    do
-      %{ conn | :assigns => Map.put(conn.assigns, :current_user, user) }
+         {:ok, user} <- fetch_current_user(current_user_id) do
+      %{conn | :assigns => Map.put(conn.assigns, :current_user, user)}
     else
-      {:not_found, _} -> conn
-                         |> delete_session(:current_user_id)
-                         |> redirect_to_root
+      {:not_found, _} ->
+        conn
+        |> delete_session(:current_user_id)
+        |> redirect_to_root
     end
   end
 

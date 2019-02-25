@@ -4,9 +4,9 @@ defmodule HoldUpWeb.RegistrationController do
   alias HoldUp.Registrations
   alias HoldUp.Registrations.RegistrationForm
 
-  @type schema :: Ecto.Schema.t
-  @type conn :: Plug.Conn.t
-  @type params :: Map.t
+  @type schema :: Ecto.Schema.t()
+  @type conn :: Plug.Conn.t()
+  @type params :: Map.t()
 
   @spec new(conn, params) :: conn
   def new(conn, _params) do
@@ -20,7 +20,10 @@ defmodule HoldUpWeb.RegistrationController do
       {:ok, user} ->
         conn
         |> put_session(:current_user_id, user.id)
-        |> put_flash(:info, "That's it. Your registration is complete. We've created an initial default waitlist for you.")
+        |> put_flash(
+          :info,
+          "That's it. Your registration is complete. We've created an initial default waitlist for you."
+        )
         |> redirect(to: Routes.dashboard_path(conn, :index))
 
       {:error, %Ecto.Changeset{} = changeset} ->

@@ -3,7 +3,6 @@ defmodule HoldUpWeb.Plugs.RedirectLoggedIn do
   import Phoenix.Controller
   alias HoldUpWeb.Router.Helpers
 
-
   def redirect_if_logged_in(conn, _params) do
     if get_session(conn, :current_user_id) do
       conn

@@ -3,9 +3,9 @@ defmodule HoldUpWeb.Plugs.CurrentCompany do
   alias HoldUp.Accounts
 
   def assign_current_company(conn, _params) do
-     company = Accounts.get_current_company(conn.assigns.current_user)
+    company = Accounts.get_current_company(conn.assigns.current_user)
 
-     conn
-     |> assign(:current_company, company)
+    conn
+    |> assign(:current_company, company)
   end
 end
