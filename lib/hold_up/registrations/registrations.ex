@@ -57,9 +57,11 @@ defmodule HoldUp.Registrations do
     RegistrationForm.changeset(registration_form, %{})
   end
 
-
   defp company_changeset(registration_form) do
-    Company.changeset(%Company{}, %{name: registration_form.company_name, contact_email: registration_form.email})
+    Company.changeset(%Company{}, %{
+      name: registration_form.company_name,
+      contact_email: registration_form.email
+    })
   end
 
   defp user_changeset(registration_form, company) do

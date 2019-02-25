@@ -2,7 +2,6 @@ defmodule HoldUp.Accounts.Business do
   use Ecto.Schema
   import Ecto.Changeset
 
-
   schema "businesses" do
     field :name, :string
 

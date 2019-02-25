@@ -2,7 +2,6 @@ defmodule HoldUp.Accounts.Company do
   use Ecto.Schema
   import Ecto.Changeset
 
-
   schema "companies" do
     field :contact_email, :string
     field :name, :string

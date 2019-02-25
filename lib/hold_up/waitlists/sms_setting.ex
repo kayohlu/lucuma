@@ -2,7 +2,6 @@ defmodule HoldUp.Waitlists.SmsSetting do
   use Ecto.Schema
   import Ecto.Changeset
 
-
   schema "sms_settings" do
     field :message_content, :string
     field :waitlist_id, :id

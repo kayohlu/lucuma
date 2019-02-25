@@ -2,7 +2,6 @@ defmodule HoldUp.Waitlists.Waitlist do
   use Ecto.Schema
   import Ecto.Changeset
 
-
   schema "waitlists" do
     field :name, :string
     field :business_id, :id

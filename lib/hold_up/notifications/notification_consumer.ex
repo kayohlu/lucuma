@@ -54,10 +54,11 @@ defmodule HoldUp.Notifications.NotificationConsumer do
   def handle_events(events, from, state) do
     IO.puts("Handling #{length(events)} events from producer")
 
-    new_state = Enum.into(events, state, fn event ->
-      task = process_event(event)
-      {task.ref, event}
-    end)
+    new_state =
+      Enum.into(events, state, fn event ->
+        task = process_event(event)
+        {task.ref, event}
+      end)
 
     {:noreply, [], new_state}
   end
@@ -69,7 +70,7 @@ defmodule HoldUp.Notifications.NotificationConsumer do
   """
   def handle_info({task_ref, result}, state) do
     # Process.demonitor(task_ref, [:flush])
-    IO.inspect {task_ref, result}
+    IO.inspect({task_ref, result})
     {:noreply, [], Map.delete(state, task_ref)}
   end
 
@@ -80,7 +81,7 @@ defmodule HoldUp.Notifications.NotificationConsumer do
   This is a successful message..
   """
   def handle_info({:DOWN, task_ref, :process, from, :normal}, state) do
-    IO.inspect state
+    IO.inspect(state)
     {:noreply, [], state}
   end
 
@@ -89,9 +90,9 @@ defmodule HoldUp.Notifications.NotificationConsumer do
   Some exception was raised and you'll see it in reason..
   """
   def handle_info({:DOWN, task_ref, :process, from, reason}, state) do
-    IO.puts "Task failed for some reason.."
-    IO.inspect task_ref
-    IO.inspect reason
+    IO.puts("Task failed for some reason..")
+    IO.inspect(task_ref)
+    IO.inspect(reason)
 
     Notifications.update_sms_notification(Map.get(state, task_ref), %{status: "for_delivery"})
 
@@ -102,6 +103,11 @@ defmodule HoldUp.Notifications.NotificationConsumer do
   Creates a supervised task that is monitored - not linked - by this process.
   """
   defp process_event(event) do
-    Task.Supervisor.async_nolink(HoldUp.NotifierSupervisor, HoldUp.Notifications.Notifier, :send_notification, [event])
+    Task.Supervisor.async_nolink(
+      HoldUp.NotifierSupervisor,
+      HoldUp.Notifications.Notifier,
+      :send_notification,
+      [event]
+    )
   end
 end

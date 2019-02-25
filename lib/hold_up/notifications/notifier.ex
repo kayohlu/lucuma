@@ -13,24 +13,28 @@ defmodule HoldUp.Notifications.Notifier do
   The "FOR UPDATE SKIP LOCKED" allows us to "skip" the lock when updating said locked records.
   """
   def enqueue_notifications do
-    {:ok, results} = Repo.transaction(fn ->
-      for_delivery_ids =
-        Repo.all(
-          from sms in SmsNotification,
-            where: sms.status == "for_delivery",
-            lock: "FOR UPDATE SKIP LOCKED",
-            select: sms.id
-        )
+    {:ok, results} =
+      Repo.transaction(fn ->
+        for_delivery_ids =
+          Repo.all(
+            from sms in SmsNotification,
+              where: sms.status == "for_delivery",
+              lock: "FOR UPDATE SKIP LOCKED",
+              select: sms.id
+          )
 
-      {_count, sms_notifications} =
-        Repo.update_all(
-          (from sms in SmsNotification,
-            where: sms.id in ^for_delivery_ids),
+        {_count, sms_notifications} =
+          Repo.update_all(
+            from(sms in SmsNotification,
+              where: sms.id in ^for_delivery_ids
+            ),
             [set: [status: "queued_for_delivery"]],
-            returning: true # returns all fields
-        )
-      sms_notifications
-    end)
+            # returns all fields
+            returning: true
+          )
+
+        sms_notifications
+      end)
 
     results
   end
@@ -61,28 +65,39 @@ defmodule HoldUp.Notifications.Notifier do
   end
 
   defp handle_api_response(:ok = result, sms_notification) do
-    Notifications.update_sms_notification(sms_notification, %{status: "delivering"})
+    Notifications.update_sms_notification!(sms_notification, %{status: "delivering"})
   end
 
   defp handle_api_response({:ok, response} = result, sms_notification) do
-    Notifications.update_sms_notification(sms_notification, %{status: "delivering"})
+    Notifications.update_sms_notification!(sms_notification, %{status: "delivering"})
   end
 
   defp handle_api_response({:error, response, response_code} = result, sms_notification) do
     %{"code" => error_code} = response
+
     case error_code do
-      21211 -> # phone number is invalid.
-        Notifications.update_sms_notification(sms_notification, %{status: "cannot_deliver"})
-      21612 -> # twillio can't route to this number
-        Notifications.update_sms_notification(sms_notification, %{status: "cannot_deliver"})
-      21614 -> # not a mobile number
-        Notifications.update_sms_notification(sms_notification, %{status: "cannot_deliver"})
-      21408 -> # no geo permissions
-        Notifications.update_sms_notification(sms_notification, %{status: "for_delivery"})
-      21610 -> # blacklisted number
-        Notifications.update_sms_notification(sms_notification, %{status: "cannot_deliver"})
+      # phone number is invalid.
+      21211 ->
+        Notifications.update_sms_notification!(sms_notification, %{status: "cannot_deliver"})
+
+      # twillio can't route to this number
+      21612 ->
+        Notifications.update_sms_notification!(sms_notification, %{status: "cannot_deliver"})
+
+      # not a mobile number
+      21614 ->
+        Notifications.update_sms_notification!(sms_notification, %{status: "cannot_deliver"})
+
+      # no geo permissions
+      21408 ->
+        Notifications.update_sms_notification!(sms_notification, %{status: "for_delivery"})
+
+      # blacklisted number
+      21610 ->
+        Notifications.update_sms_notification!(sms_notification, %{status: "cannot_deliver"})
+
       _ ->
-        Notifications.update_sms_notification(sms_notification, %{status: "for_delivery"})
+        Notifications.update_sms_notification!(sms_notification, %{status: "for_delivery"})
     end
   end
 end

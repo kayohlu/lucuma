@@ -10,7 +10,6 @@ defmodule HoldUp.Accounts do
   alias HoldUp.Accounts.Company
   alias HoldUp.Accounts.Business
 
-
   def list_users do
     Repo.all(User)
   end
@@ -75,22 +74,22 @@ defmodule HoldUp.Accounts do
   end
 
   def get_user_by(email) do
-    query = from user in HoldUp.Accounts.User,
-            join: company in HoldUp.Accounts.Company,
-            where: company.id == user.company_id,
-            join: businesses in HoldUp.Accounts.Business,
-            where: businesses.company_id == company.id,
-            where: user.email == ^email,
-            preload: [company: {company, businesses: businesses}]
-
+    query =
+      from user in HoldUp.Accounts.User,
+        join: company in HoldUp.Accounts.Company,
+        where: company.id == user.company_id,
+        join: businesses in HoldUp.Accounts.Business,
+        where: businesses.company_id == company.id,
+        where: user.email == ^email,
+        preload: [company: {company, businesses: businesses}]
 
     Repo.one(query)
   end
 
   def get_current_business_for_user(user) do
-    query = from businesses in HoldUp.Accounts.Business,
-            where: businesses.company_id == ^user.company_id
-
+    query =
+      from businesses in HoldUp.Accounts.Business,
+        where: businesses.company_id == ^user.company_id
 
     Repo.one(query)
   end

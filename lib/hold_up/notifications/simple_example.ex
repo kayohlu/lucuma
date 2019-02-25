@@ -13,7 +13,6 @@ defmodule Notifications.SimpleExample do
     spawn_link(__MODULE__, :loop, [%{}])
   end
 
-
   # state is the arguments passed in the start_link function above.
   # In this case state is %{} because there is only one argument and one element in the list above.
   def loop(state) do
@@ -28,9 +27,11 @@ defmodule Notifications.SimpleExample do
         {key, value} = item
         new_state = Map.put(state, key, value)
         loop(new_state)
+
       {:remove, key} ->
         new_state = Map.delete(state, key)
         loop(new_state)
+
       {:state, from} ->
         IO.inspect(state)
         # This sends a message to the pid 'from'
@@ -38,6 +39,7 @@ defmodule Notifications.SimpleExample do
         # You can use `flush` to see whats in the mailbox.
         send(from, state)
         loop(state)
+
       # This is a catch all to catch anything that does match.
       # You could raise an error in here.
       _ ->

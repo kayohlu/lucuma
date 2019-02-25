@@ -91,7 +91,7 @@ defmodule Notifications.NamedGenServerExample do
   def start_link do
     # We name our gen server here.
     # the last param could also be written without the square brackets around it.
-    GenServer.start_link(__MODULE__, :ok, [name: @name])
+    GenServer.start_link(__MODULE__, :ok, name: @name)
   end
 
   # We don't need to pass in the pid anymore because the process is named now.

@@ -28,15 +28,18 @@ defmodule HoldUp.Notifications.ExampleConsumer do
   max_demand options. See below..
   """
   def init(state) do
-    IO.puts "Initial consumer state"
-    IO.inspect state
-    {:consumer, state, subscribe_to: [{HoldUp.Notifications.Producer, min_demand: 1, max_demand: 2}]}
+    IO.puts("Initial consumer state")
+    IO.inspect(state)
+
+    {:consumer, state,
+     subscribe_to: [{HoldUp.Notifications.Producer, min_demand: 1, max_demand: 2}]}
   end
 
   def handle_events(events, from, state) do
-    IO.puts "Handling events from producer"
+    IO.puts("Handling events from producer")
+
     for event <- events do
-      IO.inspect {"Consumer", self, "received event: #{event} from pid", from}
+      IO.inspect({"Consumer", self, "received event: #{event} from pid", from})
     end
 
     {:noreply, [], state}

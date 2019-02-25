@@ -34,13 +34,13 @@ defmodule HoldUp.Notifications.ExampleProducer do
   a consumer/dispatcher.
   """
   def handle_demand(demand, state) do
-    IO.puts "Current producer state: #{state}"
-    IO.puts "Producer demand: #{demand}"
+    IO.puts("Current producer state: #{state}")
+    IO.puts("Producer demand: #{demand}")
 
     # Events seem to be a term for the things that will be returned to the demander..
     # The could by anything really..
-    events = Enum.to_list(state..state+demand)
-    IO.inspect events
-    {:noreply, events, demand+state}
+    events = Enum.to_list(state..(state + demand))
+    IO.inspect(events)
+    {:noreply, events, demand + state}
   end
 end
