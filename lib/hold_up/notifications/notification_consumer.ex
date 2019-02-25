@@ -43,11 +43,10 @@ defmodule HoldUp.Notifications.NotificationConsumer do
   I think... The consumer subtracts the number of events/things it receives from the max_demand amount and if it's
   less than or equal to the min_demand amount, it demands more..
   Subsequent demand is only placed when: (max_demand - length(events)) < min_demand
+
+  # Having min_demand: 0, max_demand: 1 seems to demand one thing at a time from the producer.
   """
   def init(state) do
-    IO.inspect({"Initial consumer state", state})
-
-    # Having min_demand: 0, max_demand: 1 seems to demand one thing at a time from the producer.
     {:consumer, state,
      subscribe_to: [{HoldUp.Notifications.NotificationProducer, min_demand: 50, max_demand: 100}]}
   end
@@ -69,7 +68,7 @@ defmodule HoldUp.Notifications.NotificationConsumer do
   If we do not demonitor the DOWN message will be sent.
   """
   def handle_info({task_ref, result}, state) do
-    # Process.demonitor(ref, [:flush])
+    # Process.demonitor(task_ref, [:flush])
     IO.inspect {task_ref, result}
     {:noreply, [], Map.delete(state, task_ref)}
   end
@@ -103,8 +102,6 @@ defmodule HoldUp.Notifications.NotificationConsumer do
   Creates a supervised task that is monitored - not linked - by this process.
   """
   defp process_event(event) do
-    Task.Supervisor.async_nolink(HoldUp.NotifierSupervisor, fn ->
-      HoldUp.Notifications.Notifier.send_notification(event)
-    end)
+    Task.Supervisor.async_nolink(HoldUp.NotifierSupervisor, HoldUp.Notifications.Notifier, :send_notification, [event])
   end
 end
