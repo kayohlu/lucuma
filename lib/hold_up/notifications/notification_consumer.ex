@@ -1,6 +1,7 @@
 defmodule HoldUp.Notifications.NotificationConsumer do
   use GenStage
 
+  alias HoldUp.Notifications
   alias HoldUp.Notifications.Notifier
 
   @moduledoc """
@@ -13,7 +14,7 @@ defmodule HoldUp.Notifications.NotificationConsumer do
   # client
 
   def start_link(opts) do
-    GenStage.start_link(__MODULE__, :the_state_does_not_matter)
+    GenStage.start_link(__MODULE__, %{})
   end
 
   # server
@@ -54,34 +55,33 @@ defmodule HoldUp.Notifications.NotificationConsumer do
   def handle_events(events, from, state) do
     IO.puts("Handling #{length(events)} events from producer")
 
-    for event <- events do
-      process_event(event)
-    end
+    new_state = Enum.into(events, state, fn event ->
+      task = process_event(event)
+      {task.ref, event}
+    end)
 
-    {:noreply, [], state}
+    {:noreply, [], new_state}
   end
 
   @doc """
   This is a successful message.
+  if we don't care about the DOWN message now, we can demonitor and flush it.
+  If we do not demonitor the DOWN message will be sent.
   """
-  def handle_info({ref, result}, state) do
-    # If we don't care about the DOWN message now, we can demonitor and flush it.
-    # If we do not demonitor the DOWN message will be sent.
+  def handle_info({task_ref, result}, state) do
     # Process.demonitor(ref, [:flush])
-
-    IO.inspect {ref, result}
-    {:noreply, [], state}
+    IO.inspect {task_ref, result}
+    {:noreply, [], Map.delete(state, task_ref)}
   end
 
   @doc """
   This handle info callback is defined because even though handle_info({ref, result}, state) is invoked another message is
   sent to this process and it's handled by this function.
-  If we use `Process.demonitor(ref, [:flush])` in `handle_info({ref, result}, state)` this callback won't invoked.
+  If we use `Process.demonitor(ref, [:flush])` in `handle_info({ref, result}, state)` this callback won't be invoked.
   This is a successful message..
   """
-  def handle_info({:DOWN, task_monitor_reference, :process, from, :normal}, state) do
-    IO.inspect task_monitor_reference
-
+  def handle_info({:DOWN, task_ref, :process, from, :normal}, state) do
+    IO.inspect state
     {:noreply, [], state}
   end
 
@@ -89,18 +89,21 @@ defmodule HoldUp.Notifications.NotificationConsumer do
   The task completed unsuccessfully.
   Some exception was raised and you'll see it in reason..
   """
-  def handle_info({:DOWN, task_monitor_reference, :process, from, reason}, state) do
+  def handle_info({:DOWN, task_ref, :process, from, reason}, state) do
     IO.puts "Task failed for some reason.."
-    IO.inspect task_monitor_reference
+    IO.inspect task_ref
     IO.inspect reason
 
-    Notifications.update_sms_notification(sms_notification, %{status: "for_delivery"})
+    Notifications.update_sms_notification(Map.get(state, task_ref), %{status: "for_delivery"})
 
-    {:noreply, [], state}
+    {:noreply, [], Map.delete(state, task_ref)}
   end
 
+  @doc """
+  Creates a supervised task that is monitored - not linked - by this process.
+  """
   defp process_event(event) do
-    task = Task.Supervisor.async_nolink(HoldUp.NotifierSupervisor, fn ->
+    Task.Supervisor.async_nolink(HoldUp.NotifierSupervisor, fn ->
       HoldUp.Notifications.Notifier.send_notification(event)
     end)
   end

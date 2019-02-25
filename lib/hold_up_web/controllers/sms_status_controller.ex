@@ -7,7 +7,7 @@ defmodule HoldUpWeb.SmsStatusController do
     sms_notification = Notifications.get_sms_notification!(sms_notification_id)
 
     case message_status do
-      "delivered" -> Notifications.update_sms_notification(sms_notification, %{delivered_at: DateTime.utc_now})
+      "delivered" -> Notifications.update_sms_notification(sms_notification, %{status: "delivered"})
       _ -> nil
     end
 

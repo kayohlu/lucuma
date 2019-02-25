@@ -12,7 +12,7 @@ defmodule HoldUp.Notifications.Notifier do
   cannot query for the same rows in the db resulting in the same sms_notfications being processed more than once.
   The "FOR UPDATE SKIP LOCKED" allows us to "skip" the lock when updating said locked records.
   """
-  def notifications_for_delivery do
+  def enqueue_notifications do
     {:ok, results} = Repo.transaction(fn ->
       for_delivery_ids =
         Repo.all(
@@ -39,25 +39,25 @@ defmodule HoldUp.Notifications.Notifier do
     send_notification(Mix.env(), sms_notification)
   end
 
-  defp send_notification(:prod, notification) do
+  defp send_notification(:prod, sms_notification) do
     [twilio_number_data] = ExTwilio.IncomingPhoneNumber.all()
 
     ExTwilio.Message.create(
-      to: notification.recipient_phone_number,
+      to: sms_notification.recipient_phone_number,
       from: twilio_number_data.phone_number,
-      body: notification.message_content,
-      status_callback: Helpers.sms_status_url(HoldUpWeb.Endpoint, :create, notification.id)
+      body: sms_notification.message_content,
+      status_callback: Helpers.sms_status_url(HoldUpWeb.Endpoint, :create, sms_notification.id)
     )
-    |> handle_api_response(notification)
+    |> handle_api_response(sms_notification)
   end
 
-  defp send_notification(_mix_env, notification) do
+  defp send_notification(_mix_env, sms_notification) do
     ExTwilio.Message.create(
-      to: notification.recipient_phone_number,
+      to: sms_notification.recipient_phone_number,
       from: System.get_env("TWILIO_DEV_FROM_NUMBER"),
-      body: notification.message_content
+      body: sms_notification.message_content
     )
-    |> handle_api_response(notification)
+    |> handle_api_response(sms_notification)
   end
 
   defp handle_api_response(:ok = result, sms_notification) do

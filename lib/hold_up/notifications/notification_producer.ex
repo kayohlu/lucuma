@@ -20,7 +20,6 @@ defmodule HoldUp.Notifications.NotificationProducer do
   end
 
   def send_sms_async do
-    IO.puts("casting send sms async message")
     GenStage.cast(__MODULE__, {:send_sms_async})
   end
 
@@ -44,11 +43,11 @@ defmodule HoldUp.Notifications.NotificationProducer do
     IO.puts("Producer state: #{state}")
     IO.puts("Producer demand: #{demand}")
 
-    {:noreply, Notifier.notifications_for_delivery(), demand}
+    {:noreply, Notifier.enqueue_notifications(), demand}
   end
 
   def handle_cast({:send_sms_async}, state) do
     IO.puts("Handling cast message send_sms_async")
-    {:noreply, Notifier.notifications_for_delivery(), state}
+    {:noreply, Notifier.enqueue_notifications(), state}
   end
 end
