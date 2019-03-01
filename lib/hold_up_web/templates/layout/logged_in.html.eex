@@ -14,6 +14,7 @@
 <body>
   <main role="main">
     <%= render "navigation.html", conn: @conn %>
+    <%= render "flash.html", conn: @conn %>
     <%= if is_nil(Map.get(assigns, :inner_layout)) do %>
       <div class="container">
         <%= render @view_module, @view_template, assigns %>

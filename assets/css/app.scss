@@ -32,16 +32,20 @@ body {
 }
 
 .sub-menu {
-  background-color: white;
+  background-color: #f0f2f4;
   color: $body-color;
   font-size: 1.1rem;
   padding-bottom: 0;
-  padding-top: 1.5rem;
+  // padding-top: 1.5rem;
 
   .navbar-nav {
-    .nav-link {
+    .nav-item {
+      // width: 177px;
+
+      .nav-link {
       padding: 0.5rem 1.5rem;
-      color: #a5a5a5;
+      color: #586069;
+      text-align: center;
 
       &.active {
         background-color: $body-bg;
@@ -49,6 +53,8 @@ body {
         color: $body-color;
       }
     }
+    }
+
   }
 }
 
