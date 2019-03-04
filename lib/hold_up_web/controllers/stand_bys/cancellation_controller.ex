@@ -3,10 +3,14 @@ defmodule HoldUpWeb.StandBys.CancellationController do
 
   alias HoldUp.Waitlists
 
-  def create(conn, params) do
-    Waitlists.mark_as_cancelled(params["stand_by_id"])
+  def index(conn, params) do
+    render(conn, "index.html")
+  end
+
+  def show(conn, %{"id" => cancellation_uuid}) do
+    Waitlists.mark_as_cancelled(cancellation_uuid)
 
     conn
-    |> redirect(to: Routes.waitlists_waitlist_path(conn, :index))
+    |> redirect(to: Routes.stand_bys_cancellation_path(conn, :index))
   end
 end

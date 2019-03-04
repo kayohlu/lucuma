@@ -111,4 +111,17 @@ Highcharts.chart('party-size-container', {
   });
 }
 
+if (document.querySelector(".js_submitOnClick")) {
+  $('[data-toggle="buttons"] .btn').on('click', function () {
+      $(this).toggleClass('btn-light active');
+
+      var $checkbox = $(this).find('[type=checkbox]');
+      $checkbox.prop('checked',!$checkbox.prop('checked'));
+
+      $(this).parents('form').submit();
+
+      return false;
+  });
+}
+
 });

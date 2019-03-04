@@ -71,19 +71,30 @@ defmodule HoldUp.Repo.Migrations.CreateUsers do
       add :notified_at, :utc_datetime
       add :attended_at, :utc_datetime
       add :no_show_at, :utc_datetime
+      add :cancelled_at, :utc_datetime
+      add :cancellation_uuid, :string
 
       timestamps()
     end
     create index(:stand_bys, [:business_id])
     create index(:stand_bys, [:waitlist_id])
 
-    create table(:sms_settings) do
+    create table(:confirmation_sms_settings) do
+      add :enabled, :boolean
       add :message_content, :string
-      add :waitlist_id, references(:waitlists, on_delete: :nothing)
+      add :waitlist_id, references(:waitlists, on_delete: :nothing), null: false
 
       timestamps()
     end
-    create index(:sms_settings, [:waitlist_id])
+    create index(:confirmation_sms_settings, [:waitlist_id])
+    create table(:attendance_sms_settings) do
+      add :enabled, :boolean
+      add :message_content, :string
+      add :waitlist_id, references(:waitlists, on_delete: :nothing), null: false
+
+      timestamps()
+    end
+    create index(:attendance_sms_settings, [:waitlist_id])
 
     create table(:sms_notifications) do
       add :stand_by_id, references(:stand_bys, on_delete: :nothing)

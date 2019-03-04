@@ -11,7 +11,8 @@ defmodule HoldUp.Registrations do
   alias HoldUp.Accounts.User
   alias HoldUp.Accounts.Business
   alias HoldUp.Waitlists.Waitlist
-  alias HoldUp.Waitlists.SmsSetting
+  alias HoldUp.Waitlists.ConfirmationSmsSetting
+  alias HoldUp.Waitlists.AttendanceSmsSetting
 
   @doc """
   Creates a registration_form.
@@ -36,7 +37,8 @@ defmodule HoldUp.Registrations do
         {:ok, user} = Repo.insert(user_changeset(registration_form, company))
         {:ok, business} = Repo.insert(business_changeset(company))
         {:ok, waitlist} = Repo.insert(waitlist_changeset(business))
-        {:ok, sms_settings} = Repo.insert(sms_settings_changeset(waitlist))
+        {:ok, confirmation_sms_setting} = Repo.insert(confirmation_sms_settings_changeset(waitlist))
+        {:ok, attendance_sms_setting} = Repo.insert(attendance_sms_settings_changeset(waitlist))
         user
       end)
     else
@@ -87,13 +89,29 @@ defmodule HoldUp.Registrations do
     })
   end
 
-  defp sms_settings_changeset(waitlist) do
-    SmsSetting.changeset(%SmsSetting{}, %{
+  defp confirmation_sms_settings_changeset(waitlist) do
+    ConfirmationSmsSetting.changeset(%ConfirmationSmsSetting{}, %{
+      enabled: true,
       waitlist_id: waitlist.id,
       message_content: """
       Hello [[NAME]],
 
       It's your turn!
+
+      Regards,
+      Your friendly staff
+      """
+    })
+  end
+
+  defp attendance_sms_settings_changeset(waitlist) do
+    AttendanceSmsSetting.changeset(%AttendanceSmsSetting{}, %{
+      enabled: true,
+      waitlist_id: waitlist.id,
+      message_content: """
+      Hello [[NAME]],
+
+      You've been added to our waitlist. We'll let you know when it's your turn as soon as possible.
 
       Regards,
       Your friendly staff

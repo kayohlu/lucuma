@@ -73,7 +73,7 @@ defmodule HoldUp.Accounts do
     User.changeset(user, %{})
   end
 
-  def get_user_by(email) do
+  def get_user_by_email(email) do
     query =
       from user in HoldUp.Accounts.User,
         join: company in HoldUp.Accounts.Company,

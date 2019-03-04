@@ -12,6 +12,8 @@ defmodule HoldUp.Waitlists.StandBy do
     field :notified_at, :utc_datetime
     field :attended_at, :utc_datetime
     field :no_show_at, :utc_datetime
+    field :cancelled_at, :utc_datetime
+    field :cancellation_uuid, :string
 
     timestamps()
   end
@@ -28,7 +30,8 @@ defmodule HoldUp.Waitlists.StandBy do
       :waitlist_id,
       :notified_at,
       :attended_at,
-      :no_show_at
+      :no_show_at,
+      :cancelled_at
     ])
     |> validate_required([
       :name,
@@ -39,6 +42,7 @@ defmodule HoldUp.Waitlists.StandBy do
       :waitlist_id
     ])
     |> validate_phone_number(:contact_phone_number)
+    |> generate_cancellation_uuid()
   end
 
   def validate_phone_number(changeset, field, options \\ []) do
@@ -50,5 +54,13 @@ defmodule HoldUp.Waitlists.StandBy do
         false -> [{field, options[:message] || "invalid phone number."}]
       end
     end)
+  end
+
+  def generate_cancellation_uuid(changeset) do
+    IO.inspect get_field(changeset, :cancellation_uuid)
+    case get_field(changeset, :cancellation_uuid) do
+      nil -> put_change(changeset, :cancellation_uuid, Ecto.UUID.generate)
+      _ -> changeset
+    end
   end
 end
