@@ -14,7 +14,9 @@ defmodule HoldUp.Waitlists do
   alias HoldUpWeb.Router.Helpers
 
   def get_business_waitlist(business_id) do
-    Repo.one(from waitlist in Waitlist, where: waitlist.business_id == ^business_id, order_by: :id)
+    Repo.one(
+      from waitlist in Waitlist, where: waitlist.business_id == ^business_id, order_by: :id
+    )
   end
 
   def get_waitlist!(id) do
@@ -50,9 +52,29 @@ defmodule HoldUp.Waitlists do
 
   """
   def create_stand_by(waitlist_id, attrs \\ %{}) do
-    %StandBy{}
+    {:ok, stand_by} = %StandBy{}
     |> StandBy.changeset(Map.put(attrs, "waitlist_id", waitlist_id))
     |> Repo.insert()
+
+    confirmation_sms_setting = Repo.get_by!(ConfirmationSmsSetting, waitlist_id: waitlist_id)
+
+    if confirmation_sms_setting.enabled do
+      body =
+        confirmation_sms_setting.message_content
+        |> String.replace("[[NAME]]", stand_by.name)
+        |> String.replace(
+          "[[CANCEL_LINK]]",
+          Helpers.stand_bys_cancellation_url(
+            HoldUpWeb.Endpoint,
+            :show,
+            stand_by.cancellation_uuid
+          )
+        )
+
+      Notifications.send_sms_notification(stand_by.contact_phone_number, body, stand_by.id)
+    end
+
+    {:ok, stand_by}
   end
 
   @doc """
@@ -83,6 +105,10 @@ defmodule HoldUp.Waitlists do
     sms_setting
     |> AttendanceSmsSetting.changeset(attrs)
     |> Repo.update()
+  end
+
+  def attendance_sms_setting_for_waitlist(waitlist_id) do
+    Repo.get_by!(AttendanceSmsSetting, waitlist_id: waitlist_id)
   end
 
   @doc """
@@ -120,16 +146,27 @@ defmodule HoldUp.Waitlists do
   end
 
   def notify_stand_by(waitlist_id, stand_by_id) do
-    stand_by = get_stand_by!(stand_by_id)
-    IO.inspect stand_by
+    attendance_sms_setting = attendance_sms_setting_for_waitlist(waitlist_id)
 
-    body =
-      Repo.get!(SmsSetting, waitlist_id).message_content
-      |> String.replace("[[NAME]]", stand_by.name)
-      |> String.replace("[[CANCEL_LINK]]", Helpers.stand_bys_cancellation_url(HoldUpWeb.Endpoint, :show, stand_by.cancellation_uuid))
+    if attendance_sms_setting.enabled do
+      stand_by = get_stand_by!(stand_by_id)
 
-    Notifications.send_sms_notification(stand_by.contact_phone_number, body, stand_by.id)
-    update_stand_by(stand_by, %{notified_at: DateTime.utc_now()})
+      body =
+        attendance_sms_setting.message_content
+        |> String.replace("[[NAME]]", stand_by.name)
+        |> String.replace(
+          "[[CANCEL_LINK]]",
+          Helpers.stand_bys_cancellation_url(
+            HoldUpWeb.Endpoint,
+            :show,
+            stand_by.cancellation_uuid
+          )
+        )
+
+      Notifications.send_sms_notification(stand_by.contact_phone_number, body, stand_by.id)
+
+      update_stand_by(stand_by, %{notified_at: DateTime.utc_now()})
+    end
   end
 
   def mark_as_attended(stand_by_id) do
@@ -144,8 +181,6 @@ defmodule HoldUp.Waitlists do
 
   def mark_as_cancelled(cancellation_uuid) do
     stand_by = Repo.get_by!(StandBy, cancellation_uuid: cancellation_uuid)
-
-    IO.inspect(stand_by)
     update_stand_by(stand_by, %{cancelled_at: DateTime.utc_now()})
   end
 

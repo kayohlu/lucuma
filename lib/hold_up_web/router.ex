@@ -6,7 +6,6 @@ defmodule HoldUpWeb.Router do
   import HoldUpWeb.Plugs.CurrentCompany
   import HoldUpWeb.Plugs.CurrentBusiness
 
-
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -33,7 +32,6 @@ defmodule HoldUpWeb.Router do
 
     plug :put_layout, {HoldUpWeb.LayoutView, :logged_in}
   end
-
 
   scope "/", HoldUpWeb do
     pipe_through :browser
@@ -70,7 +68,6 @@ defmodule HoldUpWeb.Router do
       resources "/settings", SettingController, only: [:index, :update]
     end
   end
-
 
   scope "/stand_bys", HoldUpWeb.StandBys, as: :stand_bys do
     pipe_through :protected

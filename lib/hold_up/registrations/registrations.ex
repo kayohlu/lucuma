@@ -37,7 +37,10 @@ defmodule HoldUp.Registrations do
         {:ok, user} = Repo.insert(user_changeset(registration_form, company))
         {:ok, business} = Repo.insert(business_changeset(company))
         {:ok, waitlist} = Repo.insert(waitlist_changeset(business))
-        {:ok, confirmation_sms_setting} = Repo.insert(confirmation_sms_settings_changeset(waitlist))
+
+        {:ok, confirmation_sms_setting} =
+          Repo.insert(confirmation_sms_settings_changeset(waitlist))
+
         {:ok, attendance_sms_setting} = Repo.insert(attendance_sms_settings_changeset(waitlist))
         user
       end)

@@ -57,9 +57,10 @@ defmodule HoldUp.Waitlists.StandBy do
   end
 
   def generate_cancellation_uuid(changeset) do
-    IO.inspect get_field(changeset, :cancellation_uuid)
+    IO.inspect(get_field(changeset, :cancellation_uuid))
+
     case get_field(changeset, :cancellation_uuid) do
-      nil -> put_change(changeset, :cancellation_uuid, Ecto.UUID.generate)
+      nil -> put_change(changeset, :cancellation_uuid, Ecto.UUID.generate())
       _ -> changeset
     end
   end
