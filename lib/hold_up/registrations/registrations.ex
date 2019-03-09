@@ -7,12 +7,8 @@ defmodule HoldUp.Registrations do
   alias HoldUp.Repo
 
   alias HoldUp.Registrations.RegistrationForm
-  alias HoldUp.Accounts.Company
-  alias HoldUp.Accounts.User
-  alias HoldUp.Accounts.Business
-  alias HoldUp.Waitlists.Waitlist
-  alias HoldUp.Waitlists.ConfirmationSmsSetting
-  alias HoldUp.Waitlists.AttendanceSmsSetting
+  alias HoldUp.Accounts
+  alias HoldUp.Waitlists
 
   @doc """
   Creates a registration_form.
@@ -33,15 +29,10 @@ defmodule HoldUp.Registrations do
       registration_form = Ecto.Changeset.apply_changes(changeset)
 
       Repo.transaction(fn ->
-        {:ok, company} = Repo.insert(company_changeset(registration_form))
-        {:ok, user} = Repo.insert(user_changeset(registration_form, company))
-        {:ok, business} = Repo.insert(business_changeset(company))
-        {:ok, waitlist} = Repo.insert(waitlist_changeset(business))
-
-        {:ok, confirmation_sms_setting} =
-          Repo.insert(confirmation_sms_settings_changeset(waitlist))
-
-        {:ok, attendance_sms_setting} = Repo.insert(attendance_sms_settings_changeset(waitlist))
+        {:ok, company} = create_company(registration_form)
+        {:ok, user} = create_user(registration_form, company)
+        {:ok, business} = create_business(company)
+        {:ok, waitlist} = create_waitlist(business)
         user
       end)
     else
@@ -62,15 +53,15 @@ defmodule HoldUp.Registrations do
     RegistrationForm.changeset(registration_form, %{})
   end
 
-  defp company_changeset(registration_form) do
-    Company.changeset(%Company{}, %{
+  defp create_company(registration_form) do
+    Accounts.create_company(%{
       name: registration_form.company_name,
       contact_email: registration_form.email
     })
   end
 
-  defp user_changeset(registration_form, company) do
-    User.changeset(%User{}, %{
+  defp create_user(registration_form, company) do
+    Accounts.create_user(%{
       email: registration_form.email,
       full_name: registration_form.full_name,
       password_hash: Comeonin.Bcrypt.hashpwsalt(registration_form.password),
@@ -78,47 +69,17 @@ defmodule HoldUp.Registrations do
     })
   end
 
-  defp business_changeset(parent_company) do
-    Business.changeset(%Business{}, %{
+  defp create_business(parent_company) do
+    Accounts.create_business(%{
       name: "Unnamed Business",
       company_id: parent_company.id
     })
   end
 
-  defp waitlist_changeset(business) do
-    Waitlist.changeset(%Waitlist{}, %{
+  defp create_waitlist(business) do
+    Waitlists.create_waitlist(%{
       name: "Wait List 1",
       business_id: business.id
-    })
-  end
-
-  defp confirmation_sms_settings_changeset(waitlist) do
-    ConfirmationSmsSetting.changeset(%ConfirmationSmsSetting{}, %{
-      enabled: true,
-      waitlist_id: waitlist.id,
-      message_content: """
-      Hello [[NAME]],
-
-      It's your turn!
-
-      Regards,
-      Your friendly staff
-      """
-    })
-  end
-
-  defp attendance_sms_settings_changeset(waitlist) do
-    AttendanceSmsSetting.changeset(%AttendanceSmsSetting{}, %{
-      enabled: true,
-      waitlist_id: waitlist.id,
-      message_content: """
-      Hello [[NAME]],
-
-      You've been added to our waitlist. We'll let you know when it's your turn as soon as possible.
-
-      Regards,
-      Your friendly staff
-      """
     })
   end
 end

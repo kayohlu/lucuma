@@ -3,9 +3,33 @@ defmodule HoldUpWeb.UserControllerTest do
 
   alias HoldUp.Accounts
 
-  @create_attrs %{confirmation_sent_at: "2010-04-17T14:00:00Z", confirmation_token: "some confirmation_token", confirmed_at: "2010-04-17T14:00:00Z", email: "some email", full_name: "some full_name", password_hash: "some password_hash", reset_password_token: "some reset_password_token"}
-  @update_attrs %{confirmation_sent_at: "2011-05-18T15:01:01Z", confirmation_token: "some updated confirmation_token", confirmed_at: "2011-05-18T15:01:01Z", email: "some updated email", full_name: "some updated full_name", password_hash: "some updated password_hash", reset_password_token: "some updated reset_password_token"}
-  @invalid_attrs %{confirmation_sent_at: nil, confirmation_token: nil, confirmed_at: nil, email: nil, full_name: nil, password_hash: nil, reset_password_token: nil}
+  @create_attrs %{
+    confirmation_sent_at: "2010-04-17T14:00:00Z",
+    confirmation_token: "some confirmation_token",
+    confirmed_at: "2010-04-17T14:00:00Z",
+    email: "some email",
+    full_name: "some full_name",
+    password_hash: "some password_hash",
+    reset_password_token: "some reset_password_token"
+  }
+  @update_attrs %{
+    confirmation_sent_at: "2011-05-18T15:01:01Z",
+    confirmation_token: "some updated confirmation_token",
+    confirmed_at: "2011-05-18T15:01:01Z",
+    email: "some updated email",
+    full_name: "some updated full_name",
+    password_hash: "some updated password_hash",
+    reset_password_token: "some updated reset_password_token"
+  }
+  @invalid_attrs %{
+    confirmation_sent_at: nil,
+    confirmation_token: nil,
+    confirmed_at: nil,
+    email: nil,
+    full_name: nil,
+    password_hash: nil,
+    reset_password_token: nil
+  }
 
   def fixture(:user) do
     {:ok, user} = Accounts.create_user(@create_attrs)
@@ -75,6 +99,7 @@ defmodule HoldUpWeb.UserControllerTest do
     test "deletes chosen user", %{conn: conn, user: user} do
       conn = delete(conn, Routes.user_path(conn, :delete, user))
       assert redirected_to(conn) == Routes.user_path(conn, :index)
+
       assert_error_sent 404, fn ->
         get(conn, Routes.user_path(conn, :show, user))
       end

@@ -3,8 +3,18 @@ defmodule HoldUpWeb.RegistrationControllerTest do
 
   alias HoldUp.Registrations
 
-  @create_attrs %{email: "some email", full_name: "some full_name", password: "some password", password_confirmation: "some password_confirmation"}
-  @update_attrs %{email: "some updated email", full_name: "some updated full_name", password: "some updated password", password_confirmation: "some updated password_confirmation"}
+  @create_attrs %{
+    email: "some email",
+    full_name: "some full_name",
+    password: "some password",
+    password_confirmation: "some password_confirmation"
+  }
+  @update_attrs %{
+    email: "some updated email",
+    full_name: "some updated full_name",
+    password: "some updated password",
+    password_confirmation: "some updated password_confirmation"
+  }
   @invalid_attrs %{email: nil, full_name: nil, password: nil, password_confirmation: nil}
 
   def fixture(:registration) do
@@ -56,7 +66,11 @@ defmodule HoldUpWeb.RegistrationControllerTest do
     setup [:create_registration]
 
     test "redirects when data is valid", %{conn: conn, registration: registration} do
-      conn = put(conn, Routes.registration_path(conn, :update, registration), registration: @update_attrs)
+      conn =
+        put(conn, Routes.registration_path(conn, :update, registration),
+          registration: @update_attrs
+        )
+
       assert redirected_to(conn) == Routes.registration_path(conn, :show, registration)
 
       conn = get(conn, Routes.registration_path(conn, :show, registration))
@@ -64,7 +78,11 @@ defmodule HoldUpWeb.RegistrationControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn, registration: registration} do
-      conn = put(conn, Routes.registration_path(conn, :update, registration), registration: @invalid_attrs)
+      conn =
+        put(conn, Routes.registration_path(conn, :update, registration),
+          registration: @invalid_attrs
+        )
+
       assert html_response(conn, 200) =~ "Edit Registration"
     end
   end
@@ -75,6 +93,7 @@ defmodule HoldUpWeb.RegistrationControllerTest do
     test "deletes chosen registration", %{conn: conn, registration: registration} do
       conn = delete(conn, Routes.registration_path(conn, :delete, registration))
       assert redirected_to(conn) == Routes.registration_path(conn, :index)
+
       assert_error_sent 404, fn ->
         get(conn, Routes.registration_path(conn, :show, registration))
       end

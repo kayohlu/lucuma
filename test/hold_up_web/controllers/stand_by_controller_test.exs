@@ -3,9 +3,27 @@ defmodule HoldUpWeb.StandByControllerTest do
 
   alias HoldUp.Waitlists
 
-  @create_attrs %{contact_phone_number: "some contact_phone_number", estimated_wait_time: 42, name: "some name", notes: "some notes", party_size: 42}
-  @update_attrs %{contact_phone_number: "some updated contact_phone_number", estimated_wait_time: 43, name: "some updated name", notes: "some updated notes", party_size: 43}
-  @invalid_attrs %{contact_phone_number: nil, estimated_wait_time: nil, name: nil, notes: nil, party_size: nil}
+  @create_attrs %{
+    contact_phone_number: "some contact_phone_number",
+    estimated_wait_time: 42,
+    name: "some name",
+    notes: "some notes",
+    party_size: 42
+  }
+  @update_attrs %{
+    contact_phone_number: "some updated contact_phone_number",
+    estimated_wait_time: 43,
+    name: "some updated name",
+    notes: "some updated notes",
+    party_size: 43
+  }
+  @invalid_attrs %{
+    contact_phone_number: nil,
+    estimated_wait_time: nil,
+    name: nil,
+    notes: nil,
+    party_size: nil
+  }
 
   def fixture(:stand_by) do
     {:ok, stand_by} = Waitlists.create_stand_by(@create_attrs)
@@ -75,6 +93,7 @@ defmodule HoldUpWeb.StandByControllerTest do
     test "deletes chosen stand_by", %{conn: conn, stand_by: stand_by} do
       conn = delete(conn, Routes.stand_by_path(conn, :delete, stand_by))
       assert redirected_to(conn) == Routes.stand_by_path(conn, :index)
+
       assert_error_sent 404, fn ->
         get(conn, Routes.stand_by_path(conn, :show, stand_by))
       end

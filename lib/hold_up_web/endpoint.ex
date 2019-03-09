@@ -1,6 +1,12 @@
 defmodule HoldUpWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :hold_up
 
+  # Checking if the SQL sandbox env is present because during feature/integrations tests
+  # the endpoint is running and we want to enable concurrent testing.
+  if Application.get_env(:your_app, :sql_sandbox) do
+    plug Phoenix.Ecto.SQL.Sandbox
+  end
+
   socket "/socket", HoldUpWeb.UserSocket,
     websocket: true,
     longpoll: false

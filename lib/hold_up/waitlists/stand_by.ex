@@ -15,6 +15,9 @@ defmodule HoldUp.Waitlists.StandBy do
     field :cancelled_at, :utc_datetime
     field :cancellation_uuid, :string
 
+
+    has_many :sms_notifications, HoldUp.Notifications.SmsNotification, on_delete: :delete_all
+
     timestamps()
   end
 

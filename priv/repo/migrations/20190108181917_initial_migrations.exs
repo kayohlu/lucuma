@@ -19,6 +19,7 @@ defmodule HoldUp.Repo.Migrations.CreateUsers do
 
 
     create table(:users) do
+      add :company_id, references(:companies, on_delete: :nothing), null: false
       add :email, :string, null: false
       add :full_name, :string, null: false
       # authenticatable
@@ -43,17 +44,14 @@ defmodule HoldUp.Repo.Migrations.CreateUsers do
       # rememberable
       add :remember_created_at, :utc_datetime
 
-
-      add :company_id, references(:companies, on_delete: :nothing), null: false
-
       timestamps()
     end
     create unique_index(:users, [:email])
 
 
     create table(:waitlists) do
-      add :name, :string
       add :business_id, references(:businesses, on_delete: :nothing)
+      add :name, :string
       add :notification_sms_body, :string
 
       timestamps()
@@ -97,7 +95,7 @@ defmodule HoldUp.Repo.Migrations.CreateUsers do
     create index(:attendance_sms_settings, [:waitlist_id])
 
     create table(:sms_notifications) do
-      add :stand_by_id, references(:stand_bys, on_delete: :nothing)
+      add :stand_by_id, references(:stand_bys, on_delete: :delete_all)
       add :message_content, :string
       add :recipient_phone_number, :string
       add :status, :string

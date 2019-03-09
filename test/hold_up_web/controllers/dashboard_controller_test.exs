@@ -75,6 +75,7 @@ defmodule HoldUpWeb.DashboardControllerTest do
     test "deletes chosen dashboard", %{conn: conn, dashboard: dashboard} do
       conn = delete(conn, Routes.dashboard_path(conn, :delete, dashboard))
       assert redirected_to(conn) == Routes.dashboard_path(conn, :index)
+
       assert_error_sent 404, fn ->
         get(conn, Routes.dashboard_path(conn, :show, dashboard))
       end

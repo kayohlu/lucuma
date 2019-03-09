@@ -75,6 +75,7 @@ defmodule HoldUpWeb.WaitlistControllerTest do
     test "deletes chosen waitlist", %{conn: conn, waitlist: waitlist} do
       conn = delete(conn, Routes.waitlist_path(conn, :delete, waitlist))
       assert redirected_to(conn) == Routes.waitlist_path(conn, :index)
+
       assert_error_sent 404, fn ->
         get(conn, Routes.waitlist_path(conn, :show, waitlist))
       end

@@ -1,6 +1,6 @@
 defmodule HoldUp.Registrations.RegistrationForm do
   @moduledoc """
-  This is an embedded schema (i.e. virtual schema) to allow the us to work with forms that span many actual schemas (DB tables)
+  This is an embedded schema (i.e. virtual schema) to allow  us to work with forms that span many actual schemas (DB tables)
   http://blog.plataformatec.com.br/2016/05/ectos-insert_all-and-schemaless-queries/
   """
   use Ecto.Schema

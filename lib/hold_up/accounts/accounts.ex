@@ -18,7 +18,7 @@ defmodule HoldUp.Accounts do
 
   def get_user(id), do: Repo.get(User, id)
 
-  def get_current_company(user), do: Repo.get(Company, user.company_id)
+  def get_current_company(%User{} = user), do: Repo.get(Company, user.company_id)
 
   @doc """
   Creates a user.
@@ -92,5 +92,17 @@ defmodule HoldUp.Accounts do
         where: businesses.company_id == ^user.company_id
 
     Repo.one(query)
+  end
+
+  def create_company(attrs \\ %{}) do
+    %Company{}
+    |> Company.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def create_business(attrs \\ %{}) do
+    %Business{}
+    |> Business.changeset(attrs)
+    |> Repo.insert()
   end
 end

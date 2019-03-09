@@ -20,7 +20,7 @@
 </div>
 
 <div class="card mt-4">
-  <div class="card-body">
+  <div class="card-body pb-0">
     <ul class="list-inline">
       <li class="list-inline-item">
         <%= link to: Routes.stand_by_path(@conn, :new), class: "btn btn-primary" do %>
@@ -31,7 +31,7 @@
     </ul>
     <ul class="list-group list-group-flush">
       <%= for stand_by <- @waitlist.stand_bys do %>
-      <div class="list-group-item">
+      <div class="list-group-item pt-4 pb-4">
         <div class="d-flex w-100 justify-content-between">
           <div class="flex-fill">
             <h5 class="mb-1"><%= stand_by.name %></h5>
