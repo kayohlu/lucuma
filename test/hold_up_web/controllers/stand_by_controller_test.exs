@@ -4,6 +4,7 @@ defmodule HoldUpWeb.StandByControllerTest do
   This seems to be because the test process owns the db connection (process - i think it's a process) and when the test
   finishes the db connection no longer exists. So when the producer tries to make a query it fails because the connection
   no longer exists.
+  See: https://elixirforum.com/t/issue-with-dbconnection-ownership-proxy-checkout-and-genserver-process/4334/2
   """
   use HoldUpWeb.ConnCase
 
@@ -37,7 +38,9 @@ defmodule HoldUpWeb.StandByControllerTest do
 
       assert redirected_to(conn) == Routes.waitlists_waitlist_path(conn, :show, waitlist)
 
-      # Supervisor.terminate_child(HoldUp.Supervisor, HoldUp.Notifications.NotificationProducer)
+      # Hack to get around what is described in the moduledoc above. The test finished and the Notificationproducer is looking to use
+      # a process/connection that does not exist anymore..
+      :timer.sleep(10)
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
@@ -49,6 +52,10 @@ defmodule HoldUpWeb.StandByControllerTest do
       conn = Plug.Test.init_test_session(conn, current_user_id: user.id, current_business_id: business.id, current_company_id: company.id)
       conn = post(conn, Routes.waitlists_waitlist_stand_by_path(conn, :create, waitlist), stand_by: %{name: nil})
       assert html_response(conn, 200) =~ "New Stand by"
+
+      # Hack to get around what is described in the moduledoc above. The test finished and the Notificationproducer is looking to use
+      # a process/connection that does not exist anymore..
+      :timer.sleep(10)
     end
   end
   # describe "edit stand_by" do
