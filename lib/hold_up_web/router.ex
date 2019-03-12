@@ -58,13 +58,13 @@ defmodule HoldUpWeb.Router do
 
     delete "/signout", SessionController, :delete
     resources "/dashboard", DashboardController, only: [:index]
-    resources "/stand_bys", StandByController, only: [:new, :create]
   end
 
   scope "/waitlists", HoldUpWeb.Waitlists, as: :waitlists do
     pipe_through :protected
 
     resources "/", WaitlistController, only: [:index, :show] do
+      resources "/stand_bys", StandByController, only: [:new, :create]
       resources "/settings", SettingController, only: [:index, :update]
     end
   end

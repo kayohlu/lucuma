@@ -4,11 +4,11 @@ defmodule HoldUp.Waitlists.Waitlist do
 
   schema "waitlists" do
     field :name, :string
-    field :business_id, :id
     field :notification_sms_body, :string
 
     timestamps()
 
+    belongs_to :business, HoldUp.Accounts.Business
     has_many :stand_bys, HoldUp.Waitlists.StandBy
   end
 

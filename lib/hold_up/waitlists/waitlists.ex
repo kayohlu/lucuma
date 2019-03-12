@@ -138,7 +138,7 @@ defmodule HoldUp.Waitlists do
   def create_stand_by(attrs \\ %{}, notification_module \\ Notifications) do
     case %StandBy{} |> StandBy.changeset(attrs) |> Repo.insert do
       {:ok, stand_by} ->
-        confirmation_sms_setting = Repo.get_by!(ConfirmationSmsSetting, waitlist_id: attrs.waitlist_id)
+        confirmation_sms_setting = Repo.get_by!(ConfirmationSmsSetting, waitlist_id: stand_by.waitlist_id)
         if confirmation_sms_setting.enabled do
           body =
             confirmation_sms_setting.message_content

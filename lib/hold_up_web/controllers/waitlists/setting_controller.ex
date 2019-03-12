@@ -19,7 +19,6 @@ defmodule HoldUpWeb.Waitlists.SettingController do
     waitlist = Waitlists.get_waitlist!(1)
     sms_setting = Repo.get_by!(ConfirmationSmsSetting, waitlist_id: waitlist.id)
 
-    IO.inspect sms_setting_params
     case Waitlists.update_confirmation_sms_setting(sms_setting, sms_setting_params) do
       {:ok, sms_setting} ->
         conn

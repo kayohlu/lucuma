@@ -4,6 +4,7 @@ defmodule HoldUp.Notifications.NotificationProducer do
   alias HoldUp.Notifications.Notifier
 
   @moduledoc """
+  See for help: https://www.youtube.com/watch?v=aZuY5-2lwW4
   This module is a producer
   It handles demand for events from consumers or producer/consumers.
   It responds with what is being demanded.

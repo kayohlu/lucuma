@@ -1,0 +1,3 @@
+<h1>New Stand by</h1>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.waitlists_waitlist_stand_by_path(@conn, :create, @waitlist.id)) %>

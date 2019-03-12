@@ -23,7 +23,7 @@
   <div class="card-body pb-0">
     <ul class="list-inline">
       <li class="list-inline-item">
-        <%= link to: Routes.stand_by_path(@conn, :new), class: "btn btn-primary" do %>
+        <%= link to: Routes.waitlists_waitlist_stand_by_path(@conn, :new, @waitlist.id), class: "btn btn-primary" do %>
         <i class="fas fa-plus"></i>
           Add Person
         <% end %>

@@ -8,14 +8,13 @@ defmodule HoldUp.Waitlists.StandBy do
     field :name, :string
     field :notes, :string
     field :party_size, :integer
-    field :waitlist_id, :integer
     field :notified_at, :utc_datetime
     field :attended_at, :utc_datetime
     field :no_show_at, :utc_datetime
     field :cancelled_at, :utc_datetime
     field :cancellation_uuid, :string
 
-
+    belongs_to :waitlist, HoldUp.Waitlists.Waitlist
     has_many :sms_notifications, HoldUp.Notifications.SmsNotification, on_delete: :delete_all
 
     timestamps()

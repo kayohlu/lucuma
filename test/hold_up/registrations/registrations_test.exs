@@ -20,13 +20,6 @@ defmodule HoldUp.RegistrationsTest do
       password: "some password",
       password_confirmation: "some password"
     }
-    @update_attrs %{
-      email: "someupdated@email",
-      full_name: "some updated full_name",
-      company_name: "company",
-      password: "some updated password",
-      password_confirmation: "some updated password"
-    }
     @invalid_attrs %{
       email: nil,
       full_name: nil,

@@ -5,7 +5,8 @@ defmodule HoldUp.Waitlists.AttendanceSmsSetting do
   schema "attendance_sms_settings" do
     field :enabled, :boolean
     field :message_content, :string
-    field :waitlist_id, :id
+
+    belongs_to :waitlist, HoldUp.Waitlists.Waitlist
 
     timestamps()
   end

@@ -4,7 +4,9 @@ use Mix.Config
 # you can enable the server option below.
 config :hold_up, HoldUpWeb.Endpoint,
   http: [port: 4002],
-  server: false
+  server: true
+
+config :hold_up, :sql_sandbox, true
 
 # Print only warnings and errors during test
 config :logger, level: :warn
