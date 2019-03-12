@@ -1,5 +1,11 @@
 defmodule HoldUpWeb.StandByControllerTest do
-  use HoldUpWeb.ConnCase#, async: true
+  @moduledoc """
+  NotificationProducer errors are thrown because of this test.
+  This seems to be because the test process owns the db connection (process - i think it's a process) and when the test
+  finishes the db connection no longer exists. So when the producer tries to make a query it fails because the connection
+  no longer exists.
+  """
+  use HoldUpWeb.ConnCase
 
   import HoldUp.Factory
 
@@ -30,6 +36,8 @@ defmodule HoldUpWeb.StandByControllerTest do
       conn = post(conn, Routes.waitlists_waitlist_stand_by_path(conn, :create, waitlist), stand_by: params_for(:stand_by))
 
       assert redirected_to(conn) == Routes.waitlists_waitlist_path(conn, :show, waitlist)
+
+      # Supervisor.terminate_child(HoldUp.Supervisor, HoldUp.Notifications.NotificationProducer)
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
@@ -43,7 +51,6 @@ defmodule HoldUpWeb.StandByControllerTest do
       assert html_response(conn, 200) =~ "New Stand by"
     end
   end
-
   # describe "edit stand_by" do
   #   test "renders form for editing chosen stand_by", %{conn: conn} do
   #     company = insert(:company)
