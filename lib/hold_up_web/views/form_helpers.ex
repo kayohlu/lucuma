@@ -65,7 +65,7 @@ defmodule HoldUpWeb.FormHelpers do
   def phone_form_group(form, field, opts \\ []) do
     content_tag(:div, class: "form-group") do
       [
-        label(form, field, class: "control-label"),
+        label(form, field, class: "control-label", for: "input-phone"),
         text_input(form, field, class: input_field_classes(form, field), id: "input-phone"),
         error_tag(form, field)
       ]

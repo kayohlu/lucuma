@@ -20,7 +20,9 @@ defmodule HoldUp.WaitlistsTests.AttendanceSmsSettingTest do
                )
 
       assert attendance_sms_setting.enabled == attendance_sms_setting_params.enabled
-      assert attendance_sms_setting.message_content == attendance_sms_setting_params.message_content
+
+      assert attendance_sms_setting.message_content ==
+               attendance_sms_setting_params.message_content
     end
 
     test "create_attendance_sms_settings/1 with invalid data returns error changeset" do
@@ -40,7 +42,9 @@ defmodule HoldUp.WaitlistsTests.AttendanceSmsSettingTest do
                )
 
       assert attendance_sms_setting.enabled == attendance_sms_setting_params.enabled
-      assert attendance_sms_setting.message_content == attendance_sms_setting_params.message_content
+
+      assert attendance_sms_setting.message_content ==
+               attendance_sms_setting_params.message_content
     end
 
     test "update_attendance_sms_settings/2 with invalid data returns error changeset" do

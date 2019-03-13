@@ -6,10 +6,10 @@ config :hold_up, HoldUpWeb.Endpoint,
   http: [port: 4002],
   server: true
 
-config :hold_up, :sql_sandbox, true
+config :hold_up, sql_sandbox: true
 
 # Print only warnings and errors during test
-config :logger, level: :warn
+config :logger, level: :debug
 
 # Configure your database
 config :hold_up, HoldUp.Repo,
@@ -21,3 +21,6 @@ config :hold_up, HoldUp.Repo,
 
 # Don't slow down test suite because of bcrypt.
 config :bcrypt_elixir, :log_rounds, 4
+
+config :wallaby,
+  driver: Wallaby.Experimental.Chrome

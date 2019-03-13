@@ -17,7 +17,13 @@ defmodule HoldUpWeb.StandByControllerTest do
       user = insert(:user, company: company)
       waitlist = insert(:waitlist, business: business)
 
-      conn = Plug.Test.init_test_session(conn, current_user_id: user.id, current_business_id: business.id, current_company_id: company.id)
+      conn =
+        Plug.Test.init_test_session(conn,
+          current_user_id: user.id,
+          current_business_id: business.id,
+          current_company_id: company.id
+        )
+
       conn = get(conn, Routes.waitlists_waitlist_stand_by_path(conn, :new, waitlist))
 
       assert html_response(conn, 200) =~ "New Stand by"
@@ -33,8 +39,17 @@ defmodule HoldUpWeb.StandByControllerTest do
       insert(:confirmation_sms_setting, waitlist: waitlist)
       insert(:attendance_sms_setting, waitlist: waitlist)
 
-      conn = Plug.Test.init_test_session(conn, current_user_id: user.id, current_business_id: business.id, current_company_id: company.id)
-      conn = post(conn, Routes.waitlists_waitlist_stand_by_path(conn, :create, waitlist), stand_by: params_for(:stand_by))
+      conn =
+        Plug.Test.init_test_session(conn,
+          current_user_id: user.id,
+          current_business_id: business.id,
+          current_company_id: company.id
+        )
+
+      conn =
+        post(conn, Routes.waitlists_waitlist_stand_by_path(conn, :create, waitlist),
+          stand_by: params_for(:stand_by)
+        )
 
       assert redirected_to(conn) == Routes.waitlists_waitlist_path(conn, :show, waitlist)
 
@@ -49,8 +64,18 @@ defmodule HoldUpWeb.StandByControllerTest do
       user = insert(:user, company: company)
       waitlist = insert(:waitlist, business: business)
 
-      conn = Plug.Test.init_test_session(conn, current_user_id: user.id, current_business_id: business.id, current_company_id: company.id)
-      conn = post(conn, Routes.waitlists_waitlist_stand_by_path(conn, :create, waitlist), stand_by: %{name: nil})
+      conn =
+        Plug.Test.init_test_session(conn,
+          current_user_id: user.id,
+          current_business_id: business.id,
+          current_company_id: company.id
+        )
+
+      conn =
+        post(conn, Routes.waitlists_waitlist_stand_by_path(conn, :create, waitlist),
+          stand_by: %{name: nil}
+        )
+
       assert html_response(conn, 200) =~ "New Stand by"
 
       # Hack to get around what is described in the moduledoc above. The test finished and the Notificationproducer is looking to use
@@ -58,6 +83,7 @@ defmodule HoldUpWeb.StandByControllerTest do
       :timer.sleep(10)
     end
   end
+
   # describe "edit stand_by" do
   #   test "renders form for editing chosen stand_by", %{conn: conn} do
   #     company = insert(:company)

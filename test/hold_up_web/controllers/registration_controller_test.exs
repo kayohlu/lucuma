@@ -4,18 +4,18 @@ defmodule HoldUpWeb.RegistrationControllerTest do
   alias HoldUp.Registrations
 
   @create_attrs %{
-      email: "some@email",
-      full_name: "some full_name",
-      company_name: "company",
-      password: "some password",
-      password_confirmation: "some password"
-    }
-    @invalid_attrs %{
-      email: nil,
-      full_name: nil,
-      password: nil,
-      password_confirmation: nil
-    }
+    email: "some@email",
+    full_name: "some full_name",
+    company_name: "company",
+    password: "some password",
+    password_confirmation: "some password"
+  }
+  @invalid_attrs %{
+    email: nil,
+    full_name: nil,
+    password: nil,
+    password_confirmation: nil
+  }
 
   describe "new registration" do
     test "renders form", %{conn: conn} do
@@ -29,7 +29,11 @@ defmodule HoldUpWeb.RegistrationControllerTest do
       conn = post(conn, Routes.registration_path(conn, :create), registration: @create_attrs)
 
       assert redirected_to(conn) == Routes.dashboard_path(conn, :index)
-      assert %{"info" => "That's it. Your registration is complete. We've created an initial default waitlist for you."} = get_flash(conn)
+
+      assert %{
+               "info" =>
+                 "That's it. Your registration is complete. We've created an initial default waitlist for you."
+             } = get_flash(conn)
     end
 
     test "renders errors when data is invalid", %{conn: conn} do

@@ -7,19 +7,19 @@ defmodule HoldUp.Factory do
 
   def company_factory() do
     %HoldUp.Accounts.Company{
-      name: sequence(:company_name, fn(n) -> "Company #{n}" end),
-      contact_email: sequence(:company_email, fn(n) -> "email-company-#{n}@example.com" end)
+      name: sequence(:company_name, fn n -> "Company #{n}" end),
+      contact_email: sequence(:company_email, fn n -> "email-company-#{n}@example.com" end)
     }
   end
 
   def user_factory(attrs) do
     %HoldUp.Accounts.User{
-      email: sequence(:user_email, fn(n) -> "email-user-#{n}@example.com" end),
-      full_name: sequence(:user_full_name, fn(n) -> "Full Name #{n}" end),
+      email: sequence(:user_email, fn n -> "email-user-#{n}@example.com" end),
+      full_name: sequence(:user_full_name, fn n -> "Full Name #{n}" end),
       password_hash: Comeonin.Bcrypt.hashpwsalt("123123123"),
-      confirmation_sent_at: DateTime.utc_now,
+      confirmation_sent_at: DateTime.utc_now(),
       confirmation_token: "some confirmation_token",
-      confirmed_at: DateTime.utc_now |> DateTime.add(3),
+      confirmed_at: DateTime.utc_now() |> DateTime.add(3),
       reset_password_token: "some reset_password_token"
     }
     |> merge_attributes(attrs)
@@ -27,14 +27,14 @@ defmodule HoldUp.Factory do
 
   def business_factory(attrs) do
     %HoldUp.Accounts.Business{
-      name: sequence(:business_name, fn(n) -> "Business #{n}" end),
+      name: sequence(:business_name, fn n -> "Business #{n}" end)
     }
     |> merge_attributes(attrs)
   end
 
   def waitlist_factory(attrs) do
     %HoldUp.Waitlists.Waitlist{
-      name: sequence(:waitlist_name, fn(n) -> "Waitlist #{n}" end),
+      name: sequence(:waitlist_name, fn n -> "Waitlist #{n}" end)
     }
     |> merge_attributes(attrs)
   end
@@ -42,7 +42,7 @@ defmodule HoldUp.Factory do
   def confirmation_sms_setting_factory(attrs) do
     %HoldUp.Waitlists.ConfirmationSmsSetting{
       enabled: true,
-      message_content: sequence(:waitlist_name, fn(n) -> "Message content #{n}" end),
+      message_content: sequence(:waitlist_name, fn n -> "Message content #{n}" end)
       # waitlist: nil
     }
     |> merge_attributes(attrs)
@@ -51,7 +51,7 @@ defmodule HoldUp.Factory do
   def attendance_sms_setting_factory(attrs) do
     %HoldUp.Waitlists.AttendanceSmsSetting{
       enabled: true,
-      message_content: sequence(:waitlist_name, fn(n) -> "Message content #{n}" end),
+      message_content: sequence(:waitlist_name, fn n -> "Message content #{n}" end)
     }
     |> merge_attributes(attrs)
   end
@@ -60,17 +60,17 @@ defmodule HoldUp.Factory do
     %HoldUp.Waitlists.StandBy{
       contact_phone_number: "+353851761516",
       estimated_wait_time: 20,
-      name: sequence(:stand_by_name, fn(n) -> "Standby By name #{n}" end),
-      notes: sequence(:stand_by_notes, fn(n) -> "A standby note #{n}" end),
+      name: sequence(:stand_by_name, fn n -> "Standby By name #{n}" end),
+      notes: sequence(:stand_by_notes, fn n -> "A standby note #{n}" end),
       party_size: 3,
-      cancellation_uuid: sequence(:stand_by_notes, fn(n) -> "cancel_uuid_#{n}" end),
+      cancellation_uuid: sequence(:stand_by_notes, fn n -> "cancel_uuid_#{n}" end)
     }
     |> merge_attributes(attrs)
   end
 
   def waitlist_factory(attrs) do
     %HoldUp.Waitlists.Waitlist{
-      name: sequence(:waitlist_name, fn(n) -> "Waitlist #{n}" end)
+      name: sequence(:waitlist_name, fn n -> "Waitlist #{n}" end)
     }
   end
- end
+end

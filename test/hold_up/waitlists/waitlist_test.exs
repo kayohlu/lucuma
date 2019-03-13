@@ -54,9 +54,10 @@ defmodule HoldUp.WaitlistsTests.WaitlistTest do
       insert(:confirmation_sms_setting, waitlist: waitlist)
       insert(:attendance_sms_setting, waitlist: waitlist)
 
-      stand_by = insert(:stand_by,
-        waitlist_id: waitlist.id,
-        notified_at: DateTime.add(DateTime.utc_now, 60, :second)
+      stand_by =
+        insert(:stand_by,
+          waitlist_id: waitlist.id,
+          notified_at: DateTime.add(DateTime.utc_now(), 60, :second)
         )
 
       assert 1 = Waitlists.calculate_average_wait_time(waitlist.id)

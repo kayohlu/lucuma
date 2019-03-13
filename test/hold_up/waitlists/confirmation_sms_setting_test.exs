@@ -20,7 +20,9 @@ defmodule HoldUp.WaitlistsTests.ConfirmationSmsSettingTest do
                )
 
       assert confirmation_sms_setting.enabled == confirmation_sms_setting_params.enabled
-      assert confirmation_sms_setting.message_content == confirmation_sms_setting_params.message_content
+
+      assert confirmation_sms_setting.message_content ==
+               confirmation_sms_setting_params.message_content
     end
 
     test "create_confirmation_sms_settings/1 with invalid data returns error changeset" do
@@ -40,7 +42,9 @@ defmodule HoldUp.WaitlistsTests.ConfirmationSmsSettingTest do
                )
 
       assert confirmation_sms_setting.enabled == confirmation_sms_setting_params.enabled
-      assert confirmation_sms_setting.message_content == confirmation_sms_setting_params.message_content
+
+      assert confirmation_sms_setting.message_content ==
+               confirmation_sms_setting_params.message_content
     end
 
     test "update_confirmation_sms_settings/2 with invalid data returns error changeset" do

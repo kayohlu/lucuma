@@ -3,8 +3,11 @@ defmodule HoldUpWeb.Endpoint do
 
   # Checking if the SQL sandbox env is present because during feature/integrations tests
   # the endpoint is running and we want to enable concurrent testing.
-  if Application.get_env(:your_app, :sql_sandbox) do
-    plug Phoenix.Ecto.SQL.Sandbox
+  if Application.get_env(:hold_up, :sql_sandbox) do
+    plug Phoenix.Ecto.SQL.Sandbox,
+      at: "/sandbox",
+      repo: HoldUp.Repo,
+      timeout: 15_000
   end
 
   socket "/socket", HoldUpWeb.UserSocket,

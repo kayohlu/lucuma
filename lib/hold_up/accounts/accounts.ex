@@ -74,6 +74,8 @@ defmodule HoldUp.Accounts do
   end
 
   def get_user_by_email(email) do
+    require Logger
+    Logger.debug "inside get_user_by_email"
     query =
       from user in HoldUp.Accounts.User,
         join: company in HoldUp.Accounts.Company,
@@ -83,6 +85,7 @@ defmodule HoldUp.Accounts do
         where: user.email == ^email,
         preload: [company: {company, businesses: businesses}]
 
+    Logger.debug "calling Repo.one"
     Repo.one(query)
   end
 

@@ -26,12 +26,14 @@ defmodule HoldUp.AccountsTests.UserTest do
       assert {:ok, %User{} = user} =
                Accounts.create_user(Map.put(user_params, :company_id, company.id))
 
-      assert user.confirmation_sent_at == user_params.confirmation_sent_at  |> DateTime.truncate(:second)
+      assert user.confirmation_sent_at ==
+               user_params.confirmation_sent_at |> DateTime.truncate(:second)
+
       assert user.confirmation_token == user_params.confirmation_token
-      assert user.confirmed_at == user_params.confirmed_at  |> DateTime.truncate(:second)
+      assert user.confirmed_at == user_params.confirmed_at |> DateTime.truncate(:second)
       assert user.email == user_params.email
       assert user.full_name == user_params.full_name
-      assert user.reset_password_token ==  user_params.reset_password_token
+      assert user.reset_password_token == user_params.reset_password_token
       assert user.company_id == company.id
     end
 
@@ -44,12 +46,15 @@ defmodule HoldUp.AccountsTests.UserTest do
       user_params = params_for(:user)
 
       assert {:ok, %User{} = user} = Accounts.update_user(user, user_params)
-      assert user.confirmation_sent_at == user_params.confirmation_sent_at |> DateTime.truncate(:second)
+
+      assert user.confirmation_sent_at ==
+               user_params.confirmation_sent_at |> DateTime.truncate(:second)
+
       assert user.confirmation_token == user_params.confirmation_token
       assert user.confirmed_at == user_params.confirmed_at |> DateTime.truncate(:second)
       assert user.email == user_params.email
       assert user.full_name == user_params.full_name
-      assert user.reset_password_token ==  user_params.reset_password_token
+      assert user.reset_password_token == user_params.reset_password_token
     end
 
     test "update_user/2 with invalid data returns error changeset" do

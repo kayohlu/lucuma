@@ -121,7 +121,9 @@ defmodule HoldUp.WaitlistsTests.StandByTest do
       waitlist = insert_waitlist
       stand_by = insert(:stand_by, waitlist_id: waitlist.id)
 
-      assert {:ok, %StandBy{} = updated_stand_by} = Waitlists.mark_as_cancelled(stand_by.cancellation_uuid)
+      assert {:ok, %StandBy{} = updated_stand_by} =
+               Waitlists.mark_as_cancelled(stand_by.cancellation_uuid)
+
       assert updated_stand_by.id == stand_by.id
       assert !is_nil(updated_stand_by.cancelled_at)
     end
