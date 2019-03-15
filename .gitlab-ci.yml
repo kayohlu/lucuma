@@ -12,7 +12,7 @@ test:
     - robcherry/docker-chromedriver:latest
     - browserless/chrome:latest
   variables:
-    MIX_ENV: ci
+    MIX_ENV: test
   script:
     - echo $MIX_ENV
     - echo "Testing the app"
