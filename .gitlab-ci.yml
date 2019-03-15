@@ -1,0 +1,47 @@
+image: trenpixster/elixir:latest
+
+stages:
+  - test
+  - build
+  - deploy
+
+test:
+  stage: test
+  services:
+    - postgres:latest
+    - robcherry/docker-chromedriver:latest
+    - browserless/chrome:latest
+  variables:
+    MIX_ENV: test
+  script:
+    - echo $MIX_ENV
+    - echo "Testing the app"
+    - apt-get update
+    - mix local.hex --force
+    - mix deps.get --only test
+    - mix ecto.create
+    - mix ecto.migrate
+    - mix test
+
+deploy_production:
+  stage: deploy
+  variables:
+    MIX_ENV: prod
+  environment:
+    name: production
+    url: https://www.example.com
+  script:
+    - echo "Compiling the app"
+    - mix do deps.get --only prod
+    - mix deps.compile
+    - cd assets
+    - npm install && ./node_modules/webpack/bin/webpack.js build --production
+    # - cd ..
+    # - mix phx.digest
+    # - mix release --env=prod --verbose
+
+    # - echo "Deploy to production server"
+  only:
+    - master
+  cache:
+    key: build-cache
