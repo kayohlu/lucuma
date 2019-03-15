@@ -1,4 +1,4 @@
-image: elixir:1.8.1-alpine
+image: bitwalker/alpine-elixir-phoenix:latest
 
 stages:
   - test
