@@ -13,7 +13,7 @@ test:
     MIX_ENV: test
   script:
     - echo $MIX_ENV
-    - apk updae
+    - apk update
     - apk add chromium chromium-chromedriver
     - chromedriver &
     - echo "Testing the app"
