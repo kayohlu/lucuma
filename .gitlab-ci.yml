@@ -17,7 +17,7 @@ test:
     - echo $MIX_ENV
     - apk add chromium chromium-chromedriver
     - chromium-chromedriver &
-    - alias "chrome" chromium-chromedriver
+    - alias chrome="chromium"
     - echo "Testing the app"
     - mix local.hex --force
     - mix deps.get --only test
