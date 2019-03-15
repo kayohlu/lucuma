@@ -9,8 +9,6 @@ test:
   stage: test
   services:
     - postgres:latest
-    - robcherry/docker-chromedriver:latest
-    - zenika/alpine-chrome
   variables:
     MIX_ENV: test
   script:
