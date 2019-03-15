@@ -16,6 +16,7 @@ test:
   script:
     - echo $MIX_ENV
     - apk add chromium chromium-chromedriver
+    - alias chrome chromium
     - which chrome
     - chromedriver &
     - echo "Testing the app"
