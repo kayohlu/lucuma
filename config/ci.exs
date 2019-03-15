@@ -16,7 +16,7 @@ config :hold_up, HoldUp.Repo,
   username: "postgres",
   password: "postgres",
   database: "hold_up_test",
-  hostname: if(System.get_env("CI"), do: "postgres", else: "localhost"),,
+  hostname: "postgres",
   pool: Ecto.Adapters.SQL.Sandbox
 
 # Don't slow down test suite because of bcrypt.
