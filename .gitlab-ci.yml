@@ -16,7 +16,6 @@ test:
   script:
     - echo $MIX_ENV
     - echo "Testing the app"
-    - apt-get update
     - mix local.hex --force
     - mix deps.get --only test
     - mix ecto.create
