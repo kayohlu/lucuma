@@ -10,14 +10,11 @@ test:
   services:
     - postgres:latest
     - robcherry/docker-chromedriver:latest
-    - browserless/chrome:latest
+    - zenika/alpine-chrome
   variables:
     MIX_ENV: test
   script:
     - echo $MIX_ENV
-    - apk add chromium chromium-chromedriver
-    - alias chrome chromium
-    - which chrome
     - chromedriver &
     - echo "Testing the app"
     - mix local.hex --force
