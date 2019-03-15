@@ -16,7 +16,7 @@ test:
     - echo @edge http://nl.alpinelinux.org/alpine/edge/community >> /etc/apk/repositories &&
     - echo @edge http://nl.alpinelinux.org/alpine/edge/main >> /etc/apk/repositories &&
     - apk add --no-cache chromium@edge harfbuzz@edge nss@edge chromium-chromedriver@edge
-    - which chrome
+    - which chromium
     - rm -rf /var/cache/*
     - chromedriver &
     - echo "Testing the app"
