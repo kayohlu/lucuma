@@ -44,11 +44,16 @@ defmodule HoldUp.Notifications.NotificationProducer do
     IO.puts("Producer state: #{state}")
     IO.puts("Producer demand: #{demand}")
 
-    {:noreply, Notifier.enqueue_notifications(), demand}
+    {:noreply, events, demand}
   end
 
   def handle_cast({:send_sms_async}, state) do
     IO.puts("Handling cast message send_sms_async")
-    {:noreply, Notifier.enqueue_notifications(), state}
+
+    {:noreply, events, state}
   end
+
+  defp events, do: events(Mix.env)
+  defp events(:test), do: []
+  defp events(_), do: Notifier.enqueue_notifications()
 end

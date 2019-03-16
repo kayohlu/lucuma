@@ -10,17 +10,23 @@ defmodule HoldUpWeb.Features.AuthenticationTest do
       business = insert(:business, company: company)
       user = insert(:user, company: company, email: "a@a.com")
 
-      session
+      page = session
       |> visit("/")
       |> click(link("Sign In"))
       |> fill_in(text_field("Email"), with: "a@a.com")
       |> fill_in(text_field("Password"), with: "123123123")
-      |> click(button("Sign In"))
+
+      page
+      |> find(button("Sign In"))
+      |> Wallaby.Element.click
+
+
+      page
       |> assert_text("Dashboard")
 
       # logout
 
-      session
+      page
       |> click(link("Log out"))
       |> assert_text("Sign In")
     end
