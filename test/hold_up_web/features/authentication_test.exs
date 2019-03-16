@@ -28,7 +28,9 @@ defmodule HoldUpWeb.Features.AuthenticationTest do
 
       page
       |> click(link("Log out"))
-      |> assert_text("Sign In")
+      |> find(button("Sign In"))
+
+      assert_text(page, "Sign In")
     end
   end
 
