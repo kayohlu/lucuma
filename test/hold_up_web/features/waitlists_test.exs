@@ -1,5 +1,5 @@
 defmodule HoldUpWeb.Features.WaitlistTest do
-  use HoldUp.FeatureCase, async: false
+  use HoldUp.FeatureCase, async: true
 
   import HoldUp.Factory
   import Wallaby.Query
@@ -19,6 +19,7 @@ defmodule HoldUpWeb.Features.WaitlistTest do
         |> click(link("Sign In"))
         |> fill_in(text_field("Email"), with: user.email)
         |> fill_in(text_field("Password"), with: "123123123")
+        |> find(button("Sign In"), & assert has_text?(&1, "Sign In"))
         |> click(button("Sign In"))
 
       assert_text(page, "Dashboard")

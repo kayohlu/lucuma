@@ -1,6 +1,8 @@
 defmodule HoldUp.Notifications.NotificationConsumer do
   use GenStage
 
+  require Logger
+
   alias HoldUp.Notifications
   alias HoldUp.Notifications.Notifier
 
@@ -52,7 +54,7 @@ defmodule HoldUp.Notifications.NotificationConsumer do
   end
 
   def handle_events(events, from, state) do
-    IO.puts("Handling #{length(events)} events from producer")
+    Logger.info("Handling #{length(events)} events from producer")
 
     new_state =
       Enum.into(events, state, fn event ->

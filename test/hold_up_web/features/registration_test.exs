@@ -1,5 +1,5 @@
 defmodule HoldUpWeb.Features.RegistrationTest do
-  use HoldUp.FeatureCase, async: false
+  use HoldUp.FeatureCase, async: true
 
   import HoldUp.Factory
   import Wallaby.Query

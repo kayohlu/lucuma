@@ -1,43 +1,7 @@
 defmodule HoldUp.Notifications.Notifier do
-  alias HoldUp.Notifications
   alias HoldUpWeb.Router.Helpers
-  alias HoldUpWeb.Waitlists
-  alias HoldUp.Repo
+  alias HoldUp.Notifications
   alias HoldUp.Notifications.SmsNotification
-
-  import Ecto.Query
-
-  @doc """
-  The lock line below allows us to lock those records so another machine running the same process
-  cannot query for the same rows in the db resulting in the same sms_notfications being processed more than once.
-  The "FOR UPDATE SKIP LOCKED" allows us to "skip" the lock when updating said locked records.
-  """
-  def enqueue_notifications do
-    {:ok, results} =
-      Repo.transaction(fn ->
-        for_delivery_ids =
-          Repo.all(
-            from sms in SmsNotification,
-              where: sms.status == "for_delivery",
-              lock: "FOR UPDATE SKIP LOCKED",
-              select: sms.id
-          )
-
-        {_count, sms_notifications} =
-          Repo.update_all(
-            from(sms in SmsNotification,
-              where: sms.id in ^for_delivery_ids
-            ),
-            [set: [status: "queued_for_delivery"]],
-            # returns all fields
-            returning: true
-          )
-
-        sms_notifications
-      end)
-
-    results
-  end
 
   def send_notification(%SmsNotification{} = sms_notification) do
     send_notification(Mix.env(), sms_notification)

@@ -1,7 +1,12 @@
 defmodule HoldUp.Notifications.NotificationProducer do
   use GenStage
 
+  import Ecto.Query
+
   alias HoldUp.Notifications.Notifier
+  alias HoldUp.Repo
+  alias HoldUpWeb.Waitlists
+  alias HoldUp.Notifications.SmsNotification
 
   @moduledoc """
   See for help: https://www.youtube.com/watch?v=aZuY5-2lwW4
@@ -53,7 +58,41 @@ defmodule HoldUp.Notifications.NotificationProducer do
     {:noreply, events, state}
   end
 
+  # Hack to get around the producer doing a query in the test environment when
+  # the test process is finished and the repo process.
   defp events, do: events(Mix.env)
   defp events(:test), do: []
-  defp events(_), do: Notifier.enqueue_notifications()
+  defp events(_), do: enqueue_notifications
+
+  @doc """
+  The lock line below allows us to lock those records so another machine running the same process
+  cannot query for the same rows in the db resulting in the same sms_notfications being processed more than once.
+  The "FOR UPDATE SKIP LOCKED" allows us to "skip" the lock when updating said locked records.
+  """
+  def enqueue_notifications do
+    {:ok, results} =
+      Repo.transaction(fn ->
+        for_delivery_ids =
+          Repo.all(
+            from sms in SmsNotification,
+              where: sms.status == "for_delivery",
+              lock: "FOR UPDATE SKIP LOCKED",
+              select: sms.id
+          )
+
+        {_count, sms_notifications} =
+          Repo.update_all(
+            from(sms in SmsNotification,
+              where: sms.id in ^for_delivery_ids
+            ),
+            [set: [status: "queued_for_delivery"]],
+            # returns all fields
+            returning: true
+          )
+
+        sms_notifications
+      end)
+
+    results
+  end
 end
