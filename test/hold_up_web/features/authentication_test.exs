@@ -9,6 +9,7 @@ defmodule HoldUpWeb.Features.AuthenticationTest do
       company = insert(:company)
       business = insert(:business, company: company)
       user = insert(:user, company: company, email: "a@a.com")
+      user_business = insert(:user_business, user_id: user.id, business_id: business.id)
 
       page = session
       |> visit("/")
@@ -36,6 +37,7 @@ defmodule HoldUpWeb.Features.AuthenticationTest do
       company = insert(:company)
       business = insert(:business, company: company)
       user = insert(:user, company: company, email: "a@a.com")
+      user_business = insert(:user_business, user_id: user.id, business_id: business.id)
 
       session
       |> visit("/")

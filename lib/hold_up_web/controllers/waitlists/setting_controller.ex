@@ -16,14 +16,13 @@ defmodule HoldUpWeb.Waitlists.SettingController do
   end
 
   def update(conn, %{"confirmation_sms_setting" => sms_setting_params}) do
-    waitlist = Waitlists.get_waitlist!(1)
-    sms_setting = Repo.get_by!(ConfirmationSmsSetting, waitlist_id: waitlist.id)
+    sms_setting = Repo.get!(ConfirmationSmsSetting, conn.params["id"])
 
     case Waitlists.update_confirmation_sms_setting(sms_setting, sms_setting_params) do
       {:ok, sms_setting} ->
         conn
         |> put_flash(:info, "Settings updated successfully.")
-        |> redirect(to: Routes.waitlists_waitlist_setting_path(conn, :index, waitlist.id))
+        |> redirect(to: Routes.waitlists_waitlist_setting_path(conn, :index, sms_setting.waitlist_id))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "index.html", changeset: changeset, sms_setting: sms_setting)
@@ -31,14 +30,13 @@ defmodule HoldUpWeb.Waitlists.SettingController do
   end
 
   def update(conn, %{"attendance_sms_setting" => sms_setting_params}) do
-    waitlist = Waitlists.get_waitlist!(1)
-    sms_setting = Repo.get_by!(AttendanceSmsSetting, waitlist_id: waitlist.id)
+    sms_setting = Repo.get!(AttendanceSmsSetting, conn.params["id"])
 
     case Waitlists.update_attendance_sms_setting(sms_setting, sms_setting_params) do
       {:ok, sms_setting} ->
         conn
         |> put_flash(:info, "Settings updated successfully.")
-        |> redirect(to: Routes.waitlists_waitlist_setting_path(conn, :index, waitlist.id))
+        |> redirect(to: Routes.waitlists_waitlist_setting_path(conn, :index, sms_setting.waitlist_id))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "index.html", changeset: changeset, sms_setting: sms_setting)

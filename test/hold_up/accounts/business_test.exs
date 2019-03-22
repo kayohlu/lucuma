@@ -28,6 +28,7 @@ defmodule HoldUp.AccountsTests.BusinessTest do
       company = insert(:company)
       user = insert(:user, company: company)
       business = insert(:business, company: company)
+      user_business = insert(:user_business, user_id: user.id, business_id: business.id)
 
       assert Accounts.get_current_business_for_user(user).id == business.id
     end

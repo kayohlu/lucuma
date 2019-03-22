@@ -9,6 +9,7 @@ defmodule HoldUpWeb.Features.WaitlistTest do
       company = insert(:company)
       business = insert(:business, company: company)
       user = insert(:user, company: company)
+      user_business = insert(:user_business, user_id: user.id, business_id: business.id)
       waitlist = insert(:waitlist, business: business)
       insert(:confirmation_sms_setting, waitlist: waitlist)
       insert(:attendance_sms_setting, waitlist: waitlist)
@@ -34,6 +35,7 @@ defmodule HoldUpWeb.Features.WaitlistTest do
       company = insert(:company)
       business = insert(:business, company: company)
       user = insert(:user, company: company)
+      user_business = insert(:user_business, user_id: user.id, business_id: business.id)
       waitlist = insert(:waitlist, business: business)
       insert(:confirmation_sms_setting, waitlist: waitlist)
       insert(:attendance_sms_setting, waitlist: waitlist)
@@ -51,6 +53,8 @@ defmodule HoldUpWeb.Features.WaitlistTest do
       page =
         page
         |> click(link("Waitlist"))
+        |> take_screenshot
+        |> find(link("Settings"), & assert has_text?(&1, "Settings"))
         |> click(link("Settings"))
 
       find(page, css(".nav-link.active", count: 1))
@@ -102,6 +106,43 @@ defmodule HoldUpWeb.Features.WaitlistTest do
 
       assert_text(page, "updated attendance message content")
       assert_text(page, "Settings updated successfully.")
+    end
+  end
+
+  describe "trying to view a waitlist that does not belong to the user's business but another business for the same company" do
+    test "it 404s", %{session: session}  do
+      company = insert(:company)
+      business = insert(:business, company: company)
+      user = insert(:user, company: company)
+      user_business = insert(:user_business, user_id: user.id, business_id: business.id)
+      waitlist = insert(:waitlist, business: business)
+      insert(:confirmation_sms_setting, waitlist: waitlist)
+      insert(:attendance_sms_setting, waitlist: waitlist)
+
+      other_waitlist = insert(:waitlist, business: insert(:business, company: company))
+
+      page =
+        session
+        |> visit("/")
+        |> click(link("Sign In"))
+        |> fill_in(text_field("Email"), with: user.email)
+        |> fill_in(text_field("Password"), with: "123123123")
+        |> click(button("Sign In"))
+
+      assert_text(page, "Dashboard")
+
+      page =
+        page
+        |> click(link("Waitlist"))
+
+
+      take_screenshot(page)
+      page
+      |> assert_text("Settings")
+
+      page
+      |> visit("/waitlists/#{other_waitlist.id}")
+      |> assert_text("Not Found")
     end
   end
 end

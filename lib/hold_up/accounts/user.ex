@@ -12,6 +12,7 @@ defmodule HoldUp.Accounts.User do
     field :reset_password_token, :string
 
     belongs_to :company, HoldUp.Accounts.Company
+    many_to_many :businesses, HoldUp.Accounts.Business, join_through: HoldUp.Accounts.UserBusiness
 
     timestamps()
   end

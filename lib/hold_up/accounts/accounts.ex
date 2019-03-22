@@ -9,6 +9,7 @@ defmodule HoldUp.Accounts do
   alias HoldUp.Accounts.User
   alias HoldUp.Accounts.Company
   alias HoldUp.Accounts.Business
+  alias HoldUp.Accounts.UserBusiness
 
   def list_users do
     Repo.all(User)
@@ -85,16 +86,20 @@ defmodule HoldUp.Accounts do
         where: user.email == ^email,
         preload: [company: {company, businesses: businesses}]
 
-    Logger.debug "calling Repo.one"
     Repo.one(query)
   end
 
   def get_current_business_for_user(user) do
     query =
-      from businesses in HoldUp.Accounts.Business,
-        where: businesses.company_id == ^user.company_id
+      from users_businesses in HoldUp.Accounts.UserBusiness,
+        join: businesses in HoldUp.Accounts.Business,
+        where: businesses.id == users_businesses.business_id,
+        where: users_businesses.user_id == ^user.id,
+        order_by: users_businesses.id,
+        limit: 1,
+        preload: [business: businesses]
 
-    Repo.one(query)
+    Repo.one(query).business
   end
 
   def create_company(attrs \\ %{}) do
@@ -106,6 +111,12 @@ defmodule HoldUp.Accounts do
   def create_business(attrs \\ %{}) do
     %Business{}
     |> Business.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def create_user_business(attrs \\ %{}) do
+    %UserBusiness{}
+    |> UserBusiness.changeset(attrs)
     |> Repo.insert()
   end
 end

@@ -32,6 +32,7 @@ defmodule HoldUp.Registrations do
         {:ok, company} = create_company(registration_form)
         {:ok, user} = create_user(registration_form, company)
         {:ok, business} = create_business(company)
+        {:ok, users_business} = create_user_business(user, business)
         {:ok, waitlist} = create_waitlist(business)
         user
       end)
@@ -73,6 +74,13 @@ defmodule HoldUp.Registrations do
     Accounts.create_business(%{
       name: "Unnamed Business",
       company_id: parent_company.id
+    })
+  end
+
+  defp create_user_business(user, business) do
+    Accounts.create_user_business(%{
+      user_id: user.id,
+      business_id: business.id
     })
   end
 

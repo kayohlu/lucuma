@@ -32,6 +32,11 @@ defmodule HoldUp.Factory do
     |> merge_attributes(attrs)
   end
 
+  def user_business_factory(attrs) do
+    %HoldUp.Accounts.UserBusiness{}
+    |> merge_attributes(attrs)
+  end
+
   def waitlist_factory(attrs) do
     %HoldUp.Waitlists.Waitlist{
       name: sequence(:waitlist_name, fn n -> "Waitlist #{n}" end)

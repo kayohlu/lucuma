@@ -14,11 +14,7 @@ defmodule HoldUp.Waitlists do
   alias HoldUpWeb.Router.Helpers
 
   def get_business_waitlist(business_id) do
-    stand_bys_query =
-      from s in StandBy,
-        where: is_nil(s.attended_at) and is_nil(s.no_show_at) and is_nil(s.cancelled_at)
-
-    Repo.one(from w in Waitlist, where: w.business_id == ^business_id, preload: [stand_bys: ^stand_bys_query])
+    Repo.one(from w in Waitlist, where: w.business_id == ^business_id)
   end
 
   def get_waitlist!(id) do
@@ -26,9 +22,9 @@ defmodule HoldUp.Waitlists do
 
     stand_bys_query =
       from s in StandBy,
-        where: is_nil(s.attended_at) and is_nil(s.no_show_at) and is_nil(s.cancelled_at)
+        where: is_nil(s.attended_at) and is_nil(s.no_show_at) and is_nil(s.cancelled_at) and s.waitlist_id == ^id
 
-    Repo.one(from w in Waitlist, preload: [stand_bys: ^stand_bys_query])
+    Repo.one(from w in Waitlist, where: w.id == ^id, preload: [stand_bys: ^stand_bys_query])
   end
 
   def create_waitlist(attrs \\ %{}) do
@@ -214,8 +210,9 @@ defmodule HoldUp.Waitlists do
     |> Enum.map(fn {k, v} -> %{name: k, y: length(v)} end)
   end
 
-  def notify_stand_by(waitlist_id, stand_by_id, notification_module \\ Notifications) do
-    attendance_sms_setting = attendance_sms_setting_for_waitlist(waitlist_id)
+  def notify_stand_by(stand_by_id, notification_module \\ Notifications) do
+    stand_by = get_stand_by!(stand_by_id)
+    attendance_sms_setting = attendance_sms_setting_for_waitlist(stand_by.waitlist_id)
 
     if attendance_sms_setting.enabled do
       stand_by = get_stand_by!(stand_by_id)

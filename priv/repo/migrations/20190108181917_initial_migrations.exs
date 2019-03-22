@@ -48,6 +48,14 @@ defmodule HoldUp.Repo.Migrations.CreateUsers do
     end
     create unique_index(:users, [:email])
 
+    create table(:users_businesses) do
+      add :user_id, references(:users, on_delete: :nothing)
+      add :business_id, references(:businesses, on_delete: :nothing)
+
+      timestamps()
+    end
+    create unique_index(:users_businesses, [:user_id, :business_id])
+
 
     create table(:waitlists) do
       add :business_id, references(:businesses, on_delete: :nothing)

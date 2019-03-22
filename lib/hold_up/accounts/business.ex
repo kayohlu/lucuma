@@ -6,6 +6,7 @@ defmodule HoldUp.Accounts.Business do
     field :name, :string
 
     belongs_to :company, HoldUp.Accounts.Company
+    many_to_many :users, HoldUp.Accounts.User, join_through: HoldUp.Accounts.UserBusiness
 
     timestamps()
   end

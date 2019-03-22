@@ -92,7 +92,7 @@ defmodule HoldUp.WaitlistsTests.StandByTest do
       stand_by = insert(:stand_by, waitlist_id: waitlist.id)
 
       assert {:ok, %StandBy{} = updated_stand_by} =
-               Waitlists.notify_stand_by(waitlist.id, stand_by.id, NotificationsMock)
+               Waitlists.notify_stand_by(stand_by.id, NotificationsMock)
 
       assert !is_nil(updated_stand_by.notified_at)
       assert updated_stand_by.id == stand_by.id
