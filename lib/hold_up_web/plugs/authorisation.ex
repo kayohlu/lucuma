@@ -27,5 +27,6 @@ defmodule HoldUpWeb.Plugs.Authorisation do
     |> put_view(HoldUpWeb.ErrorView)
     |> put_layout({HoldUpWeb.LayoutView, :app})
     |> render(:"404")
+    |> halt()
   end
 end

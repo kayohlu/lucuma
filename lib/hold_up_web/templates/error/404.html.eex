@@ -1,0 +1,7 @@
+<div class="d-flex flex-column justify-content-center align-items-center">
+<h1 class="display-1 mt-4">404</h1>
+<h1 class="display-1 mt-4">¯\_(ツ)_/¯</h1>
+<a href="/" class="btn btn-primary mt-4">
+  Back Home
+</a>
+</div>
