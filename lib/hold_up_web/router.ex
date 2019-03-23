@@ -5,6 +5,7 @@ defmodule HoldUpWeb.Router do
   import HoldUpWeb.Plugs.Authentication
   import HoldUpWeb.Plugs.CurrentCompany
   import HoldUpWeb.Plugs.CurrentBusiness
+  import HoldUpWeb.Plugs.Authorisation
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -29,6 +30,7 @@ defmodule HoldUpWeb.Router do
     plug :authenticated?
     plug :assign_current_company
     plug :assign_current_business
+    plug :authorise
 
     plug :put_layout, {HoldUpWeb.LayoutView, :logged_in}
   end
