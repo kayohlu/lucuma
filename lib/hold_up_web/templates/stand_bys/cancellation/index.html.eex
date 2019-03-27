@@ -1,1 +1,1 @@
-Cancellation successful. Sorry to see you go.
+<%= gettext("Cancellation successful. Sorry to see you go.") %>

@@ -1,0 +1,120 @@
+## `msgid`s in this file come from POT (.pot) files.
+##
+## Do not add, change, or remove `msgid`s manually here as
+## they're tied to the ones in the corresponding POT file
+## (with the same domain).
+##
+## Use `mix gettext.extract --merge` or `mix gettext.merge`
+## to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: en\n"
+"Plural-Forms: nplurals=2\n"
+
+#, elixir-format
+#: lib/hold_up_web/templates/waitlists/setting/index.html.eex:33
+msgid "Attendance SMS Notification"
+msgstr ""
+
+#, elixir-format
+#: lib/hold_up_web/templates/error/404.html.eex:5
+msgid "Back Home"
+msgstr ""
+
+#, elixir-format
+#: lib/hold_up_web/templates/stand_bys/cancellation/index.html.eex:1
+msgid "Cancellation successful. Sorry to see you go."
+msgstr ""
+
+#, elixir-format
+#: lib/hold_up_web/templates/waitlists/setting/index.html.eex:4
+msgid "Confirmation SMS Notification"
+msgstr ""
+
+#, elixir-format
+#: lib/hold_up_web/templates/dashboard/index.html.eex:1
+msgid "Dashboard"
+msgstr ""
+
+#, elixir-format
+#: lib/hold_up_web/templates/layout/waitlist.html.eex:12
+msgid "Details"
+msgstr ""
+
+#, elixir-format
+#: lib/hold_up_web/templates/session/new.html.eex:6
+#: lib/hold_up_web/templates/session/new.html.eex:11
+msgid "Email"
+msgstr ""
+
+#, elixir-format
+#: lib/hold_up_web/templates/layout/navigation.html.eex:22
+msgid "Log out"
+msgstr ""
+
+#, elixir-format
+#: lib/hold_up_web/templates/waitlists/setting/index.html.eex:11
+#: lib/hold_up_web/templates/waitlists/setting/index.html.eex:40
+msgid "Off"
+msgstr ""
+
+#, elixir-format
+#: lib/hold_up_web/templates/waitlists/setting/index.html.eex:11
+#: lib/hold_up_web/templates/waitlists/setting/index.html.eex:40
+msgid "On"
+msgstr ""
+
+#, elixir-format
+#: lib/hold_up_web/templates/session/new.html.eex:21
+#: lib/hold_up_web/templates/session/new.html.eex:26
+msgid "Password"
+msgstr ""
+
+#, elixir-format
+#: lib/hold_up_web/templates/waitlists/setting/index.html.eex:20
+#: lib/hold_up_web/templates/waitlists/setting/index.html.eex:49
+msgid "Please make sure your tags are correctly entered. Every tag should be surrounded by double square braces. For example: "
+msgstr ""
+
+#, elixir-format
+#: lib/hold_up_web/templates/page/index.html.eex:1
+#: lib/hold_up_web/templates/registration/form.html.eex:9
+msgid "Register"
+msgstr ""
+
+#, elixir-format
+#: lib/hold_up_web/templates/registration/new.html.eex:1
+msgid "Register now"
+msgstr ""
+
+#, elixir-format
+#: lib/hold_up_web/templates/layout/waitlist.html.eex:18
+msgid "Settings"
+msgstr ""
+
+#, elixir-format
+#: lib/hold_up_web/templates/page/index.html.eex:2
+msgid "Sign In"
+msgstr ""
+
+#, elixir-format
+#: lib/hold_up_web/templates/waitlists/setting/index.html.eex:5
+#: lib/hold_up_web/templates/waitlists/setting/index.html.eex:34
+msgid "This is the SMS your customers receive when they are added to the waitlist."
+msgstr ""
+
+#, elixir-format
+#: lib/hold_up_web/templates/waitlists/setting/index.html.eex:22
+msgid "Update SMS message"
+msgstr ""
+
+#, elixir-format
+#: lib/hold_up_web/templates/layout/navigation.html.eex:14
+msgid "Waitlist"
+msgstr ""
+
+#, elixir-format
+#: lib/hold_up_web/templates/waitlists/setting/index.html.eex:20
+#: lib/hold_up_web/templates/waitlists/setting/index.html.eex:49
+msgid "and"
+msgstr ""
