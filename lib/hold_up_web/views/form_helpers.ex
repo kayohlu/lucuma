@@ -1,6 +1,8 @@
 defmodule HoldUpWeb.FormHelpers do
   @moduledoc """
   Conveniences for working with forms.
+
+  http://blog.plataformatec.com.br/2016/09/dynamic-forms-with-phoenix/
   """
 
   import Phoenix.HTML.Form
@@ -12,12 +14,19 @@ defmodule HoldUpWeb.FormHelpers do
   """
 
   def form_group(form, field, opts \\ []) do
-    content_tag(:div, class: "form-group") do
-      [
-        label(form, field, class: "control-label"),
-        text_input(form, field, class: input_field_classes(form, field)),
-        error_tag(form, field)
-      ]
+    type = opts[:using] || Phoenix.HTML.Form.input_type(form, field)
+
+    wrapper_opts = Keyword.merge([class: "form-group"], opts[:wrapper_opts] || [])
+    label_opts = Keyword.merge([class: "control-label"], opts[:label_opts] || [])
+    input_opts = Keyword.merge([class: input_field_classes(form, field)], opts[:input_opts] || [])
+
+    content_tag(:div, wrapper_opts) do
+      label = label(form, field, label_opts)
+      # apply is like the equivalent of send in ruby.
+      input = apply(Phoenix.HTML.Form, type, [form, field, input_opts])
+      error = error_tag(form, field)
+
+      [label, input, error]
     end
   end
 
@@ -32,44 +41,13 @@ defmodule HoldUpWeb.FormHelpers do
     end
   end
 
-  def form_group_custom(form, field, opts \\ [], do: block) do
-    content_tag(:div, class: "form-group") do
-      [
-        label(form, field, class: "control-label"),
-        block,
-        error_tag(form, field)
-      ]
-    end
-  end
-
-  def password_form_group(form, field, opts \\ []) do
-    content_tag(:div, class: "form-group") do
-      [
-        label(form, field, class: "control-label"),
-        password_input(form, field, class: input_field_classes(form, field)),
-        error_tag(form, field)
-      ]
-    end
-  end
-
-  def number_form_group(form, field, opts \\ []) do
-    content_tag(:div, class: "form-group") do
-      [
-        label(form, field, class: "control-label"),
-        number_input(form, field, class: input_field_classes(form, field)),
-        error_tag(form, field)
-      ]
-    end
-  end
-
   def phone_form_group(form, field, opts \\ []) do
-    content_tag(:div, class: "form-group") do
-      [
-        label(form, field, class: "control-label", for: "input-phone"),
-        text_input(form, field, class: input_field_classes(form, field), id: "input-phone"),
-        error_tag(form, field)
-      ]
-    end
+    extra_opts = [
+      label_opts: [for: "input-phone"],
+      input_opts: [id: "input-phone"]
+    ]
+
+    form_group(form, field, extra_opts)
   end
 
   def input_field_classes(form, field) do

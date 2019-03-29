@@ -5,9 +5,9 @@
     </div>
   <% end %>
 
-  <%= form_group(f, :name, []) %>
+  <%= form_group(f, :name) %>
   <%= phone_form_group(f, :contact_phone_number) %>
-  <%= number_form_group(f, :party_size) %>
+  <%= form_group(f, :party_size) %>
 
   <%= input_group(f, :estimated_wait_time) do %>
     <%= number_input(f, :estimated_wait_time, class: input_field_classes(f, :estimated_wait_time)) %>
@@ -17,9 +17,7 @@
     <%= error_tag(f, :estimated_wait_time) %>
   <% end %>
 
-  <%= form_group_custom(f, :notes) do %>
-    <%= textarea(f, :notes, class: input_field_classes(f, :notes)) %>
-  <% end %>
+  <%= form_group(f, :notes, using: :textarea) %>
 
   <div>
     <%= submit "Add", class: "btn btn-primary btn-block" %>

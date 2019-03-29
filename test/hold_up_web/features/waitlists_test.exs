@@ -142,7 +142,7 @@ defmodule HoldUpWeb.Features.WaitlistTest do
 
       page
       |> visit("/waitlists/#{other_waitlist.id}")
-      |> assert_text("Not Found")
+      |> assert_text("404")
     end
   end
 end

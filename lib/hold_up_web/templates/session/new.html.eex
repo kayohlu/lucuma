@@ -1,38 +1,5 @@
-<br \>
-
 <%= form_for @conn, Routes.session_path(@conn, :create), [as: :session], fn f  -> %>
-<div class="form-row justify-content-center">
-  <div class="form-group col-md-6">
-    <%= label f, gettext("Email"), class: 'col-form-label', for: "inputEmail" %>
-    <%= email_input f, :email, id: "inputEmail", placeholder: "Email", class: "form-control #{ if Enum.any?(Keyword.get_values(f.errors, :email)), do: 'is-invalid', else: nil }" %>
-    <%= if Enum.any?(Keyword.get_values(f.errors, :email)) do %>
-      <div class="invalid-feedback">
-        <% {msg, _} = hd(Keyword.get_values(f.errors, :email)) %>
-        <%= gettext("Email") %> <%= msg %>.
-      </div>
-    <% end %>
-  </div>
-</div>
-
-<div class="form-row justify-content-center">
-  <div class="form-group col-md-6">
-    <%= error_tag f, :password %>
-
-    <%= label f, gettext("Password"), class: 'col-form-label', for: "inputPassword" %>
-    <%= password_input f, :password, id: "inputPassword", placeholder: "Password", class: "form-control #{ if Enum.any?(Keyword.get_values(f.errors, :password)), do: 'is-invalid', else: nil }" %>
-    <%= if Enum.any?(Keyword.get_values(f.errors, :password)) do %>
-      <div class="invalid-feedback">
-        <% {msg, _} = hd(Keyword.get_values(f.errors, :password)) %>
-        <%= gettext("Password") %> <%= msg %>.
-      </div>
-    <% end %>
-  </div>
-</div>
-
-<div class="form-row justify-content-center">
-  <div class="col-md-6">
-    <%= submit "Sign In", class: "btn btn-primary btn-block" %>
-  </div>
-</div>
-
+  <%= form_group(f, :email, using: :text_input) %>
+  <%= form_group(f, :password) %>
+  <%= submit "Sign In", class: "btn btn-primary btn-block" %>
 <% end %>

@@ -1,9 +1,9 @@
 <%= form_for @changeset, @action, [as: :registration], fn f -> %>
-  <%= form_group(f, :email) %>
+  <%= form_group(f, :email, using: :text_input) %>
   <%= form_group(f, :full_name) %>
   <%= form_group(f, :company_name) %>
-  <%= password_form_group(f, :password) %>
-  <%= password_form_group(f, :password_confirmation) %>
+  <%= form_group(f, :password) %>
+  <%= form_group(f, :password_confirmation) %>
 
   <div>
     <%= submit gettext("Register"), class: "btn btn-primary" %>
