@@ -6,12 +6,6 @@
   <%= form_group(f, :password_confirmation) %>
 
   <div>
-    <%= submit gettext("Register"), class: "btn btn-primary" %>
+    <%= submit gettext("Sign Up"), class: "btn btn-primary btn-block mt-4" %>
   </div>
 <% end %>
-
-<div class="form-row justify-content-center">
-  <div class="form-group col-md-6">
-
-  </div>
-</div>

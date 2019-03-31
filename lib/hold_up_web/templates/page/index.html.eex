@@ -1,2 +1,2 @@
- <%= link gettext("Register"), to: Routes.registration_path(@conn, :new) %>
+ <%= link gettext("Sign Up"), to: Routes.registration_path(@conn, :new) %>
   <%= link gettext("Sign In"), to: Routes.session_path(@conn, :new) %>

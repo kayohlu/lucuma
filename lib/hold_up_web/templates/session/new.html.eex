@@ -1,5 +1,40 @@
-<%= form_for @conn, Routes.session_path(@conn, :create), [as: :session], fn f  -> %>
-  <%= form_group(f, :email, using: :text_input) %>
-  <%= form_group(f, :password) %>
-  <%= submit "Sign In", class: "btn btn-primary btn-block" %>
-<% end %>
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+<head>
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HoldUp</title>
+  <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
+</head>
+<body class="h-100" style="background-color: #f4f2f0;">
+  <div class="d-flex flex-column justify-content-center align-items-center h-100">
+    <div class="card cardForm">
+      <div class="card-body">
+        <h5 class="card-title text-center"><%= gettext("Welcome back!") %></h5>
+        <div class="mt-3">
+          <%= form_for @conn, Routes.session_path(@conn, :create), [as: :session], fn f  -> %>
+            <%= form_group(f, :email, using: :text_input) %>
+            <%= form_group(f, :password) %>
+
+            <div class="d-flex align-items-center">
+              <%= checkbox(f, :remember_me) %>
+              <label class="form-check-label pl-2" for="session_remember_me">
+                <%= gettext("Remember me") %>
+              </label>
+              <%= link gettext("Forgot your password?"), to: "#", class: "d-flex ml-auto" %>
+            </div>
+
+            <%= submit "Sign In", class: "btn btn-primary btn-block mt-4" %>
+          <% end %>
+        </div>
+      </div>
+      <div class="card-footer text-muted text-center">
+        <span><%= gettext("Don't have an account?") %></span>
+        <%= link gettext("Sign Up"), to: Routes.registration_path(@conn, :new), class: "text-underline" %>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+</body>
+</html>

@@ -4,6 +4,8 @@ defmodule HoldUpWeb.Waitlists.StandByController do
   alias HoldUp.Waitlists
   alias HoldUp.Waitlists.StandBy
 
+  plug :put_layout, false when action in [:new]
+
   def new(conn, _params) do
     waitlist = Waitlists.get_waitlist!(conn.params["waitlist_id"])
     changeset = Waitlists.change_stand_by(%StandBy{})
