@@ -52,7 +52,8 @@ config :hold_up, HoldUpWeb.Endpoint,
       ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
       ~r{priv/gettext/.*(po)$},
       ~r{lib/hold_up_web/views/.*(ex)$},
-      ~r{lib/hold_up_web/templates/.*(eex)$}
+      ~r{lib/hold_up_web/templates/.*(eex)$},
+      ~r{lib/my_app_web/live/.*(ex)$}
     ]
   ]
 

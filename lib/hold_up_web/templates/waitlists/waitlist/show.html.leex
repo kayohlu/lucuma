@@ -69,7 +69,7 @@
 </div>
 
 <div class="modal fade" id="addStandByModal" tabindex="-1" role="dialog" aria-labelledby="addStandByModalLabel" aria-hidden="true">
-  <%= form_for @changeset, Routes.waitlists_waitlist_stand_by_path(@conn, :create, @waitlist.id), fn f -> %>
+  <%= form_for @changeset, "#", [phx_change: :validate, phx_submit: :save], fn f -> %>
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">

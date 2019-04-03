@@ -33,16 +33,16 @@ defmodule HoldUp.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.4.0"},
-      {:phoenix_pubsub, "~> 1.1"},
+      {:phoenix, "~> 1.4.3"},
+      {:phoenix_pubsub, "~> 1.1.2"},
       {:phoenix_ecto, "~> 4.0"},
       {:ecto_sql, "~> 3.0"},
       {:postgrex, ">= 0.0.0"},
-      {:phoenix_html, "~> 2.11"},
+      {:phoenix_html, "~> 2.13.2"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"},
+      {:plug_cowboy, "~> 2.0.2"},
       {:dialyxir, "~> 1.0.0-rc.4", only: [:dev], runtime: false},
       {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false},
       {:comeonin, "~> 4.1"},
@@ -53,7 +53,8 @@ defmodule HoldUp.MixProject do
       {:gen_stage, "~> 0.14"},
       {:ex_machina, "~> 2.3"},
       {:wallaby, "~> 0.22.0", [runtime: false, only: [:test, :ci]]},
-      {:canada, "~> 1.0.1"}
+      {:canada, "~> 1.0.1"},
+      {:phoenix_live_view, github: "phoenixframework/phoenix_live_view"}
     ]
   end
 

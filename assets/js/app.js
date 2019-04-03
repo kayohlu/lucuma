@@ -10,15 +10,18 @@ import css from "../css/app.scss"
 // Import dependencies
 //
 import "phoenix_html"
+import LiveSocket from "phoenix_live_view"
+let liveSocket = new LiveSocket("/live")
+liveSocket.connect()
 
 import $ from "jquery"
 window.$ = $;
-
 import 'bootstrap'
-
 import Highcharts from "highcharts"
-
 import * as intlTelInput from 'intl-tel-input';
+
+
+
 
 // Import local files
 //
@@ -26,74 +29,74 @@ import * as intlTelInput from 'intl-tel-input';
 // import socket from "./socket"
 
 $(function() {
-  Highcharts.setOptions({
-      chart: {
-          style: {
-              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";'
-          }
-      }
-  });
+//   Highcharts.setOptions({
+//       chart: {
+//           style: {
+//               fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";'
+//           }
+//       }
+//   });
 
-if ($('#party-size-container').length > 0) {
-Highcharts.chart('party-size-container', {
-    chart: {
-      type: 'column'
-    },
-    title: {
-      text: null
-    },
-    subtitle: {
-      text: null
-    },
-    xAxis: {
-        tickWidth: 0,
-        lineWidth: 0,
-        type: 'category',
-        labels: {
-          useHTML: true,
-          format: "<i class='fas fa-users'></i> {value}",
-        },
-        title: {
-          text: "Party Size Summary",
-          style: {
-            "font-size": "1rem",
-            color: "#6c757d"
-          }
-        }
-    },
-    yAxis: {
-      labels: {
-        enabled: true
-      },
-      gridLineWidth:0,
-      lineWidth: 1,
-        min: 0,
-        title: {
-          text: null
-        },
+// if ($('#party-size-container').length > 0) {
+// Highcharts.chart('party-size-container', {
+//     chart: {
+//       type: 'column'
+//     },
+//     title: {
+//       text: null
+//     },
+//     subtitle: {
+//       text: null
+//     },
+//     xAxis: {
+//         tickWidth: 0,
+//         lineWidth: 0,
+//         type: 'category',
+//         labels: {
+//           useHTML: true,
+//           format: "<i class='fas fa-users'></i> {value}",
+//         },
+//         title: {
+//           text: "Party Size Summary",
+//           style: {
+//             "font-size": "1rem",
+//             color: "#6c757d"
+//           }
+//         }
+//     },
+//     yAxis: {
+//       labels: {
+//         enabled: true
+//       },
+//       gridLineWidth:0,
+//       lineWidth: 1,
+//         min: 0,
+//         title: {
+//           text: null
+//         },
 
-    },
-    legend: {
-      enabled: false
-    },
-    tooltip: {
-      enabled: false,
-    },
-    series: [{
-        data: $('#party-size-container').data('party-size-breakdown'),
-        colorByPoint: true,
-        dataLabels: {
-            enabled: false,
-            rotation: 0,
-            color: '#FFFFFF',
-            align: 'center',
-            format: '{point.y}', // one decimal
-            y: 30, // 10 pixels down from the top
-        }
-    }]
-  });
+//     },
+//     legend: {
+//       enabled: false
+//     },
+//     tooltip: {
+//       enabled: false,
+//     },
+//     series: [{
+//         data: $('#party-size-container').data('party-size-breakdown'),
+//         colorByPoint: true,
+//         dataLabels: {
+//             enabled: false,
+//             rotation: 0,
+//             color: '#FFFFFF',
+//             align: 'center',
+//             format: '{point.y}', // one decimal
+//             y: 30, // 10 pixels down from the top
+//         }
+//     }]
+//   });
 
-}
+// }
 
 
  if (document.querySelector("#input-phone")) {

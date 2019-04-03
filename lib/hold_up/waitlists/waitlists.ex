@@ -200,8 +200,8 @@ defmodule HoldUp.Waitlists do
       %Ecto.Changeset{source: %StandBy{}}
 
   """
-  def change_stand_by(%StandBy{} = stand_by) do
-    StandBy.changeset(stand_by, %{})
+  def change_stand_by(%StandBy{} = stand_by, attrs \\ %{}) do
+    StandBy.changeset(stand_by, attrs)
   end
 
   def party_size_breakdown(waitlist_id) do

@@ -15,7 +15,10 @@ config :hold_up, HoldUpWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "lLy5QMpqK1F/HGZMKhlUuQiYjw55Mj30C3J4v2C4Celns19UMTZjKi2xUyBYLVv8",
   render_errors: [view: HoldUpWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: HoldUp.PubSub, adapter: Phoenix.PubSub.PG2]
+  pubsub: [name: HoldUp.PubSub, adapter: Phoenix.PubSub.PG2],
+  live_view: [
+     signing_salt: "imxM3waFXGZE2VjX6SsfoTsv/6EbYmC3"
+   ]
 
 # Configures Elixir's Logger
 config :logger, :console,

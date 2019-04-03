@@ -1,9 +1,11 @@
 defmodule HoldUpWeb.Waitlists.WaitlistController do
   use HoldUpWeb, :controller
 
-  plug :put_layout, :waitlist
-
   alias HoldUp.Waitlists
+  alias HoldUp.Waitlists.StandBy
+  alias Phoenix.LiveView
+
+  plug :put_layout, :waitlist
 
   def index(conn, _params) do
     waitlist = Waitlists.get_business_waitlist(conn.assigns.current_business.id)
@@ -11,10 +13,18 @@ defmodule HoldUpWeb.Waitlists.WaitlistController do
   end
 
   def show(conn, %{"id" => id}) do
-    waitlist = Waitlists.get_waitlist!(id)
-    attendance_sms_setting = Waitlists.attendance_sms_setting_for_waitlist(waitlist.id)
-    party_breakdown = Waitlists.party_size_breakdown(waitlist.id)
-    average_wait_time = Waitlists.calculate_average_wait_time(waitlist.id)
-    render(conn, "show.html", waitlist: waitlist, party_breakdown: party_breakdown, average_wait_time: average_wait_time, attendance_sms_setting: attendance_sms_setting)
+
+    # Since this view is rendered inside a nested layout that makes use
+    # of something in the assigns this is a little hack to stop liveview complaining.
+    conn = assign(conn, :waitlist, Waitlists.get_waitlist!(id))
+
+    LiveView.Controller.live_render(
+      conn,
+      HoldUpWeb.Live.Waitlists.WaitlistView,
+      session: %{
+        current_user_id: conn.assigns.current_user.id,
+        waitlist_id: id
+      }
+    )
   end
 end
