@@ -5,7 +5,7 @@ defmodule HoldUpWeb.Live.Waitlists.WaitlistView do
   alias HoldUp.Waitlists.StandBy
 
   def render(assigns) do
-    HoldUpWeb.Waitlists.WaitlistView.render("show.html.leex", assigns)
+    HoldUpWeb.Waitlists.WaitlistView.render("show.html", assigns)
   end
 
   def mount(session, socket) do
@@ -20,7 +20,8 @@ defmodule HoldUpWeb.Live.Waitlists.WaitlistView do
       attendance_sms_setting: attendance_sms_setting,
       party_breakdown: party_breakdown,
       average_wait_time: average_wait_time,
-      changeset: changeset
+      changeset: changeset,
+      show_modal: false
     ]
 
     {:ok, assign(socket, assigns)}
@@ -28,10 +29,19 @@ defmodule HoldUpWeb.Live.Waitlists.WaitlistView do
 
   def handle_event("validate", %{ "stand_by" => stand_by_params}, socket) do
     changeset = Waitlists.change_stand_by(%StandBy{}, Map.put(stand_by_params, "waitlist_id", socket.assigns.waitlist.id))
-                # |> Map.put(:action, :insert)
+                |> Map.put(:action, :insert)
 
     IO.inspect changeset
 
-    {:noreply, assign(socket, changeset: changeset)}
+    assigns = [
+      changeset: changeset,
+      show_modal: true
+    ]
+
+    socket = assign(socket, assigns)
+
+    IO.inspect socket
+
+    {:noreply, socket}
   end
 end

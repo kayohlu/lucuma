@@ -68,7 +68,7 @@
   </div>
 </div>
 
-<div class="modal fade" id="addStandByModal" tabindex="-1" role="dialog" aria-labelledby="addStandByModalLabel" aria-hidden="true">
+<div class='modal fade <%= if @show_modal, do: "show", else: nil %>' id="addStandByModal" tabindex="-1" role="dialog" aria-labelledby="addStandByModalLabel" aria-hidden="true" style="display: <%= if @show_modal, do: "block", else: "none" %>;">
   <%= form_for @changeset, "#", [phx_change: :validate, phx_submit: :save], fn f -> %>
     <div class="modal-dialog" role="document">
       <div class="modal-content">

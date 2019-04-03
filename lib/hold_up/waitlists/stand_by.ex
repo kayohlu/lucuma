@@ -49,11 +49,14 @@ defmodule HoldUp.Waitlists.StandBy do
 
   def validate_phone_number(changeset, field, options \\ []) do
     validate_change(changeset, field, fn _, phone_number ->
-      {:ok, number} = ExPhoneNumber.parse(phone_number, "")
-
-      case ExPhoneNumber.is_valid_number?(number) do
-        true -> []
-        false -> [{field, options[:message] || "invalid phone number."}]
+      case ExPhoneNumber.parse(phone_number, "") do
+        {:error, reason} ->
+             [{field, options[:message] || "invalid phone number."}]
+        {:ok, number} ->
+          case ExPhoneNumber.is_valid_number?(number) do
+            true -> []
+            false -> [{field, options[:message] || "invalid phone number."}]
+          end
       end
     end)
   end
