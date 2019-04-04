@@ -123,16 +123,6 @@ actualSocket.onMessage(function(message) {
  }
 })
 
-// $(document).ready(function(){
-//   console.log("ready")
-//   console.log($('div[data-phx-view="HoldUpWeb.Live.Waitlists.WaitlistView"]'))
-//   $('div[data-phx-view="HoldUpWeb.Live.Waitlists.WaitlistView"]').length
-//   $(document).on( "change", 'div[data-phx-view="HoldUpWeb.Live.Waitlists.WaitlistView"]', function(e) {
-//     console.log(e)
-//     console.log(e.target)
-//   });
-// });
-
 console.log(actualSocket.isConnected())
 liveSocket.connect()
 console.log(actualSocket.isConnected())
