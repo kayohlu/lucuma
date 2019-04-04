@@ -31,17 +31,64 @@ defmodule HoldUpWeb.Live.Waitlists.WaitlistView do
     changeset = Waitlists.change_stand_by(%StandBy{}, Map.put(stand_by_params, "waitlist_id", socket.assigns.waitlist.id))
                 |> Map.put(:action, :insert)
 
-    IO.inspect changeset
+    {:noreply, assign(socket, changeset: changeset, show_modal: true)}
+  end
 
+  def handle_event("save", %{ "stand_by" => stand_by_params}, socket) do
+    case Waitlists.create_stand_by(Map.put(stand_by_params, "waitlist_id", socket.assigns.waitlist.id)) do
+      {:ok, stand_by} ->
+        socket = put_flash(socket, :info, "Stand by created successfully.")
+        # |> redirect(to: Routes.waitlists_waitlist_path(conn, :show, waitlist))
+        waitlist = Waitlists.get_waitlist!(socket.assigns.waitlist.id)
+        assigns = [
+          waitlist: waitlist,
+          changeset: Waitlists.change_stand_by(%StandBy{}), # empty changeset so the form is blank.
+          party_breakdown: Waitlists.party_size_breakdown(waitlist.id),
+          average_wait_time: Waitlists.calculate_average_wait_time(waitlist.id),
+          show_modal: false
+        ]
+
+        socket = assign(socket, assigns)
+
+        {:noreply, socket}
+      {:error, %Ecto.Changeset{} = changeset} ->
+        {:noreply, assign(socket, changeset: changeset, show_modal: true)}
+    end
+  end
+
+  def handle_event("notify_stand_by", stand_by_id, socket) do
+    Waitlists.notify_stand_by(stand_by_id)
+
+    waitlist = Waitlists.get_waitlist!(socket.assigns.waitlist.id)
     assigns = [
-      changeset: changeset,
-      show_modal: true
+      waitlist: waitlist,
+      average_wait_time: Waitlists.calculate_average_wait_time(waitlist.id)
     ]
 
-    socket = assign(socket, assigns)
+    {:noreply, assign(socket, assigns)}
+  end
 
-    IO.inspect socket
+  def handle_event("mark_as_attended", stand_by_id, socket) do
+    Waitlists.mark_as_attended(stand_by_id)
 
-    {:noreply, socket}
+    waitlist = Waitlists.get_waitlist!(socket.assigns.waitlist.id)
+    assigns = [
+      waitlist: waitlist,
+      average_wait_time: Waitlists.calculate_average_wait_time(waitlist.id)
+    ]
+
+    {:noreply, assign(socket, assigns)}
+  end
+
+  def handle_event("mark_as_no_show", stand_by_id, socket) do
+    Waitlists.mark_as_no_show(stand_by_id)
+
+    waitlist = Waitlists.get_waitlist!(socket.assigns.waitlist.id)
+    assigns = [
+      waitlist: waitlist,
+      average_wait_time: Waitlists.calculate_average_wait_time(waitlist.id)
+    ]
+
+    {:noreply, assign(socket, assigns)}
   end
 end

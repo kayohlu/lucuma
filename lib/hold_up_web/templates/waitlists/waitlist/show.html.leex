@@ -44,18 +44,18 @@
           <div class="d-flex flex-fill align-items-center justify-content-end">
             <%= if @attendance_sms_setting.enabled do %>
               <%= if is_nil(stand_by.notified_at) do %>
-                <%= link "Notify", to: Routes.stand_bys_notification_path(@conn, :create, stand_by_id: stand_by.id), method: :post, class: "ml-1 btn btn-warning" %>
+                <%= link "Notify", to: '#', phx_click: "notify_stand_by", phx_value: stand_by.id, class: "ml-1 btn btn-warning" %>
               <% else %>
-                <%= link "Notify Again", to: Routes.stand_bys_notification_path(@conn, :create, stand_by_id: stand_by.id), method: :post, class: "ml-1 btn btn-warning" %>
+                <%= link "Notify Again", to: '#', phx_click: "notify_stand_by", phx_value: stand_by.id,  class: "ml-1 btn btn-warning" %>
               <% end %>
             <% end %>
             <%= if is_nil(stand_by.attended_at) do %>
-              <%= link "Arrive", to: Routes.stand_bys_attendance_path(@conn, :create, stand_by_id: stand_by.id), method: :post, class: "ml-1 btn btn-success" %>
+              <%= link "Arrived", to: '#', phx_click: "mark_as_attended", phx_value: stand_by.id,  class: "ml-1 btn btn-success" %>
             <% else %>
               <button type="button" class="ml-1 btn btn-success disabled">Arrived</button>
             <% end %>
             <%= if is_nil(stand_by.no_show_at) do %>
-              <%= link "No Show", to: Routes.stand_bys_no_show_path(@conn, :create, stand_by_id: stand_by.id), method: :post, class: "ml-1 btn btn-danger" %>
+              <%= link "No Show", to: '#', phx_click: "mark_as_no_show", phx_value: stand_by.id,  class: "ml-1 btn btn-danger" %>
             <% else %>
               <button type="button" class="ml-1 btn btn-danger disabled">No Show</button>
             <% end %>
@@ -69,13 +69,13 @@
 </div>
 
 <div class='modal fade <%= if @show_modal, do: "show", else: nil %>' id="addStandByModal" tabindex="-1" role="dialog" aria-labelledby="addStandByModalLabel" aria-hidden="true" style="display: <%= if @show_modal, do: "block", else: "none" %>;">
-  <%= form_for @changeset, "#", [phx_change: :validate, phx_submit: :save], fn f -> %>
+  <%= form_for @changeset, "#", [phx_submit: :save], fn f -> %>
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header border-bottom-0">
           <h5 class="modal-title"><%= gettext("New Stand By") %></h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="<%= gettext("Close") %>">
-            <span aria-hidden="true">&times;</span>
+          <button type="button" class="close font-weight-light" data-dismiss="modal" aria-label="<%= gettext("Close") %>">
+            <span aria-hidden="true"><i class="fas fa-times"></i></span>
           </button>
         </div>
         <div class="modal-body">
@@ -93,11 +93,22 @@
 
           <%= form_group(f, :notes, using: :textarea) %>
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer bg-light border-top-0">
           <button type="button" class="btn btn-link text-muted font-weight-500" data-dismiss="modal"><%= gettext("Cancel") %></button>
           <%= submit "Add", class: "btn btn-primary" %>
         </div>
       </div>
     </div>
+    <%= if @show_modal == false do %>
+      <script>
+        if(["complete", "loaded","interactive"].indexOf(document.readyState) >= 0){
+          window.$('#addStandByModal').modal('hide');
+        } else {
+          document.addEventListener("DOMContentLoaded", () => {
+            window.$('#addStandByModal').modal('hide');
+          })
+        }
+      </script>
+    <% end %>
   <% end %>
 </div>

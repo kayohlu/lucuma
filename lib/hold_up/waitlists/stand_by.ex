@@ -40,7 +40,6 @@ defmodule HoldUp.Waitlists.StandBy do
       :contact_phone_number,
       :party_size,
       :estimated_wait_time,
-      :notes,
       :waitlist_id
     ])
     |> validate_phone_number(:contact_phone_number)

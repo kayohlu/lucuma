@@ -10,99 +10,107 @@ import css from "../css/app.scss"
 // Import dependencies
 //
 import "phoenix_html"
-import LiveSocket from "phoenix_live_view"
-let liveSocket = new LiveSocket("/live")
-liveSocket.connect()
-
 import $ from "jquery"
 window.$ = $;
 import 'bootstrap'
 import Highcharts from "highcharts"
 import * as intlTelInput from 'intl-tel-input';
+import LiveSocket from "phoenix_live_view"
 
+let liveSocket = new LiveSocket("/live")
+let actualSocket = liveSocket.getSocket()
 
-
+console.log(liveSocket)
 
 // Import local files
 //
 // Local files can be imported directly using relative paths, for example:
 // import socket from "./socket"
 
-$(function() {
-//   Highcharts.setOptions({
-//       chart: {
-//           style: {
-//               fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";'
-//           }
-//       }
-//   });
+Highcharts.setOptions({
+  chart: {
+    style: {
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";'
+    }
+  }
+});
 
-// if ($('#party-size-container').length > 0) {
-// Highcharts.chart('party-size-container', {
-//     chart: {
-//       type: 'column'
-//     },
-//     title: {
-//       text: null
-//     },
-//     subtitle: {
-//       text: null
-//     },
-//     xAxis: {
-//         tickWidth: 0,
-//         lineWidth: 0,
-//         type: 'category',
-//         labels: {
-//           useHTML: true,
-//           format: "<i class='fas fa-users'></i> {value}",
-//         },
-//         title: {
-//           text: "Party Size Summary",
-//           style: {
-//             "font-size": "1rem",
-//             color: "#6c757d"
-//           }
-//         }
-//     },
-//     yAxis: {
-//       labels: {
-//         enabled: true
-//       },
-//       gridLineWidth:0,
-//       lineWidth: 1,
-//         min: 0,
-//         title: {
-//           text: null
-//         },
+let loadChart = function() {
+  Highcharts.chart('party-size-container', {
+      chart: {
+        type: 'column'
+      },
+      title: {
+        text: null
+      },
+      subtitle: {
+        text: null
+      },
+      xAxis: {
+        tickWidth: 0,
+        lineWidth: 0,
+        type: 'category',
+        labels: {
+          useHTML: true,
+          format: "<i class='fas fa-users'></i> {value}",
+        },
+        title: {
+          text: "Party Size Summary",
+          style: {
+            "font-size": "1rem",
+            color: "#6c757d"
+          }
+        }
+      },
+      yAxis: {
+        labels: {
+          enabled: true
+        },
+        gridLineWidth:0,
+        lineWidth: 1,
+        min: 0,
+        title: {
+          text: null
+        },
 
-//     },
-//     legend: {
-//       enabled: false
-//     },
-//     tooltip: {
-//       enabled: false,
-//     },
-//     series: [{
-//         data: $('#party-size-container').data('party-size-breakdown'),
-//         colorByPoint: true,
-//         dataLabels: {
-//             enabled: false,
-//             rotation: 0,
-//             color: '#FFFFFF',
-//             align: 'center',
-//             format: '{point.y}', // one decimal
-//             y: 30, // 10 pixels down from the top
-//         }
-//     }]
-//   });
+      },
+      legend: {
+        enabled: false
+      },
+      tooltip: {
+        enabled: false,
+      },
+      series: [{
+        data: $('#party-size-container').data('party-size-breakdown'),
+        colorByPoint: true,
+        dataLabels: {
+          enabled: false,
+          rotation: 0,
+          color: '#FFFFFF',
+          align: 'center',
+            format: '{point.y}', // one decimal
+            y: 30, // 10 pixels down from the top
+          }
+        }]
+      });
+};
 
-// }
+document.body.addEventListener('DOMSubtreeModified', function () {
+  document.title = 'DOM Changed at ' + new Date();
+}, false);
 
+actualSocket.onMessage(function(message) {
+ console.info("message from socket")
+ console.log(message)
+ if ($('#party-size-container').length > 0) {
+   // I'm reloading the chart here because after the initial render the socket receives a message
+   // which contains another render with the dynamic parts of the view from liveview.
 
- if (document.querySelector("#input-phone")) {
-  var input = document.querySelector("#input-phone");
-  var instance = intlTelInput(input, {
-    initialCountry: "auto",
+   loadChart()
+
+   var input = document.querySelector("#input-phone");
+   var instance = intlTelInput(input, {
+    initialCountry: "IE",
     nationalMode: false,
     geoIpLookup: function(success, failure) {
       $.get("https://ipinfo.io", function() {}, "jsonp").always(function(resp) {
@@ -112,10 +120,26 @@ $(function() {
       });
     }
   });
-}
+ }
+})
 
-if (document.querySelector(".js_submitOnClick")) {
-  $('[data-toggle="buttons"] .btn').on('click', function () {
+// $(document).ready(function(){
+//   console.log("ready")
+//   console.log($('div[data-phx-view="HoldUpWeb.Live.Waitlists.WaitlistView"]'))
+//   $('div[data-phx-view="HoldUpWeb.Live.Waitlists.WaitlistView"]').length
+//   $(document).on( "change", 'div[data-phx-view="HoldUpWeb.Live.Waitlists.WaitlistView"]', function(e) {
+//     console.log(e)
+//     console.log(e.target)
+//   });
+// });
+
+console.log(actualSocket.isConnected())
+liveSocket.connect()
+console.log(actualSocket.isConnected())
+
+$(document).ready(function(){
+  if (document.querySelector(".js_submitOnClick")) {
+    $('[data-toggle="buttons"] .btn').on('click', function () {
       $(this).toggleClass('btn-light active');
 
       var $checkbox = $(this).find('[type=checkbox]');
@@ -124,7 +148,6 @@ if (document.querySelector(".js_submitOnClick")) {
       $(this).parents('form').submit();
 
       return false;
-  });
-}
-
+    });
+  }
 });

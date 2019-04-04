@@ -253,6 +253,9 @@ defmodule HoldUp.Waitlists do
   def calculate_average_wait_time(waitlist_id) do
     {:ok, start_of_today} = NaiveDateTime.new(Date.utc_today(), ~T[00:00:00])
 
+    IO.inspect waitlist_id
+    IO.inspect start_of_today
+
     db_result =
       Repo.one(
         from s in StandBy,
@@ -261,6 +264,8 @@ defmodule HoldUp.Waitlists do
               s.inserted_at > ^start_of_today,
           select: avg(s.notified_at - s.inserted_at)
       )
+
+    IO.inspect db_result
 
     case db_result do
       %Postgrex.Interval{days: _d, months: _m, secs: seconds} -> round(seconds / 60)
