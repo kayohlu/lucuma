@@ -52,7 +52,13 @@ defmodule HoldUpWeb.Live.Waitlists.WaitlistView do
 
         {:noreply, socket}
       {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign(socket, changeset: changeset, show_modal: true)}
+        assigns = [
+          changeset: changeset,
+          show_modal: true
+        ]
+
+        socket = assign(socket, assigns)
+        {:noreply, socket}
     end
   end
 
