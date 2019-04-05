@@ -34,6 +34,12 @@ defmodule HoldUpWeb.Live.Waitlists.WaitlistView do
     {:noreply, assign(socket, changeset: changeset, show_modal: true)}
   end
 
+  def handle_event("clear_form", %{ "stand_by" => stand_by_params}, socket) do
+    changeset = Waitlists.change_stand_by(%StandBy{})
+
+    {:noreply, assign(socket, changeset: changeset, show_modal: false)}
+  end
+
   def handle_event("save", %{ "stand_by" => stand_by_params}, socket) do
     case Waitlists.create_stand_by(Map.put(stand_by_params, "waitlist_id", socket.assigns.waitlist.id)) do
       {:ok, stand_by} ->

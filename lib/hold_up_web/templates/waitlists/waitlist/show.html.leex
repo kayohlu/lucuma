@@ -94,7 +94,7 @@
           <%= form_group(f, :notes, using: :textarea) %>
         </div>
         <div class="modal-footer bg-light border-top-0">
-          <button type="button" class="btn btn-link text-muted font-weight-500" data-dismiss="modal"><%= gettext("Cancel") %></button>
+          <button type="button" class="btn btn-link text-muted font-weight-500" data-dismiss="modal" phx-click="clear_form"><%= gettext("Cancel") %></button>
           <%= submit "Add", class: "btn btn-primary" %>
         </div>
       </div>
