@@ -26,6 +26,7 @@ console.log(liveSocket)
 //
 // Local files can be imported directly using relative paths, for example:
 // import socket from "./socket"
+import './waitlist_analytics'
 
 Highcharts.setOptions({
   chart: {
@@ -94,10 +95,6 @@ let loadChart = function() {
         }]
       });
 };
-
-document.body.addEventListener('DOMSubtreeModified', function () {
-  document.title = 'DOM Changed at ' + new Date();
-}, false);
 
 actualSocket.onMessage(function(message) {
  console.info("message from socket")

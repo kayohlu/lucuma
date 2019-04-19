@@ -68,7 +68,7 @@ defmodule HoldUp.Factory do
       name: sequence(:stand_by_name, fn n -> "Standby By name #{n}" end),
       notes: sequence(:stand_by_notes, fn n -> "A standby note #{n}" end),
       party_size: 3,
-      cancellation_uuid: sequence(:stand_by_notes, fn n -> "cancel_uuid_#{n}" end)
+      cancellation_uuid: sequence(:stand_by_cancellation_uuid, fn n -> "cancel_uuid_#{n}" end)
     }
     |> merge_attributes(attrs)
   end

@@ -18,6 +18,12 @@
               <%= gettext("Settings") %>
             <% end %>
           </li>
+          <li class="nav-item">
+            <%= link to: Routes.waitlists_waitlist_analytics_path(@conn, :index, @waitlist.id), class: "nav-link #{activate_link(@conn, Routes.waitlists_waitlist_analytics_path(@conn, :index, @waitlist.id))}" do %>
+              <i class="fas fa-chart-line"></i>
+              <%= gettext("Analytics") %>
+            <% end %>
+          </li>
         </ul>
       </div>
     </div>

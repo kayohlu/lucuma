@@ -69,6 +69,7 @@ defmodule HoldUpWeb.Router do
     resources "/", WaitlistController, only: [:index, :show] do
       resources "/stand_bys", StandByController, only: [:new, :create]
       resources "/settings", SettingController, only: [:index, :update]
+      resources "/analytics", AnalyticsController, only: [:index]
     end
   end
 
