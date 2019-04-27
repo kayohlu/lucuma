@@ -12,110 +12,124 @@ defmodule HoldUp.Waitlists.Analytics do
   end
 
   def unique_customer_count(waitlist_id) do
-    Repo.one(from s in StandBy, where: s.waitlist_id == ^waitlist_id, select: count(s.contact_phone_number, :distinct))
+    Repo.one(
+      from s in StandBy,
+        where: s.waitlist_id == ^waitlist_id,
+        select: count(s.contact_phone_number, :distinct)
+    )
   end
 
   def served_customer_count(waitlist_id) do
-    Repo.one(from s in StandBy, where: s.waitlist_id == ^waitlist_id and not is_nil(s.attended_at), select: count(s.id))
+    Repo.one(
+      from s in StandBy,
+        where: s.waitlist_id == ^waitlist_id and not is_nil(s.attended_at),
+        select: count(s.id)
+    )
   end
 
   def served_percentage(waitlist_id) do
-    count = Repo.one(
-      from s in StandBy,
-      where:
-        s.waitlist_id == ^waitlist_id
-        and not is_nil(s.attended_at),
-      select: count(s.id)
-    )
+    count =
+      Repo.one(
+        from s in StandBy,
+          where:
+            s.waitlist_id == ^waitlist_id and
+              not is_nil(s.attended_at),
+          select: count(s.id)
+      )
 
-    total_count = Repo.one(
-      from s in StandBy,
-      where:
-        s.waitlist_id == ^waitlist_id,
-      select: count(s.id)
-    )
+    total_count =
+      Repo.one(
+        from s in StandBy,
+          where: s.waitlist_id == ^waitlist_id,
+          select: count(s.id)
+      )
 
-    (count / total_count) * (100 / 1)
+    count / total_count * (100 / 1)
   end
 
   def no_show_percentage(waitlist_id) do
-    count = Repo.one(
-      from s in StandBy,
-      where:
-        s.waitlist_id == ^waitlist_id
-        and not is_nil(s.no_show_at),
-      select: count(s.id)
-    )
+    count =
+      Repo.one(
+        from s in StandBy,
+          where:
+            s.waitlist_id == ^waitlist_id and
+              not is_nil(s.no_show_at),
+          select: count(s.id)
+      )
 
-    total_count = Repo.one(
-      from s in StandBy,
-      where:
-        s.waitlist_id == ^waitlist_id,
-      select: count(s.id)
-    )
+    total_count =
+      Repo.one(
+        from s in StandBy,
+          where: s.waitlist_id == ^waitlist_id,
+          select: count(s.id)
+      )
 
-    (count / total_count) * (100 / 1)
+    count / total_count * (100 / 1)
   end
 
   def cancellation_percentage(waitlist_id) do
-    count = Repo.one(
-      from s in StandBy,
-      where:
-        s.waitlist_id == ^waitlist_id
-        and not is_nil(s.cancelled_at),
-      select: count(s.id)
-    )
+    count =
+      Repo.one(
+        from s in StandBy,
+          where:
+            s.waitlist_id == ^waitlist_id and
+              not is_nil(s.cancelled_at),
+          select: count(s.id)
+      )
 
-    total_count = Repo.one(
-      from s in StandBy,
-      where:
-        s.waitlist_id == ^waitlist_id,
-      select: count(s.id)
-    )
+    total_count =
+      Repo.one(
+        from s in StandBy,
+          where: s.waitlist_id == ^waitlist_id,
+          select: count(s.id)
+      )
 
-    (count / total_count) * (100 / 1)
+    count / total_count * (100 / 1)
   end
 
   def waitlisted_per_date(waitlist_id) do
     Repo.all(
       from s in StandBy,
-      where:
-        s.waitlist_id == ^waitlist_id,
-      group_by: fragment("?::date::timestamp", s.inserted_at), # Use a fragment to write some raw sql to convert timestamp to date.
-      select: [fragment("?::date::timestamp", s.inserted_at), count(s.id)]
+        where: s.waitlist_id == ^waitlist_id,
+        # Use a fragment to write some raw sql to convert timestamp to date.
+        group_by: fragment("?::date::timestamp", s.inserted_at),
+        select: [fragment("?::date::timestamp", s.inserted_at), count(s.id)]
     )
   end
 
   def served_per_date(waitlist_id) do
     Repo.all(
       from s in StandBy,
-      where:
-        s.waitlist_id == ^waitlist_id
-        and not is_nil(s.attended_at),
-      group_by: fragment("?::date::timestamp", s.inserted_at), # Use a fragment to write some raw sql to convert timestamp to date.
-      select: [fragment("?::date::timestamp", s.inserted_at), count(s.id)]
+        where:
+          s.waitlist_id == ^waitlist_id and
+            not is_nil(s.attended_at),
+        # Use a fragment to write some raw sql to convert timestamp to date.
+        group_by: fragment("?::date::timestamp", s.inserted_at),
+        select: [fragment("?::date::timestamp", s.inserted_at), count(s.id)]
     )
   end
 
   def no_show_per_date(waitlist_id) do
     Repo.all(
       from s in StandBy,
-      where:
-        s.waitlist_id == ^waitlist_id
-        and not is_nil(s.no_show_at),
-      group_by: fragment("?::date::timestamp", s.inserted_at), # Use a fragment to write some raw sql to convert timestamp to date.
-      select: [fragment("?::date::timestamp", s.inserted_at), count(s.id)]
+        where:
+          s.waitlist_id == ^waitlist_id and
+            not is_nil(s.no_show_at),
+        # Use a fragment to write some raw sql to convert timestamp to date.
+        group_by: fragment("?::date::timestamp", s.inserted_at),
+        select: [fragment("?::date::timestamp", s.inserted_at), count(s.id)]
     )
   end
 
   def cancellation_per_date(waitlist_id) do
     Repo.all(
       from s in StandBy,
-      where:
-        s.waitlist_id == ^waitlist_id
-        and not is_nil(s.cancelled_at),
-      group_by: fragment("?::date::timestamp", s.inserted_at), # Use a fragment to write some raw sql to convert timestamp to date.
-      select: [fragment("?::date::timestamp", s.inserted_at), count(s.id)]
+        where:
+          s.waitlist_id == ^waitlist_id and
+            not is_nil(s.cancelled_at),
+        # Use a fragment to write some raw sql to convert timestamp to date.
+        group_by: fragment("?::date::timestamp", s.inserted_at),
+        select: [fragment("?::date::timestamp", s.inserted_at), count(s.id)]
     )
   end
 
@@ -126,19 +140,27 @@ defmodule HoldUp.Waitlists.Analytics do
     grouped_by_day_date_query =
       from s in StandBy,
         where:
-          s.waitlist_id == ^waitlist_id
-          and not is_nil(s.attended_at),
-        group_by: [fragment("EXTRACT(ISODOW FROM ?)", s.inserted_at), fragment("?::date::timestamp", s.inserted_at)], # Use a fragment to write some raw sql to convert timestamp to date.
+          s.waitlist_id == ^waitlist_id and
+            not is_nil(s.attended_at),
+        # Use a fragment to write some raw sql to convert timestamp to date.
+        group_by: [
+          fragment("EXTRACT(ISODOW FROM ?)", s.inserted_at),
+          fragment("?::date::timestamp", s.inserted_at)
+        ],
 
         # https://stackoverflow.com/questions/42045295/ecto-queryerror-on-a-subquery
         # Write explanation.
-        select: %{day: fragment("EXTRACT(ISODOW FROM ?)", s.inserted_at), date: fragment("?::date::timestamp", s.inserted_at), day_date_count: fragment("?::float", count(s.id))}
+        select: %{
+          day: fragment("EXTRACT(ISODOW FROM ?)", s.inserted_at),
+          date: fragment("?::date::timestamp", s.inserted_at),
+          day_date_count: fragment("?::float", count(s.id))
+        }
 
     Repo.all(
       from s in subquery(grouped_by_day_date_query),
-      group_by: s.day,
-      order_by: s.day,
-      select: [s.day, avg(s.day_date_count)]
+        group_by: s.day,
+        order_by: s.day,
+        select: [s.day, avg(s.day_date_count)]
     )
   end
 
@@ -146,22 +168,30 @@ defmodule HoldUp.Waitlists.Analytics do
   returns the average amount of people served grouped by hour
   """
   def average_served_per_hour(waitlist_id) do
-     grouped_by_hour_date_query =
+    grouped_by_hour_date_query =
       from s in StandBy,
         where:
-          s.waitlist_id == ^waitlist_id
-          and not is_nil(s.attended_at),
-        group_by: [fragment("EXTRACT(HOUR FROM ?)", s.inserted_at), fragment("?::date::timestamp", s.inserted_at)], # Use a fragment to write some raw sql to convert timestamp to date.
+          s.waitlist_id == ^waitlist_id and
+            not is_nil(s.attended_at),
+        # Use a fragment to write some raw sql to convert timestamp to date.
+        group_by: [
+          fragment("EXTRACT(HOUR FROM ?)", s.inserted_at),
+          fragment("?::date::timestamp", s.inserted_at)
+        ],
 
         # https://stackoverflow.com/questions/42045295/ecto-queryerror-on-a-subquery
         # Write explanation.
-        select: %{hour: fragment("EXTRACT(HOUR FROM ?)", s.inserted_at), date: fragment("?::date::timestamp", s.inserted_at), hour_date_count: fragment("?::float", count(s.id))}
+        select: %{
+          hour: fragment("EXTRACT(HOUR FROM ?)", s.inserted_at),
+          date: fragment("?::date::timestamp", s.inserted_at),
+          hour_date_count: fragment("?::float", count(s.id))
+        }
 
     Repo.all(
       from s in subquery(grouped_by_hour_date_query),
-      group_by: s.hour,
-      order_by: s.hour,
-      select: [s.hour, avg(s.hour_date_count)]
+        group_by: s.hour,
+        order_by: s.hour,
+        select: [s.hour, avg(s.hour_date_count)]
     )
   end
 
@@ -173,19 +203,29 @@ defmodule HoldUp.Waitlists.Analytics do
     grouped_by_day_hour_date_query =
       from s in StandBy,
         where:
-          s.waitlist_id == ^waitlist_id
-          and not is_nil(s.attended_at),
-        group_by: [fragment("EXTRACT(ISODOW FROM ?)", s.inserted_at), fragment("EXTRACT(HOUR FROM ?)", s.inserted_at), fragment("?::date::timestamp", s.inserted_at)], # Use a fragment to write some raw sql to convert timestamp to date.
+          s.waitlist_id == ^waitlist_id and
+            not is_nil(s.attended_at),
+        # Use a fragment to write some raw sql to convert timestamp to date.
+        group_by: [
+          fragment("EXTRACT(ISODOW FROM ?)", s.inserted_at),
+          fragment("EXTRACT(HOUR FROM ?)", s.inserted_at),
+          fragment("?::date::timestamp", s.inserted_at)
+        ],
 
         # https://stackoverflow.com/questions/42045295/ecto-queryerror-on-a-subquery
         # Write explanation.
-        select: %{day: fragment("EXTRACT(ISODOW FROM ?)", s.inserted_at), hour: fragment("EXTRACT(HOUR FROM ?)", s.inserted_at), date: fragment("?::date::timestamp", s.inserted_at), day_hour_date_count: fragment("?::float", count(s.id))}
+        select: %{
+          day: fragment("EXTRACT(ISODOW FROM ?)", s.inserted_at),
+          hour: fragment("EXTRACT(HOUR FROM ?)", s.inserted_at),
+          date: fragment("?::date::timestamp", s.inserted_at),
+          day_hour_date_count: fragment("?::float", count(s.id))
+        }
 
     Repo.all(
       from s in subquery(grouped_by_day_hour_date_query),
-      group_by: [s.day, s.hour],
-      order_by: [s.day, s.hour],
-      select: [s.day, s.hour, avg(s.day_hour_date_count)]
+        group_by: [s.day, s.hour],
+        order_by: [s.day, s.hour],
+        select: [s.day, s.hour, avg(s.day_hour_date_count)]
     )
   end
 
@@ -194,13 +234,17 @@ defmodule HoldUp.Waitlists.Analytics do
       Repo.all(
         from s in StandBy,
           where:
-            not is_nil(s.notified_at)
-            and s.waitlist_id == ^waitlist_id,
-          group_by: fragment("?::date::timestamp", s.inserted_at), # Use a fragment to write some raw sql to convert timestamp to date.
-          select: [fragment("?::date::timestamp", s.inserted_at), avg(s.notified_at - s.inserted_at)]
+            not is_nil(s.notified_at) and
+              s.waitlist_id == ^waitlist_id,
+          # Use a fragment to write some raw sql to convert timestamp to date.
+          group_by: fragment("?::date::timestamp", s.inserted_at),
+          select: [
+            fragment("?::date::timestamp", s.inserted_at),
+            avg(s.notified_at - s.inserted_at)
+          ]
       )
 
-    handle_average = fn (db_result) ->
+    handle_average = fn db_result ->
       case db_result do
         %Postgrex.Interval{days: _d, months: _m, secs: seconds} -> round(seconds / 60)
         _ -> 0

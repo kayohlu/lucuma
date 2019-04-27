@@ -11,16 +11,18 @@ defmodule HoldUpWeb.Plugs.Authorisation do
   defp check_waitlist_authorisation(conn, nil) do
     conn
   end
+
   defp check_waitlist_authorisation(conn, waitlist_id) do
     waitlist = Waitlists.get_waitlist!(waitlist_id)
 
     conn
-    |> handle_permission(conn.assigns.current_business |> can? read(waitlist))
+    |> handle_permission(conn.assigns.current_business |> can?(read(waitlist)))
   end
 
   defp handle_permission(conn, true) do
     conn
   end
+
   defp handle_permission(conn, false) do
     conn
     |> put_status(:not_found)

@@ -32,8 +32,8 @@ defmodule HoldUp.Registrations do
         {:ok, company} = create_company(registration_form)
         {:ok, user} = create_user(registration_form, company)
         {:ok, business} = create_business(company)
-        IO.inspect user
-        IO.inspect business
+        IO.inspect(user)
+        IO.inspect(business)
         {:ok, users_business} = create_user_business(user, business)
         {:ok, waitlist} = create_waitlist(business)
         user

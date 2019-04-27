@@ -16,10 +16,8 @@ if ($('.js-analyitcs-page').length > 0) {
       },
       xAxis: {
         type: 'datetime',
-        dateTimeLabelFormats: { // don't display the dummy year
-          month: '%e. %b',
-          year: '%b'
-
+        dateTimeLabelFormats: {
+           day: '%d %b %Y'    //ex- 01 Jan 2016
         }
       },
       yAxis: {
@@ -106,11 +104,14 @@ if ($('.js-analyitcs-page').length > 0) {
       },
       xAxis: {
         type: 'datetime',
-        dateTimeLabelFormats: { // don't display the dummy year
-          month: '%e. %b',
-          year: '%b'
-
+        dateTimeLabelFormats: {
+           day: '%d %b %Y'    //ex- 01 Jan 2016
         }
+        // dateTimeLabelFormats: { // don't display the dummy year
+        //   month: '%e. %b',
+        //   year: '%b'
+
+        // }
       },
       yAxis: {
         title: {
@@ -135,8 +136,7 @@ if ($('.js-analyitcs-page').length > 0) {
           }
         }
       },
-      series: [
-        $('#waitlist-average-wait-time-over-time-container').data('average-wait-time-over-time-data')]
+      series: [$('#waitlist-average-wait-time-over-time-container').data('average-wait-time-over-time-data')]
     });
 
 
@@ -243,7 +243,7 @@ if ($('.js-analyitcs-page').length > 0) {
         text: null
       },
       legend: {
-        enabled: false
+        enabled: true
       },
       xAxis: {
         type: 'category',

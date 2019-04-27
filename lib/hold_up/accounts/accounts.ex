@@ -76,7 +76,8 @@ defmodule HoldUp.Accounts do
 
   def get_user_by_email(email) do
     require Logger
-    Logger.debug "inside get_user_by_email"
+    Logger.debug("inside get_user_by_email")
+
     query =
       from user in HoldUp.Accounts.User,
         join: company in HoldUp.Accounts.Company,

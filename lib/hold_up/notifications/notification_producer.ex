@@ -60,7 +60,7 @@ defmodule HoldUp.Notifications.NotificationProducer do
 
   # Hack to get around the producer doing a query in the test environment when
   # the test process is finished and the repo process.
-  defp events, do: events(Mix.env)
+  defp events, do: events(Mix.env())
   defp events(:test), do: []
   defp events(_), do: enqueue_notifications
 

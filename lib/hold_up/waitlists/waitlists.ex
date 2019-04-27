@@ -22,7 +22,9 @@ defmodule HoldUp.Waitlists do
 
     stand_bys_query =
       from s in StandBy,
-        where: is_nil(s.attended_at) and is_nil(s.no_show_at) and is_nil(s.cancelled_at) and s.waitlist_id == ^id
+        where:
+          is_nil(s.attended_at) and is_nil(s.no_show_at) and is_nil(s.cancelled_at) and
+            s.waitlist_id == ^id
 
     Repo.one(from w in Waitlist, where: w.id == ^id, preload: [stand_bys: ^stand_bys_query])
   end
@@ -64,39 +66,41 @@ defmodule HoldUp.Waitlists do
   end
 
   defp create_confirmation_sms_settings(waitlist) do
-    {:ok, confirmation_sms_setting} = create_confirmation_sms_setting(%{
-      enabled: true,
-      waitlist_id: waitlist.id,
-      message_content: """
-      Hello [[NAME]],
+    {:ok, confirmation_sms_setting} =
+      create_confirmation_sms_setting(%{
+        enabled: true,
+        waitlist_id: waitlist.id,
+        message_content: """
+        Hello [[NAME]],
 
-      It's your turn!
+        It's your turn!
 
-      Regards,
-      Your friendly staff
+        Regards,
+        Your friendly staff
 
-      To cancel click the link below:
-      [[CANCEL_LINK]]
-      """
-    })
+        To cancel click the link below:
+        [[CANCEL_LINK]]
+        """
+      })
   end
 
   defp create_attendance_sms_settings(waitlist) do
-    {:ok, attendance_sms_setting} = create_attendance_sms_setting(%{
-      enabled: true,
-      waitlist_id: waitlist.id,
-      message_content: """
-      Hello [[NAME]],
+    {:ok, attendance_sms_setting} =
+      create_attendance_sms_setting(%{
+        enabled: true,
+        waitlist_id: waitlist.id,
+        message_content: """
+        Hello [[NAME]],
 
-      You've been added to our waitlist. We'll let you know when it's your turn as soon as possible.
+        You've been added to our waitlist. We'll let you know when it's your turn as soon as possible.
 
-      Regards,
-      Your friendly staff
+        Regards,
+        Your friendly staff
 
-      To cancel click the link below:
-      [[CANCEL_LINK]]
-      """
-    })
+        To cancel click the link below:
+        [[CANCEL_LINK]]
+        """
+      })
   end
 
   def update_confirmation_sms_setting(%ConfirmationSmsSetting{} = sms_setting, attrs) do
@@ -132,9 +136,11 @@ defmodule HoldUp.Waitlists do
 
   """
   def create_stand_by(attrs \\ %{}, notification_module \\ Notifications) do
-    case %StandBy{} |> StandBy.changeset(attrs) |> Repo.insert do
+    case %StandBy{} |> StandBy.changeset(attrs) |> Repo.insert() do
       {:ok, stand_by} ->
-        confirmation_sms_setting = Repo.get_by!(ConfirmationSmsSetting, waitlist_id: stand_by.waitlist_id)
+        confirmation_sms_setting =
+          Repo.get_by!(ConfirmationSmsSetting, waitlist_id: stand_by.waitlist_id)
+
         if confirmation_sms_setting.enabled do
           body =
             confirmation_sms_setting.message_content
@@ -148,10 +154,15 @@ defmodule HoldUp.Waitlists do
               )
             )
 
-          notification_module.send_sms_notification(stand_by.contact_phone_number, body, stand_by.id)
+          notification_module.send_sms_notification(
+            stand_by.contact_phone_number,
+            body,
+            stand_by.id
+          )
         end
 
         {:ok, stand_by}
+
       {:error, changeset} ->
         {:error, changeset}
     end
@@ -253,8 +264,8 @@ defmodule HoldUp.Waitlists do
   def calculate_average_wait_time(waitlist_id) do
     {:ok, start_of_today} = NaiveDateTime.new(Date.utc_today(), ~T[00:00:00])
 
-    IO.inspect waitlist_id
-    IO.inspect start_of_today
+    IO.inspect(waitlist_id)
+    IO.inspect(start_of_today)
 
     db_result =
       Repo.one(
@@ -265,7 +276,7 @@ defmodule HoldUp.Waitlists do
           select: avg(s.notified_at - s.inserted_at)
       )
 
-    IO.inspect db_result
+    IO.inspect(db_result)
 
     case db_result do
       %Postgrex.Interval{days: _d, months: _m, secs: seconds} -> round(seconds / 60)

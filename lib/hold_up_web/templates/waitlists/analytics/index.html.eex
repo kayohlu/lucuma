@@ -4,26 +4,26 @@
   <div class="card">
     <div class="card-body">
       <h1 class="display-3"><%= @total_waitlisted %></h1>
-      <span class="text-muted">Total Waitlisted</span>
+      <span class="text-muted"><%= gettext("Total Waitlisted") %></span>
     </div>
   </div>
   <div class="card">
     <div class="card-body">
       <h1 class="display-3"><%= @unique_customer_count %></h1>
-      <span class="text-muted">Unique Customers</span>
+      <span class="text-muted"><%= gettext("Unique Customers") %></span>
     </div>
   </div>
   <div class="card">
     <div class="card-body">
       <h1 class="display-3"><%= @served_customer_count %></h1>
-      <span class="text-muted">Total Served</span>
+      <span class="text-muted"><%= gettext("Total Served") %></span>
     </div>
   </div>
 </div>
 
 <div class="card mt-4" style="height: 420px">
   <div class="card-header">
-    Waitlist Overview
+    <%= gettext("Waitlist Overview") %>
   </div>
   <div class="row no-gutters">
     <div class="col-md-4">
@@ -50,56 +50,6 @@
             id: "container"
           ])
         %>
-
-
-      <%= content_tag(:div, nil,
-          [
-            {:data,
-              [percentages_data: Jason.encode!(
-                %{
-                  name: gettext("Served"),
-                  data: [
-                    round(@served_percentage)
-                  ]
-                }),
-              title: gettext("Served")
-              ]
-            },
-            id: "waitlist-served-percentages-container"
-          ])
-        %>
-        <%= content_tag(:div, nil,
-          [
-            {:data,
-              [percentages_data: Jason.encode!(
-                %{
-                  name: gettext("No Shows"),
-                  data: [
-                    round(@no_show_percentage)
-                  ]
-                }),
-              title: gettext("No Show")
-              ]
-            },
-            id: "waitlist-no-show-percentages-container"
-          ])
-        %>
-        <%= content_tag(:div, nil,
-          [
-            {:data,
-              [percentages_data: Jason.encode!(
-                %{
-                  name: gettext("Cancellations"),
-                  data: [
-                    round(@cancellation_percentage)
-                  ]
-                }),
-              title: gettext("Cancellation")
-              ]
-            },
-            id: "waitlist-cancellation-percentages-container"
-          ])
-        %>
     </div>
     <div class="col-md-8">
       <div class="card-body">
@@ -107,16 +57,16 @@
         <%= content_tag(:div, nil,
           [
             {:data,
-              [served_data: Jason.encode!(%{name: gettext("Served"), data: @served_per_date})]
+              [served_data: Jason.encode!(%{name: gettext("Served"), data: inject_unix_timestamp(@served_per_date)})]
             },
             {:data,
-               [no_show_data: Jason.encode!(%{name: gettext("No Shows"), data: @no_show_per_date})]
+               [no_show_data: Jason.encode!(%{name: gettext("No Shows"), data: inject_unix_timestamp(@no_show_per_date)})]
             },
             {:data,
-               [cancellation_data: Jason.encode!(%{name: gettext("Cancellations"), data: @cancellation_per_date})]
+               [cancellation_data: Jason.encode!(%{name: gettext("Cancellations"), data: inject_unix_timestamp(@cancellation_per_date)})]
             },
             {:data,
-               [waitlisted_data: Jason.encode!(%{name: gettext("Waitlisted"), data: @waitlisted_per_date})]
+               [waitlisted_data: Jason.encode!(%{name: gettext("Waitlisted"), data: inject_unix_timestamp(@waitlisted_per_date)})]
             },
             id: "waitlist-states-container"
           ])
@@ -131,14 +81,14 @@
 
 <div class="card mt-4">
   <div class="card-header">
-    Average wait time (grouped by date) over time
+    <%= gettext("Average wait time (grouped by date) over time") %>
   </div>
   <div class="card-body">
       <div class="col">
         <%= content_tag(:div, nil,
           [
             {:data,
-               [average_wait_time_over_time_data: Jason.encode!(%{name: gettext("Average wait time (grouped by date) over time"), data: @average_wait_time_per_date})]
+               [average_wait_time_over_time_data: Jason.encode!(%{name: gettext("Average wait time (grouped by date) over time"), data: inject_unix_timestamp(@average_wait_time_per_date)})]
             },
             id: "waitlist-average-wait-time-over-time-container"
           ])
@@ -150,7 +100,7 @@
 
 <div class="card mt-4">
   <div class="card-header">
-    Average amount of customers served for per day of the week.
+    <%= gettext("Average amount of customers served for per day of the week.") %>
   </div>
   <div class="card-body">
       <div class="col">
@@ -170,7 +120,7 @@
 
 <div class="card mt-4">
   <div class="card-header">
-    Average amount of customers served for per hour.
+    <%= gettext("Average amount of customers served for per hour.") %>
   </div>
   <div class="card-body">
       <div class="col">
@@ -188,14 +138,14 @@
 
 <div class="card mt-4">
   <div class="card-header">
-    Average amount of customers served for per hour per day.
+    <%= gettext("Average amount of customers served for per hour per day.") %>
   </div>
   <div class="card-body">
       <div class="col">
         <%= content_tag(:div, nil,
           [
             {:data,
-               [waitlist_average_served_per_hour_per_day_data: Jason.encode!(convert_stuffx(@average_served_per_hour_per_day))]
+               [waitlist_average_served_per_hour_per_day_data: Jason.encode!(convert_to_highcharts_named_series(@average_served_per_hour_per_day))]
             },
             id: "waitlist-average-served-per-hour-per-day-container"
           ])

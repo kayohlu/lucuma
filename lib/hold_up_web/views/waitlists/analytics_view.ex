@@ -1,9 +1,12 @@
 defmodule HoldUpWeb.Waitlists.AnalyticsView do
   use HoldUpWeb, :view
 
-  def inject_js_date(data) do
+  def inject_unix_timestamp(data) do
     data
-    |> Enum.map(fn ([date_str, value]) -> ["Date.parse(#{date_str})", value] end)
+    |> Enum.map(fn ([date_str, value]) ->
+      {:ok, datetime_utc} = DateTime.from_naive(date_str, "Etc/UTC")
+      [datetime_utc |> DateTime.to_unix, value]
+    end)
   end
 
   def convert_isodow_to_day_str(data) do
@@ -26,26 +29,11 @@ defmodule HoldUpWeb.Waitlists.AnalyticsView do
     |> Enum.map(fn [hour | tail] -> [ "#{trunc(hour)}:00 - #{trunc(hour + 1)}:00" | tail] end)
   end
 
-  def convert_stuff(data) do
-    days = Enum.map(data, fn [day | tail] -> day end) |> Enum.uniq
-    empty_series = Enum.map(days, fn day -> %{name: day, data: []} end)
-
-
-    Enum.map(empty_series, fn %{name: set_day, data: _empty_list} ->
-      new_data = data
-                |> Enum.filter(fn [day, _hour, _value] -> day == set_day end)
-                |> Enum.map(fn [day, hour, value] -> ["#{trunc(hour)}:00 - #{trunc(hour + 1)}:00", value] end)
-
-      %{name: set_day, data: new_data}
-    end)
-  end
-
-  def convert_stuffx(data) do
+  def convert_to_highcharts_named_series(data) do
     hours = convert_isodow_to_day_str(data)
             |> Enum.map(fn [day | [ hour | tail]] -> hour end)
             |> Enum.uniq
 
-    IO.inspect hours
     empty_series = Enum.map(hours, fn hour -> %{name: hour, data: []} end)
 
     day_map = %{
