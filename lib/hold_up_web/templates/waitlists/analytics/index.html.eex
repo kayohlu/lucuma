@@ -1,3 +1,5 @@
+
+<%= if @has_stand_bys do %>
 <div class="js-analyitcs-page"></div>
 
 <div class="card-deck">
@@ -153,3 +155,6 @@
       </div>
   </div>
 </div>
+<%= else %>
+  <p><%= gettext("There are no analytics available. You need to start adding people to your waitlist.") %></p>
+<%= end %>

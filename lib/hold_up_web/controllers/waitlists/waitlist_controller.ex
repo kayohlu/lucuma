@@ -17,6 +17,7 @@ defmodule HoldUpWeb.Waitlists.WaitlistController do
     # Since this view is rendered inside a nested layout that makes use
     # of something in the assigns this is a little hack to stop liveview complaining.
     conn = assign(conn, :waitlist, Waitlists.get_waitlist!(id))
+    conn = assign(conn, :stand_bys, Waitlists.get_waitlist_stand_bys(id))
 
     LiveView.Controller.live_render(
       conn,

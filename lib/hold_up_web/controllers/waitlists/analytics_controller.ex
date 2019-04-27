@@ -6,14 +6,17 @@ defmodule HoldUpWeb.Waitlists.AnalyticsController do
   alias HoldUp.Repo
   alias HoldUp.Waitlists
   alias HoldUp.Waitlists.Analytics
+  alias HoldUp.Waitlists.StandBy
 
   def index(conn, params) do
     %{"waitlist_id" => waitlist_id} = params
     waitlist = Waitlists.get_waitlist!(waitlist_id)
 
+    if Repo.exists?(StandBy) do
     render(conn,
       "index.html",
       waitlist: waitlist,
+      has_stand_bys: true,
       total_waitlisted: Analytics.total_waitlisted(waitlist.id),
       unique_customer_count: Analytics.unique_customer_count(waitlist.id),
       served_customer_count: Analytics.served_customer_count(waitlist.id),
@@ -32,5 +35,11 @@ defmodule HoldUpWeb.Waitlists.AnalyticsController do
       average_served_per_hour: Analytics.average_served_per_hour(waitlist.id),
       average_served_per_hour_per_day: Analytics.average_served_per_hour_per_day(waitlist.id)
     )
+  else
+    render(conn,
+      "index.html",
+      waitlist: waitlist,
+      has_stand_bys: false)
+  end
   end
 end

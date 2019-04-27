@@ -1,6 +1,7 @@
 <div class="card">
   <div class="card-header">
     Summary
+    <%=  @show_modal %>
   </div>
   <div class="card-body">
     <div class="row">
@@ -12,7 +13,7 @@
         <p class="text-muted">Average Wait Time</p>
       </div>
       <div class="col text-center align-self-center">
-        <h1 class="display-1 d-inline"><%= length(@waitlist.stand_bys) %></h1>
+        <h1 class="display-1 d-inline"><%= length(@stand_bys) %></h1>
         <p class="text-muted">People Waiting</p>
       </div>
     </div>
@@ -23,14 +24,14 @@
   <div class="card-body pb-0">
     <ul class="list-inline">
       <li class="list-inline-item">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addStandByModal">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addStandByModal" phx-click="show_modal">
           <i class="fas fa-plus"></i>
           Add Person
         </button>
       </li>
     </ul>
     <ul class="list-group list-group-flush">
-      <%= for stand_by <- @waitlist.stand_bys do %>
+      <%= for stand_by <- @stand_bys do %>
       <div class="list-group-item pt-4 pb-4">
         <div class="d-flex w-100 justify-content-between">
           <div class="flex-fill">
@@ -68,13 +69,13 @@
   </div>
 </div>
 
-<div class='modal fade <%= if @show_modal, do: "show", else: nil %>' id="addStandByModal" tabindex="-1" role="dialog" aria-labelledby="addStandByModalLabel" aria-hidden="true" style="display: <%= if @show_modal, do: "block", else: "none" %>;">
+<div class='modal fade <%= if @show_modal, do: "show", else: nil %>' id="addStandByModal" tabindex="-1" role="dialog" aria-labelledby="addStandByModalLabel" aria-hidden="true" style="display: <%= if @show_modal, do: "block", else: "none" %>; <%= if @show_modal, do: "padding-right: 15px;", else: nil %>">
   <%= form_for @changeset, "#", [phx_submit: :save], fn f -> %>
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header border-bottom-0">
-          <h5 class="modal-title"><%= gettext("New Stand By") %></h5>
-          <button type="button" class="close font-weight-light" data-dismiss="modal" aria-label="<%= gettext("Close") %>">
+          <h5 class="modal-title"><%= gettext("New Stand By") %> <%=  @show_modal %></h5>
+          <button type="button" class="close font-weight-light" data-dismiss="modal" phx-click="clear_form" aria-label="<%= gettext("Close") %>">
             <span aria-hidden="true"><i class="fas fa-times"></i></span>
           </button>
         </div>
@@ -99,9 +100,15 @@
         </div>
       </div>
     </div>
-    <%= if @show_modal == false do %>
+  <% end %>
+</div>
+   <%= if @show_modal == false do %>
+
       <script>
+      console.log("document.readyState")
         if(["complete", "loaded","interactive"].indexOf(document.readyState) >= 0){
+          console.log(document.readyState)
+          console.log("trying ot hide modal")
           window.$('#addStandByModal').modal('hide');
         } else {
           document.addEventListener("DOMContentLoaded", () => {
@@ -109,6 +116,4 @@
           })
         }
       </script>
-    <% end %>
-  <% end %>
-</div>
+       <% end %>

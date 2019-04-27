@@ -29,6 +29,18 @@ defmodule HoldUp.Waitlists do
     Repo.one(from w in Waitlist, where: w.id == ^id, preload: [stand_bys: ^stand_bys_query])
   end
 
+  def get_waitlist_stand_bys(waitlist_id) do
+    # This method does two queries because of the preload.
+
+    stand_bys_query =
+      from s in StandBy,
+        where:
+          is_nil(s.attended_at) and is_nil(s.no_show_at) and is_nil(s.cancelled_at) and
+            s.waitlist_id == ^waitlist_id
+
+    Repo.all(stand_bys_query)
+  end
+
   def create_waitlist(attrs \\ %{}) do
     changeset = Waitlist.changeset(%Waitlist{}, attrs)
 
@@ -216,7 +228,7 @@ defmodule HoldUp.Waitlists do
   end
 
   def party_size_breakdown(waitlist_id) do
-    get_waitlist!(waitlist_id).stand_bys
+    get_waitlist_stand_bys(waitlist_id)
     |> Enum.group_by(fn x -> x.party_size end, fn x -> x.id end)
     |> Enum.map(fn {k, v} -> %{name: k, y: length(v)} end)
   end
