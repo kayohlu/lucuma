@@ -35,8 +35,11 @@ defmodule HoldUp.Waitlists do
     stand_bys_query =
       from s in StandBy,
         where:
-          is_nil(s.attended_at) and is_nil(s.no_show_at) and is_nil(s.cancelled_at) and
-            s.waitlist_id == ^waitlist_id
+          is_nil(s.attended_at) and
+            is_nil(s.no_show_at) and
+            is_nil(s.cancelled_at) and
+            s.waitlist_id == ^waitlist_id,
+        order_by: [desc: s.inserted_at]
 
     Repo.all(stand_bys_query)
   end
@@ -75,6 +78,40 @@ defmodule HoldUp.Waitlists do
 
   def change_attendance_sms_setting(%AttendanceSmsSetting{} = sms_setting) do
     AttendanceSmsSetting.changeset(sms_setting, %{})
+  end
+
+  def new_confirmation_sms_setting_changeset(%ConfirmationSmsSetting{} = confirmation_sms_setting) do
+    ConfirmationSmsSetting.changeset(confirmation_sms_setting, %{
+        enabled: true,
+        message_content: """
+        Hello [[NAME]],
+
+        It's your turn!
+
+        Regards,
+        Your friendly staff
+
+        To cancel click the link below:
+        [[CANCEL_LINK]]
+        """
+      })
+  end
+
+  def new_attendance_sms_setting_changeset(%AttendanceSmsSetting{} = attendance_sms_setting) do
+    AttendanceSmsSetting.changeset(attendance_sms_setting, %{
+        enabled: true,
+        message_content: """
+        Hello [[NAME]],
+
+        You've been added to our waitlist. We'll let you know when it's your turn as soon as possible.
+
+        Regards,
+        Your friendly staff
+
+        To cancel click the link below:
+        [[CANCEL_LINK]]
+        """
+      })
   end
 
   defp create_confirmation_sms_settings(waitlist) do

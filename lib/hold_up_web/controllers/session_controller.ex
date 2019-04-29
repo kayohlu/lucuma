@@ -5,7 +5,7 @@ defmodule HoldUpWeb.SessionController do
   alias HoldUp.Accounts.User
   alias Comeonin.Bcrypt
 
-  plug :put_layout, false when action in [:new]
+  plug :put_layout, false when action in [:new, :create]
 
   def new(conn, _params) do
     render(conn, "new.html")

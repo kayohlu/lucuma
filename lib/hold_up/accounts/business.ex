@@ -7,6 +7,7 @@ defmodule HoldUp.Accounts.Business do
 
     belongs_to :company, HoldUp.Accounts.Company
     many_to_many :users, HoldUp.Accounts.User, join_through: HoldUp.Accounts.UserBusiness
+    has_one :waitlist, HoldUp.Waitlists.Waitlist
 
     timestamps()
   end

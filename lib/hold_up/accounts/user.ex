@@ -30,6 +30,7 @@ defmodule HoldUp.Accounts.User do
       :confirmation_sent_at,
       :company_id
     ])
+    |> unique_constraint(:email, name: "users_email_index")
     |> validate_required([:email, :full_name, :password_hash, :company_id])
   end
 end

@@ -9,6 +9,7 @@ defmodule HoldUp.Registrations do
   alias HoldUp.Registrations.RegistrationForm
   alias HoldUp.Accounts
   alias HoldUp.Waitlists
+  alias Ecto.Multi
 
   @doc """
   Creates a registration_form.
@@ -28,16 +29,89 @@ defmodule HoldUp.Registrations do
     if changeset.valid? do
       registration_form = Ecto.Changeset.apply_changes(changeset)
 
-      Repo.transaction(fn ->
-        {:ok, company} = create_company(registration_form)
-        {:ok, user} = create_user(registration_form, company)
-        {:ok, business} = create_business(company)
-        IO.inspect(user)
-        IO.inspect(business)
-        {:ok, users_business} = create_user_business(user, business)
-        {:ok, waitlist} = create_waitlist(business)
-        user
-      end)
+      multi_result =
+        Multi.new()
+        |> Multi.insert(:company, company_changeset(registration_form))
+        |> Ecto.Multi.insert(:user, fn %{company: company} ->
+          user_attrs = %{
+            email: registration_form.email,
+            full_name: registration_form.full_name,
+            password_hash: Comeonin.Bcrypt.hashpwsalt(registration_form.password),
+            company_id: company.id
+          }
+
+          changeset =
+            company
+            |> Ecto.build_assoc(:users)
+            |> Accounts.User.changeset(user_attrs)
+
+          changeset
+        end)
+        # |> Ecto.Multi.run(:get_company, fn _repo, previous_steps ->
+        #   IO.inspect({:get_company})
+        #   IO.inspect(previous_steps)
+        #   {:ok, previous_steps.company}
+        # end)
+        |> Ecto.Multi.insert(:business, fn previous_steps ->
+          business_attrs = %{
+            name: "Unnamed Business"
+          }
+
+          changeset =
+            previous_steps.company
+            |> Ecto.build_assoc(:businesses)
+            |> Accounts.Business.changeset(business_attrs)
+
+          changeset
+        end)
+        |> Ecto.Multi.insert(:user_business, fn previous_steps ->
+          changeset =
+            Accounts.UserBusiness.changeset(%Accounts.UserBusiness{}, %{
+              user_id: previous_steps.user.id,
+              business_id: previous_steps.business.id
+            })
+
+          changeset
+        end)
+        |> Ecto.Multi.insert(:waitlist, fn previous_steps ->
+          waitlist_attrs = %{
+            name: "Waitlist 1"
+          }
+
+          changeset =
+            previous_steps.business
+            |> Ecto.build_assoc(:waitlist)
+            |> Waitlists.Waitlist.changeset(waitlist_attrs)
+
+          changeset
+        end)
+        |> Ecto.Multi.insert(:confirmation_sms_setting, fn previous_steps ->
+          changeset =
+            previous_steps.waitlist
+            |> Ecto.build_assoc(:confirmation_sms_setting)
+            |> Waitlists.new_confirmation_sms_setting_changeset
+
+          changeset
+        end)
+        |> Ecto.Multi.insert(:attendance_sms_setting, fn previous_steps ->
+          changeset =
+            previous_steps.waitlist
+            |> Ecto.build_assoc(:attendance_sms_setting)
+            |> Waitlists.new_attendance_sms_setting_changeset
+
+          changeset
+        end)
+        |> Repo.transaction()
+
+      case multi_result do
+        {:ok, steps} ->
+          {:ok, steps.user}
+        {:error, failed_operation, failed_value, changes_so_far} ->
+          IO.inspect(failed_operation)
+          IO.inspect(failed_value)
+          IO.inspect(changes_so_far)
+          {:error, %{changeset | action: :registration}}
+      end
     else
       {:error, %{changeset | action: :registration}}
     end
@@ -56,40 +130,10 @@ defmodule HoldUp.Registrations do
     RegistrationForm.changeset(registration_form, %{})
   end
 
-  defp create_company(registration_form) do
-    Accounts.create_company(%{
+  defp company_changeset(registration_form) do
+    Accounts.Company.changeset(%Accounts.Company{}, %{
       name: registration_form.company_name,
       contact_email: registration_form.email
-    })
-  end
-
-  defp create_user(registration_form, company) do
-    Accounts.create_user(%{
-      email: registration_form.email,
-      full_name: registration_form.full_name,
-      password_hash: Comeonin.Bcrypt.hashpwsalt(registration_form.password),
-      company_id: company.id
-    })
-  end
-
-  defp create_business(parent_company) do
-    Accounts.create_business(%{
-      name: "Unnamed Business",
-      company_id: parent_company.id
-    })
-  end
-
-  defp create_user_business(user, business) do
-    Accounts.create_user_business(%{
-      user_id: user.id,
-      business_id: business.id
-    })
-  end
-
-  defp create_waitlist(business) do
-    Waitlists.create_waitlist(%{
-      name: "Wait List 1",
-      business_id: business.id
     })
   end
 end

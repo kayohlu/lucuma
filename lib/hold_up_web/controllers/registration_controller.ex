@@ -4,7 +4,7 @@ defmodule HoldUpWeb.RegistrationController do
   alias HoldUp.Registrations
   alias HoldUp.Registrations.RegistrationForm
 
-  plug :put_layout, false when action in [:new]
+  plug :put_layout, false when action in [:new, :create]
 
   @type schema :: Ecto.Schema.t()
   @type conn :: Plug.Conn.t()
