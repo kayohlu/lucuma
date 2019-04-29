@@ -89,7 +89,7 @@ defmodule HoldUp.Registrations do
           changeset =
             previous_steps.waitlist
             |> Ecto.build_assoc(:confirmation_sms_setting)
-            |> Waitlists.new_confirmation_sms_setting_changeset
+            |> Waitlists.new_confirmation_sms_setting_changeset()
 
           changeset
         end)
@@ -97,7 +97,7 @@ defmodule HoldUp.Registrations do
           changeset =
             previous_steps.waitlist
             |> Ecto.build_assoc(:attendance_sms_setting)
-            |> Waitlists.new_attendance_sms_setting_changeset
+            |> Waitlists.new_attendance_sms_setting_changeset()
 
           changeset
         end)
@@ -106,6 +106,7 @@ defmodule HoldUp.Registrations do
       case multi_result do
         {:ok, steps} ->
           {:ok, steps.user}
+
         {:error, failed_operation, failed_value, changes_so_far} ->
           IO.inspect(failed_operation)
           IO.inspect(failed_value)

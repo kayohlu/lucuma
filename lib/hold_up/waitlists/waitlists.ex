@@ -82,36 +82,36 @@ defmodule HoldUp.Waitlists do
 
   def new_confirmation_sms_setting_changeset(%ConfirmationSmsSetting{} = confirmation_sms_setting) do
     ConfirmationSmsSetting.changeset(confirmation_sms_setting, %{
-        enabled: true,
-        message_content: """
-        Hello [[NAME]],
+      enabled: true,
+      message_content: """
+      Hello [[NAME]],
 
-        It's your turn!
+      It's your turn!
 
-        Regards,
-        Your friendly staff
+      Regards,
+      Your friendly staff
 
-        To cancel click the link below:
-        [[CANCEL_LINK]]
-        """
-      })
+      To cancel click the link below:
+      [[CANCEL_LINK]]
+      """
+    })
   end
 
   def new_attendance_sms_setting_changeset(%AttendanceSmsSetting{} = attendance_sms_setting) do
     AttendanceSmsSetting.changeset(attendance_sms_setting, %{
-        enabled: true,
-        message_content: """
-        Hello [[NAME]],
+      enabled: true,
+      message_content: """
+      Hello [[NAME]],
 
-        You've been added to our waitlist. We'll let you know when it's your turn as soon as possible.
+      You've been added to our waitlist. We'll let you know when it's your turn as soon as possible.
 
-        Regards,
-        Your friendly staff
+      Regards,
+      Your friendly staff
 
-        To cancel click the link below:
-        [[CANCEL_LINK]]
-        """
-      })
+      To cancel click the link below:
+      [[CANCEL_LINK]]
+      """
+    })
   end
 
   defp create_confirmation_sms_settings(waitlist) do
