@@ -39,6 +39,14 @@ body {
   font-weight: 500 !important;
 }
 
+.card {
+  box-shadow: 0 4px 5px hsla(0, 0%, 0%, 0.07);
+
+  .card-footer {
+    background-color: #f8f9fa;
+  }
+}
+
 .sub-menu {
   background-color: #f4f2f0;
   color: $body-color;
@@ -113,3 +121,6 @@ body {
   }
 }
 
+
+@import "dropdown";
+@import "pricing";

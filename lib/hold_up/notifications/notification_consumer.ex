@@ -90,6 +90,7 @@ defmodule HoldUp.Notifications.NotificationConsumer do
   @doc """
   The task completed unsuccessfully.
   Some exception was raised and you'll see it in `reason`.
+  Process crashed?
   """
   def handle_info({:DOWN, task_ref, :process, from, reason}, state) do
     IO.puts("Task failed for some reason..")

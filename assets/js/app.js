@@ -27,6 +27,13 @@ console.log(liveSocket)
 // Local files can be imported directly using relative paths, for example:
 // import socket from "./socket"
 import './waitlist_analytics'
+import './stripe_payments'
+
+$(function () {
+  $('[data-toggle="popover"]').popover({
+    // container: 'body'
+  })
+})
 
 Highcharts.setOptions({
   chart: {

@@ -61,6 +61,7 @@ defmodule HoldUpWeb.Router do
 
     delete "/signout", SessionController, :delete
     resources "/dashboard", DashboardController, only: [:index]
+    resources "/profile", ProfileController, only: [:show], singleton: true
   end
 
   scope "/waitlists", HoldUpWeb.Waitlists, as: :waitlists do

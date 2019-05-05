@@ -1,0 +1,57 @@
+<section>
+    <div class="pricing pricing-palden">
+      <div class="pricing-item" style="border-top: 6px solid #929191">
+      <h3 class="pricing-title text-uppercase">Pay as you go</h3>
+      <div class="pricing-deco d-flex flex-column">
+        <div class="pricing-price d-flex justify-content-center">
+          <div class="pricing-currency-payg">$</div>
+          <span class="pricing-price-number">0.20</span>
+          <span class="pricing-period-payg text-muted">/ customer</span>
+        </div>
+      </div>
+
+      <ul class="pricing-feature-list fa-ul">
+        <li class="pricing-feature"><span class="fa-li"><i class="fas fa-exclamation pr-2" style="color: #929191"></i></span>Customizable SMS alerts</li>
+        <li class="pricing-feature"><span class="fa-li"><i class="fas fa-chart-bar pr-2" style="color: #929191"></i></span>Analytics and Statistics</li>
+      </ul>
+       <%= link gettext("Choose plan"), to: Routes.registration_path(@conn, :new), class: "btn btn-outline-primary pricing-action" %>
+    </div>
+
+      <div class="pricing-item pricing__item--featured" style="border-top: 6px solid #24b47e">
+        <div class="pricing-deco d-flex flex-column">
+          <h3 class="pricing-title text-uppercase">Standard</h3>
+          <div class="pricing-price d-flex justify-content-center">
+            <div class="pricing-currency">$</div>
+            <span class="pricing-price-number">30</span>
+            <span class="pricing-period text-muted">/ month</span>
+          </div>
+
+        </div>
+        <ul class="pricing-feature-list fa-ul">
+          <li class="pricing-feature"><span class="fa-li"><i class="fas fa-user-clock pr-2" style="color: #24b47e"></i></span>First 5000 customers free</li>
+          <li class="pricing-feature"><span class="fa-li"><i class="fas fa-exclamation pr-2" style="color: #24b47e"></i></span>Customizable SMS alerts</li>
+          <li class="pricing-feature"><span class="fa-li"><i class="fas fa-chart-bar pr-2" style="color: #24b47e"></i></span>Analytics and Statistics</li>
+        </ul>
+        <button class="btn btn-primary pricing-action">Choose plan</button>
+      </div>
+
+
+      <div class="pricing-item" style="border-top: 6px solid #2472b4">
+        <div class="pricing-deco d-flex flex-column">
+          <h3 class="pricing-title text-uppercase">Unlimited</h3>
+          <div class="pricing-price d-flex justify-content-center">
+            <div class="pricing-currency">$</div>
+            <span class="pricing-price-number">50</span>
+            <span class="pricing-period text-muted">/ month</span>
+          </div>
+
+        </div>
+        <ul class="pricing-feature-list fa-ul">
+          <li class="pricing-feature"><span class="fa-li"><i class="fas fa-user-clock pr-2"  style="color: #2472b4"></i></span>Unlimited number of customers</li>
+          <li class="pricing-feature"><span class="fa-li"><i class="fas fa-exclamation pr-2" style="color: #2472b4"></i></span>Customizable SMS alerts</li>
+          <li class="pricing-feature"><span class="fa-li"><i class="fas fa-chart-bar pr-2" style="color: #2472b4"></i></span>Analytics and Statistics</li>
+        </ul>
+        <button class="btn btn-outline-primary pricing-action">Choose plan</button>
+      </div>
+    </div>
+  </section>
