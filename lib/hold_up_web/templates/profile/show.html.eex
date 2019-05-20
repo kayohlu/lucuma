@@ -30,7 +30,7 @@
 
 <hr/>
 
-<%= render HoldUpWeb.SharedView, "pricing_plans.html", assigns %>
+<%= render HoldUpWeb.SharedView, "pricing_plans.html", Map.put(assigns, :payment_plan_links, payment_plan_links) %>
 
 <h3 class="pt-4">Staff</h2>
 

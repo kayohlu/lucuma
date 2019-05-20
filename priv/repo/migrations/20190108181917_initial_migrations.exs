@@ -5,6 +5,8 @@ defmodule HoldUp.Repo.Migrations.CreateUsers do
     create table(:companies) do
       add :name, :string, null: false
       add :contact_email, :string, null: false
+      add :stripe_customer_id, :string
+      add :stripe_payment_plan_id, :string
 
       timestamps()
     end

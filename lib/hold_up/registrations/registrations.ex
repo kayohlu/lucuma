@@ -47,11 +47,6 @@ defmodule HoldUp.Registrations do
 
           changeset
         end)
-        # |> Ecto.Multi.run(:get_company, fn _repo, previous_steps ->
-        #   IO.inspect({:get_company})
-        #   IO.inspect(previous_steps)
-        #   {:ok, previous_steps.company}
-        # end)
         |> Ecto.Multi.insert(:business, fn previous_steps ->
           business_attrs = %{
             name: "Unnamed Business"
@@ -106,7 +101,6 @@ defmodule HoldUp.Registrations do
       case multi_result do
         {:ok, steps} ->
           {:ok, steps.user}
-
         {:error, failed_operation, failed_value, changes_so_far} ->
           IO.inspect(failed_operation)
           IO.inspect(failed_value)
@@ -137,4 +131,6 @@ defmodule HoldUp.Registrations do
       contact_email: registration_form.email
     })
   end
+
+
 end

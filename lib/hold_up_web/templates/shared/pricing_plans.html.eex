@@ -14,7 +14,11 @@
         <li class="pricing-feature"><span class="fa-li"><i class="fas fa-exclamation pr-2" style="color: #929191"></i></span>Customizable SMS alerts</li>
         <li class="pricing-feature"><span class="fa-li"><i class="fas fa-chart-bar pr-2" style="color: #929191"></i></span>Analytics and Statistics</li>
       </ul>
-       <%= link gettext("Choose plan"), to: Routes.registration_path(@conn, :new), class: "btn btn-outline-primary pricing-action" %>
+      <%= if Map.has_key?(@conn.assigns, :current_company) && @conn.assigns.current_company.stripe_payment_plan_id == "plan_Eyp0J9dUxi2tWW" do %>
+        <%= link gettext("Cancel"), to: (@payment_plan_links.pay_as_you_go || Routes.registration_path(@conn, :new, payment_plan_id: "plan_Eyp0J9dUxi2tWW")), class: "btn btn-outline-dark pricing-action" %>
+      <% else %>
+       <%= link gettext("Choose plan"), to: (@payment_plan_links.pay_as_you_go || Routes.registration_path(@conn, :new, payment_plan_id: "plan_Eyp0J9dUxi2tWW")), class: "btn btn-outline-primary pricing-action" %>
+      <% end %>
     </div>
 
       <div class="pricing-item pricing__item--featured" style="border-top: 6px solid #24b47e">
@@ -32,7 +36,12 @@
           <li class="pricing-feature"><span class="fa-li"><i class="fas fa-exclamation pr-2" style="color: #24b47e"></i></span>Customizable SMS alerts</li>
           <li class="pricing-feature"><span class="fa-li"><i class="fas fa-chart-bar pr-2" style="color: #24b47e"></i></span>Analytics and Statistics</li>
         </ul>
-        <button class="btn btn-primary pricing-action">Choose plan</button>
+
+        <%= if Map.has_key?(@conn.assigns, :current_company) && @conn.assigns.current_company.stripe_payment_plan_id == "plan_Eyox8DhvcBMAaS" do %>
+          <%= link gettext("Cancel"), to: (@payment_plan_links.pay_as_you_go || Routes.registration_path(@conn, :new, payment_plan_id: "plan_Eyox8DhvcBMAaS")), class: "btn btn-outline-dark pricing-action" %>
+        <% else %>
+          <%= link gettext("Choose plan"), to: @payment_plan_links.standard || Routes.registration_path(@conn, :new, payment_plan_id: "plan_Eyox8DhvcBMAaS"), class: "btn btn-primary pricing-action"  %>
+        <% end %>
       </div>
 
 

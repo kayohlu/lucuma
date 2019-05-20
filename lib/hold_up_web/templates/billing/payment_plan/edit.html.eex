@@ -1,0 +1,1 @@
+<%= render "form.html", Map.put(assigns, :action, Routes.billing_payment_plan_path(@conn, :update, @id)) %>

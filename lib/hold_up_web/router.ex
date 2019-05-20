@@ -82,4 +82,11 @@ defmodule HoldUpWeb.Router do
     resources "/no_shows", NoShowController, only: [:create]
     resources "/c", CancellationController, only: [:show, :index]
   end
+
+  scope "/billing", HoldUpWeb.Billing, as: :billing do
+    pipe_through :protected
+
+    get "/payment_plans/:id", PaymentPlanController, :edit
+    resources "/payment_plans/", PaymentPlanController, only: [:update]
+  end
 end

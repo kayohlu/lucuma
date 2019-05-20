@@ -121,6 +121,16 @@ body {
   }
 }
 
+.form-control {
+  border: 0px solid;
+  background-color: #f8f9fa;
+}
+
+.input-group-text {
+  border: 0px solid #ced4da;
+}
+
 
 @import "dropdown";
 @import "pricing";
+@import "stripe_payment_form";

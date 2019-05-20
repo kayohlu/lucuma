@@ -1,5 +1,4 @@
- <%= link gettext("Sign Up"), to: Routes.registration_path(@conn, :new) %>
-  <%= link gettext("Sign In"), to: Routes.session_path(@conn, :new) %>
+<%= link gettext("Sign In"), to: Routes.session_path(@conn, :new) %>
 
 
-<%= render HoldUpWeb.SharedView, "pricing_plans.html", assigns %>
+<%= render HoldUpWeb.SharedView, "pricing_plans.html", Map.put(assigns, :payment_plan_links, payment_plan_links) %>

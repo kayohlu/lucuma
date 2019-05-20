@@ -1,0 +1,18 @@
+<h1>Show Payment plan</h1>
+
+<ul>
+
+  <li>
+    <strong>Stripe:</strong>
+    <%= @payment_plan.stripe_id %>
+  </li>
+
+  <li>
+    <strong>Active:</strong>
+    <%= @payment_plan.active %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.payment_plan_path(@conn, :edit, @payment_plan) %></span>
+<span><%= link "Back", to: Routes.payment_plan_path(@conn, :index) %></span>

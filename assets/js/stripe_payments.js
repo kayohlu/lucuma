@@ -1,7 +1,10 @@
 import $ from "jquery"
 
-$(document).ready(function(){
-  var stripe = Stripe('pk_test_ZvwIiwZRBS7vWlcCpzAH9eRX');
+$(document).ready(function() {
+  var payment_form = document.getElementById('payment-form')
+  if (payment_form == null) { return false }
+
+  var stripe = Stripe(payment_form.dataset.stripePublicKey);
 
   // Submit the form with the token ID.
   function stripeTokenHandler(token) {

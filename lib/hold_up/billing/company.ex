@@ -1,14 +1,10 @@
-defmodule HoldUp.Accounts.Company do
+defmodule HoldUp.Billing.Company do
   use Ecto.Schema
   import Ecto.Changeset
 
   schema "companies" do
-    field :contact_email, :string
-    field :name, :string
     field :stripe_customer_id, :string
     field :stripe_payment_plan_id, :string
-
-    timestamps()
 
     has_many :users, HoldUp.Accounts.User
     has_many :businesses, HoldUp.Accounts.Business
@@ -17,7 +13,7 @@ defmodule HoldUp.Accounts.Company do
   @doc false
   def changeset(company, attrs) do
     company
-    |> cast(attrs, [:name, :contact_email])
-    |> validate_required([:name, :contact_email])
+    |> cast(attrs, [:stripe_customer_id, :stripe_payment_plan_id])
+    |> validate_required([:stripe_customer_id, :stripe_payment_plan_id])
   end
 end
