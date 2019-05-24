@@ -7,7 +7,8 @@ defmodule HoldUpWeb.ProfileView do
         Routes.billing_payment_plan_path(HoldUpWeb.Endpoint, :edit, "plan_Eyp0J9dUxi2tWW"),
       standard:
         Routes.billing_payment_plan_path(HoldUpWeb.Endpoint, :edit, "plan_Eyox8DhvcBMAaS"),
-      unlimited: Routes.billing_payment_plan_path(HoldUpWeb.Endpoint, :edit, "plan_F7YntQ0ELRD33U")
+      unlimited:
+        Routes.billing_payment_plan_path(HoldUpWeb.Endpoint, :edit, "plan_F7YntQ0ELRD33U")
     }
   end
 end

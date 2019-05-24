@@ -18,7 +18,13 @@ defmodule HoldUp.Accounts.Company do
   @doc false
   def changeset(company, attrs) do
     company
-    |> cast(attrs, [:name, :contact_email, :stripe_customer_id, :stripe_payment_plan_id, :stripe_subscription_id])
+    |> cast(attrs, [
+      :name,
+      :contact_email,
+      :stripe_customer_id,
+      :stripe_payment_plan_id,
+      :stripe_subscription_id
+    ])
     |> validate_required([:name, :contact_email])
   end
 end

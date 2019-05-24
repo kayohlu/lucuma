@@ -13,7 +13,12 @@ defmodule HoldUpWeb.RegistrationController do
   @spec new(conn, params) :: conn
   def new(conn, params) do
     changeset = Registrations.change_registration_form(%RegistrationForm{})
-    render(conn, "new.html", changeset: changeset, payment_plan_id: payment_plan_id(params), action: form_post_action(conn, payment_plan_id(params)))
+
+    render(conn, "new.html",
+      changeset: changeset,
+      payment_plan_id: payment_plan_id(params),
+      action: form_post_action(conn, payment_plan_id(params))
+    )
   end
 
   @spec new(conn, params) :: conn
@@ -28,9 +33,7 @@ defmodule HoldUpWeb.RegistrationController do
           :info,
           "That's it. Your registration is complete. We've created an initial default waitlist for you. You can add up to 100 people to your waitlist."
         )
-        |> redirect(
-          to: registration_complete_redirect_path(conn, payment_plan_id(params))
-          )
+        |> redirect(to: registration_complete_redirect_path(conn, payment_plan_id(params)))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset, payment_plan_id: payment_plan_id(params))
@@ -40,6 +43,7 @@ defmodule HoldUpWeb.RegistrationController do
   defp payment_plan_id(%{"payment_plan_id" => id}) do
     id
   end
+
   # iex(6)> %{} = %{hello: "asd"}
   # %{hello: "asd"}
   # Seems to match any map, but because the method definition above is first
@@ -51,14 +55,16 @@ defmodule HoldUpWeb.RegistrationController do
   def form_post_action(conn, nil) do
     Routes.registration_path(conn, :create)
   end
+
   def form_post_action(conn, payment_plan_id) do
-   Routes.registration_path(conn, :create, payment_plan_id: payment_plan_id)
+    Routes.registration_path(conn, :create, payment_plan_id: payment_plan_id)
   end
 
   def registration_complete_redirect_path(conn, nil) do
-     Routes.dashboard_path(conn, :index)
+    Routes.dashboard_path(conn, :index)
   end
+
   def registration_complete_redirect_path(conn, payment_plan_id) do
-     Routes.billing_payment_plan_path(conn, :edit, payment_plan_id)
+    Routes.billing_payment_plan_path(conn, :edit, payment_plan_id)
   end
 end
