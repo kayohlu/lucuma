@@ -7,6 +7,7 @@ defmodule HoldUp.Accounts.Company do
     field :name, :string
     field :stripe_customer_id, :string
     field :stripe_payment_plan_id, :string
+    field :stripe_subscription_id, :string
 
     timestamps()
 
@@ -17,7 +18,7 @@ defmodule HoldUp.Accounts.Company do
   @doc false
   def changeset(company, attrs) do
     company
-    |> cast(attrs, [:name, :contact_email])
+    |> cast(attrs, [:name, :contact_email, :stripe_customer_id, :stripe_payment_plan_id, :stripe_subscription_id])
     |> validate_required([:name, :contact_email])
   end
 end

@@ -7,6 +7,7 @@ defmodule HoldUp.Repo.Migrations.CreateUsers do
       add :contact_email, :string, null: false
       add :stripe_customer_id, :string
       add :stripe_payment_plan_id, :string
+      add :stripe_subscription_id, :string
 
       timestamps()
     end

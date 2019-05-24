@@ -8,9 +8,11 @@ defmodule HoldUpWeb.ErrorHelpers do
   @doc """
   Generates tag for inlined form input errors.
   """
-  def error_tag(form, field) do
+  def error_tag(form, field, opts \\ []) do
+    wrapper_opts = Keyword.merge([class: "invalid-feedback"], opts[:wrapper_opts] || [], fn _k, v1, v2 -> "#{v1} #{v2}" end)
+
     Enum.map(Keyword.get_values(form.errors, field), fn error ->
-      content_tag(:div, translate_error(error), class: "invalid-feedback")
+      content_tag(:div, translate_error(error), wrapper_opts)
     end)
   end
 

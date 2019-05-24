@@ -88,5 +88,6 @@ defmodule HoldUpWeb.Router do
 
     get "/payment_plans/:id", PaymentPlanController, :edit
     resources "/payment_plans/", PaymentPlanController, only: [:update]
+    resources "/subscriptions/", SubscriptionController, only: [:delete]
   end
 end

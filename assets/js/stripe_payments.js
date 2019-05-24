@@ -4,7 +4,7 @@ $(document).ready(function() {
   var payment_form = document.getElementById('payment-form')
   if (payment_form == null) { return false }
 
-  var stripe = Stripe(payment_form.dataset.stripePublicKey);
+    var stripe = Stripe(payment_form.dataset.stripePublicKey);
 
   // Submit the form with the token ID.
   function stripeTokenHandler(token) {
@@ -28,9 +28,10 @@ $(document).ready(function() {
 var style = {
   base: {
     color: '#32325d',
-    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+    // fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
     fontSmoothing: 'antialiased',
     fontSize: '16px',
+    lineHeight: '1.429',
     '::placeholder': {
       color: '#aab7c4'
     }

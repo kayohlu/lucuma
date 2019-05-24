@@ -16,9 +16,9 @@ defmodule HoldUpWeb.FormHelpers do
   def form_group(form, field, opts \\ []) do
     type = opts[:using] || Phoenix.HTML.Form.input_type(form, field)
 
-    wrapper_opts = Keyword.merge([class: "form-group"], opts[:wrapper_opts] || [])
-    label_opts = Keyword.merge([class: "control-label"], opts[:label_opts] || [])
-    input_opts = Keyword.merge([class: input_field_classes(form, field)], opts[:input_opts] || [])
+    wrapper_opts = Keyword.merge([class: "form-group"], opts[:wrapper_opts] || [], fn _k, v1, v2 -> "#{v1} #{v2}" end)
+    label_opts = Keyword.merge([class: "control-label"], opts[:label_opts] || [], fn _k, v1, v2 -> "#{v1} #{v2}" end)
+    input_opts = Keyword.merge([class: input_field_classes(form, field)], opts[:input_opts] || [], fn _k, v1, v2 -> "#{v1} #{v2}" end)
 
     content_tag(:div, wrapper_opts) do
       label = label(form, field, label_opts)
@@ -27,6 +27,26 @@ defmodule HoldUpWeb.FormHelpers do
       error = error_tag(form, field)
 
       [label, input, error]
+    end
+  end
+
+  def form_group_for_credit_card(form, field, opts \\ []) do
+    type = opts[:using] || Phoenix.HTML.Form.input_type(form, field)
+
+    wrapper_opts = Keyword.merge([class: "form-group"], opts[:wrapper_opts] || [], fn _k, v1, v2 -> "#{v1} #{v2}" end)
+    label_opts = Keyword.merge([class: "control-label", for: "card-element"], opts[:label_opts] || [], fn _k, v1, v2 -> "#{v1} #{v2}" end)
+    input_opts = Keyword.merge([class: input_field_classes(form, field)], opts[:input_opts] || [], fn _k, v1, v2 -> "#{v1} #{v2}" end)
+
+    content_tag(:div, wrapper_opts) do
+      label = label(form, field, label_opts)
+      # apply is like the equivalent of send in ruby.
+      card_element_div = content_tag(:div, [id: "card-element"]) do
+        [apply(Phoenix.HTML.Form, type, [form, field, input_opts])]
+      end
+      stripe_error_tag = content_tag(:div, nil, [id: "card-errors", class: "invalid-feedback"])
+      error_tag = error_tag(form, field)
+
+      [label, card_element_div, stripe_error_tag, error_tag]
     end
   end
 

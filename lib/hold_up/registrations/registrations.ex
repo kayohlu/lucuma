@@ -101,6 +101,7 @@ defmodule HoldUp.Registrations do
       case multi_result do
         {:ok, steps} ->
           {:ok, steps.user}
+
         {:error, failed_operation, failed_value, changes_so_far} ->
           IO.inspect(failed_operation)
           IO.inspect(failed_value)
@@ -131,6 +132,4 @@ defmodule HoldUp.Registrations do
       contact_email: registration_form.email
     })
   end
-
-
 end
