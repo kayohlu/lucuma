@@ -1,37 +1,38 @@
-<h3 class="pt-4">Billing Overview</h2>
-
-<hr/>
-
-<div class="card-deck">
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title text-center">Current bill total</h5>
-      <h5 class="card-subtitle mb-2 mt-4 text-muted text-center">$100</h5>
-      <a href="#" class="card-link d-block text-center">Card link</a>
+<%= if @subscription do %>
+  <h3 class="pt-4">Billing Overview</h2>
+  <hr/>
+  <div class="card-deck">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title text-center">Current bill total</h5>
+        <h5 class="card-subtitle mb-2 mt-4 text-muted text-center">$100</h5>
+        <a href="#" class="card-link d-block text-center">Card link</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title text-center">Next payment due</h5>
+        <h5 class="card-subtitle mb-2 mt-4 text-muted text-center">10/10/19</h5>
+        <a href="#" class="card-link d-block text-center">Card link</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title text-center">Current bill total</h5>
+        <h5 class="card-subtitle mb-2 mt-4 text-muted text-center">$100</h5>
+        <a href="#" class="card-link d-block text-center">Card link</a>
+      </div>
     </div>
   </div>
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title text-center">Next payment due</h5>
-      <h5 class="card-subtitle mb-2 mt-4 text-muted text-center">10/10/19</h5>
-      <a href="#" class="card-link d-block text-center">Card link</a>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title text-center">Current bill total</h5>
-      <h5 class="card-subtitle mb-2 mt-4 text-muted text-center">$100</h5>
-      <a href="#" class="card-link d-block text-center">Card link</a>
-    </div>
-  </div>
-</div>
+<% end %>
 
 <h3 class="pt-4">Your Subscription</h2>
-
 <hr/>
+
+<%= unless @subscription do %>
+  <div class="alert alert-info text-center mt-4 mb-4" role="alert">
+    <%= gettext("You are currently using the free trial. You can add up to 100 customers to your waitlist.") %>
+  </div>
+<% end %>
 
 <%= render HoldUpWeb.SharedView, "pricing_plans.html", Map.put(assigns, :payment_plan_links, payment_plan_links) %>
-
-<h3 class="pt-4">Staff</h2>
-
-<hr/>

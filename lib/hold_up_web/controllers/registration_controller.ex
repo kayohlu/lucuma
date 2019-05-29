@@ -36,7 +36,11 @@ defmodule HoldUpWeb.RegistrationController do
         |> redirect(to: registration_complete_redirect_path(conn, payment_plan_id(params)))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset, payment_plan_id: payment_plan_id(params))
+        render(conn, "new.html",
+          changeset: changeset,
+          payment_plan_id: payment_plan_id(params),
+          action: form_post_action(conn, payment_plan_id(params))
+        )
     end
   end
 

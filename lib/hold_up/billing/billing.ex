@@ -21,8 +21,15 @@ defmodule HoldUp.Billing do
 
   def get_payment_plan(plan_id) do
     {:ok, payment_plan} = Stripe.Plan.retrieve(plan_id)
-    IO.inspect(payment_plan)
     payment_plan
+  end
+
+  def get_current_subscription(nil) do
+    nil
+  end
+  def get_current_subscription(stripe_subscription_id) do
+    {:ok, subscription} = Stripe.Subscription.retrieve(stripe_subscription_id)
+    subscription
   end
 
   def plans do
@@ -59,7 +66,7 @@ defmodule HoldUp.Billing do
                                                                       stripe_subscription
                                                                   } ->
           changeset =
-            Company.changeset(%Company{id: company.id}, %{
+            Company.changeset(company, %{
               stripe_customer_id: stripe_customer.id,
               stripe_payment_plan_id: stripe_payment_plan_id,
               stripe_subscription_id: stripe_subscription.id
@@ -148,7 +155,7 @@ defmodule HoldUp.Billing do
             "Could not process your subscription at this time. Please try again."
           )
 
-        {:error, :update_company_with_stripe_data, {:error, changeset},
+        {:error, :update_company_with_stripe_data, changeset,
          %{
            create_stripe_customer: stripe_customer,
            create_stripe_subscription: stripe_subscription
@@ -157,23 +164,29 @@ defmodule HoldUp.Billing do
           destroy_stripe_subscription(stripe_subscription)
           {:error, "Could not process your subscription at this time. Please try again."}
 
-          add_error_to_form_changeset(
+          {:error, add_error_to_form_changeset(
             changeset,
             "Could not process your subscription at this time. Please try again."
-          )
+          )}
       end
     end
   end
 
   def cancel_subscription(user, company, stripe_payment_plan_id) do
     # https://stripe.com/docs/billing/subscriptions/canceling-pausing
-    {:ok, success_response} =
-      Stripe.Subscription.update(company.stripe_subscription_id, %{cancel_at_period_end: true})
+    {:ok, success_response} = case stripe_payment_plan_id do
+      # This is the metered plan we need cancel right away by deleting the subscription.
+      "plan_Eyp0J9dUxi2tWW" ->
+        Stripe.Subscription.delete(company.stripe_subscription_id)
+      _ ->
+        Stripe.Subscription.update(company.stripe_subscription_id, %{cancel_at_period_end: true})
+    end
 
     {:ok, _updated_company} =
       update_company(company, %{stripe_payment_plan_id: nil, stripe_subscription_id: nil})
 
     Logger.info(inspect(success_response))
+
     :ok
   end
 

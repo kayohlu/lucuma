@@ -48,7 +48,7 @@ body {
 }
 
 .sub-menu {
-  background-color: #f4f2f0;
+  background-color: none;
   color: $body-color;
   font-size: 1.1rem;
   padding-bottom: 0;
@@ -64,6 +64,9 @@ body {
         text-align: center;
 
         &.active {
+          border-bottom: 2px solid $primary;
+          border-bottom-left-radius: 2px;
+          border-bottom-right-radius: 2px;
           background-color: $body-bg;
           border-radius: 3px 3px 0 0;
           color: $body-color;
