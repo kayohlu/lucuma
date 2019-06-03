@@ -50,6 +50,9 @@ defmodule HoldUp.Billing do
       multi_result =
         Ecto.Multi.new()
         |> Ecto.Multi.run(:create_stripe_customer, fn repo, previous_steps ->
+
+          Logger.debug "Creating Stripe customer"
+
           create_stripe_customer(user, company, stripe_credit_card_token)
         end)
         |> Ecto.Multi.run(:create_stripe_subscription, fn _repo,
@@ -57,7 +60,12 @@ defmodule HoldUp.Billing do
                                                             create_stripe_customer:
                                                               stripe_customer
                                                           } ->
-          create_stripe_subscription(stripe_customer, stripe_payment_plan_id)
+
+          Logger.debug "Creating Stripe Subscription"
+
+          result = create_stripe_subscription(stripe_customer, stripe_payment_plan_id)
+          IO.inspect result
+          result
         end)
         |> Ecto.Multi.update(:update_company_with_stripe_data, fn %{
                                                                     create_stripe_customer:
@@ -136,6 +144,19 @@ defmodule HoldUp.Billing do
           add_error_to_form_changeset(
             changeset,
             "Could not process your subscription at this time. Please try again."
+          )
+
+        {:error, :create_stripe_subscription,
+         %Stripe.Error{
+           extra: %{card_code: :card_declined, raw_error: %{"decline_code" => decline_code}}
+         } = failed_value, _changes_so_far} ->
+          Logger.info("Card declined because #{decline_code}")
+          Logger.info("Card decline response: #{inspect(failed_value)}")
+          {:error, "Your card was declined. Please try another card."}
+
+          add_error_to_form_changeset(
+            changeset,
+            "Your card was declined. Please try another card."
           )
 
         {:error, :create_stripe_subscription, failed_value,
@@ -228,7 +249,7 @@ defmodule HoldUp.Billing do
 
   def add_error_to_form_changeset(changeset, error_message) do
     # add_error_to_form_changeset(changeset, "Your card was declined. Please try another card.")
-    %{changeset | action: :subscription_payment}
-    |> Ecto.Changeset.add_error(:credit_or_debit_card, error_message)
+    {:error, %{changeset | action: :subscription_payment}
+    |> Ecto.Changeset.add_error(:credit_or_debit_card, error_message)}
   end
 end

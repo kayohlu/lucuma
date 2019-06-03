@@ -23,4 +23,7 @@ config :hold_up, HoldUp.Repo,
 config :bcrypt_elixir, :log_rounds, 4
 
 config :wallaby,
-  driver: Wallaby.Experimental.Chrome
+  driver: Wallaby.Experimental.Chrome,
+  chrome: [
+    headless: false
+  ]

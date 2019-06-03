@@ -3,6 +3,7 @@
 
 # Provide a base URL for wallaby to use so it knows how to resolve relative paths.
 Application.put_env(:wallaby, :base_url, HoldUpWeb.Endpoint.url())
+Application.put_env(:wallaby, :screenshot_on_failure, true)
 
 ExUnit.start()
 

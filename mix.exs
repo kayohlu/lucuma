@@ -52,7 +52,7 @@ defmodule HoldUp.MixProject do
       {:ex_twilio, "~> 0.7.0"},
       {:gen_stage, "~> 0.14"},
       {:ex_machina, "~> 2.3"},
-      {:wallaby, "~> 0.22.0", [runtime: false, only: [:test, :ci]]},
+      {:wallaby, github: "keathley/wallaby", runtime: false, only: [:test, :ci]},
       {:canada, "~> 1.0.1"},
       {:phoenix_live_view, github: "phoenixframework/phoenix_live_view"},
       {:stripity_stripe, "~> 2.2.2"}
