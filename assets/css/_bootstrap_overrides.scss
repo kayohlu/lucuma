@@ -10,3 +10,14 @@ $warning: #EDAE49;
 // $success: #fd5149;
 
 $card-border-color: #e5e9f2;
+
+$container-max-widths: () !default;
+$container-max-widths: map-merge(
+  (
+    sm: 740px,
+    md: 920px,
+    lg: 1160px,
+    xl: 1340px
+  ),
+  $container-max-widths
+);

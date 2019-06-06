@@ -1,56 +1,63 @@
-<div class="row mb-6">
-  <div class="col-md-4 d-flex justify-content-between h-25">
-    <div class="d-flex flex-column w-75">
-      <p class="mb-0"><%= gettext("Confirmation SMS Notification") %></p>
-      <small class="text-muted d-block"><%= gettext("This is the SMS your customers receive when they are added to the waitlist.") %></small>
-    </div>
-    <div class="d-flex align-items-center">
-      <%= form_for @confirmation_sms_setting_changeset, Routes.waitlists_waitlist_setting_path(@conn, :update, @waitlist.id, @confirmation_sms_setting.id), [method: :put], fn f -> %>
-        <div class="btn-group-toggle" data-toggle="buttons">
-          <label class="btn btn-<%= if @confirmation_sms_setting.enabled, do: "primary", else: "light" %> <%= if @confirmation_sms_setting.enabled, do: "active", else: nil %> js_submitOnClick">
-            <%= checkbox(f, :enabled) %> <%= if @confirmation_sms_setting.enabled, do: gettext("On"), else: gettext("Off") %>
-          </label>
-          </div>
-        <% end %>
-    </div>
-  </div>
-  <div class="col-md-8">
-    <%= form_for @confirmation_sms_setting_changeset, Routes.waitlists_waitlist_setting_path(@conn, :update, @waitlist.id, @confirmation_sms_setting.id), [method: :put], fn f -> %>
-    <%= textarea(f, :message_content, class: input_field_classes(f, :message_content), rows: 6) %>
-    <small id="emailHelp" class="form-text text-muted"><%= gettext("Please make sure your tags are correctly entered. Every tag should be surrounded by double square braces. For example: ") %><code>[[NAME]]</code> <%= gettext("and") %> <code>[[CANCEL_LINK]]</code></small>
-    <div class="mt-3">
-      <%= submit gettext("Update SMS message"), class: "btn btn-outline-secondary btn-block" %>
-    </div>
-    <% end %>
-  </div>
-</div>
-
-<hr/>
-
-<div class="row mb-6">
-  <div class="col-md-4 d-flex justify-content-between h-25">
-    <div class="d-flex flex-column w-75">
-      <p class="mb-0"><%= gettext("Attendance SMS Notification") %></p>
-      <small class="text-muted d-block"><%= gettext("This is the SMS your customers receive when they are added to the waitlist.") %></small>
-    </div>
-    <div class="d-flex align-items-center">
-      <%= form_for @attendance_sms_setting_changeset, Routes.waitlists_waitlist_setting_path(@conn, :update, @waitlist.id, @attendance_sms_setting.id), [method: :put], fn f -> %>
-        <div class="btn-group-toggle" data-toggle="buttons">
-          <label class="btn btn-<%= if @attendance_sms_setting.enabled, do: "primary", else: "light" %> <%= if @attendance_sms_setting.enabled, do: "active", else: nil %> js_submitOnClick">
-            <%= checkbox(f, :enabled) %> <%= if @attendance_sms_setting.enabled, do: gettext("On"), else: gettext("Off") %>
-          </label>
+<div class="card">
+  <div class="card-header"><%= gettext("Confirmation SMS Notification") %></div>
+  <div class="card-body">
+    <div class="row mb-6">
+      <div class="col-md-4 d-flex justify-content-between h-25">
+        <div class="d-flex flex-column w-75">
+          <span class="text-muted"><%= gettext("This is the SMS your customers receive when they are added to the waitlist.") %></span>
         </div>
-      <% end %>
+        <div>
+          <%= form_for @confirmation_sms_setting_changeset, Routes.waitlists_waitlist_setting_path(@conn, :update, @waitlist.id, @confirmation_sms_setting.id), [method: :put], fn f -> %>
+          <div class="btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-<%= if @confirmation_sms_setting.enabled, do: "primary", else: "light" %> <%= if @confirmation_sms_setting.enabled, do: "active", else: nil %> js_submitOnClick">
+              <%= checkbox(f, :enabled) %> <%= if @confirmation_sms_setting.enabled, do: gettext("On"), else: gettext("Off") %>
+            </label>
+          </div>
+          <% end %>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <%= form_for @confirmation_sms_setting_changeset, Routes.waitlists_waitlist_setting_path(@conn, :update, @waitlist.id, @confirmation_sms_setting.id), [method: :put], fn f -> %>
+        <%= textarea(f, :message_content, class: input_field_classes(f, :message_content), rows: 6) %>
+        <small id="emailHelp" class="form-text text-muted"><%= gettext("Please make sure your tags are correctly entered. Every tag should be surrounded by double square braces. For example: ") %><code>[[NAME]]</code> <%= gettext("and") %> <code>[[CANCEL_LINK]]</code></small>
+        <div class="mt-3">
+          <%= submit gettext("Update SMS message"), class: "btn btn-outline-secondary btn-block" %>
+        </div>
+        <% end %>
+      </div>
     </div>
-  </div>
-  <div class="col-md-8">
-    <%= form_for @attendance_sms_setting_changeset, Routes.waitlists_waitlist_setting_path(@conn, :update, @waitlist.id, @attendance_sms_setting.id), [method: :put], fn f -> %>
-    <%= textarea(f, :message_content, class: input_field_classes(f, :message_content), rows: 6) %>
-    <small id="emailHelp" class="form-text text-muted"><%= gettext("Please make sure your tags are correctly entered. Every tag should be surrounded by double square braces. For example: ") %><code>[[NAME]]</code> <%= gettext("and") %> <code>[[CANCEL_LINK]]</code></small>
-    <div class="mt-2">
-      <%= submit "Update SMS message", class: "btn btn-outline-secondary btn-block" %>
-    </div>
-    <% end %>
   </div>
 </div>
 
+<br/>
+
+<div class="card">
+  <div class="card-header"><%= gettext("Attendance SMS Notification") %></div>
+  <div class="card-body">
+    <div class="row mb-6">
+      <div class="col-md-4 d-flex justify-content-between h-25">
+        <div class="d-flex flex-column w-75">
+          <span class="text-muted"><%= gettext("This is the SMS your customers receive when they are added to the waitlist.") %></span>
+        </div>
+        <div class="d-flex">
+          <%= form_for @attendance_sms_setting_changeset, Routes.waitlists_waitlist_setting_path(@conn, :update, @waitlist.id, @attendance_sms_setting.id), [method: :put], fn f -> %>
+          <div class="btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-<%= if @attendance_sms_setting.enabled, do: "primary", else: "light" %> <%= if @attendance_sms_setting.enabled, do: "active", else: nil %> js_submitOnClick">
+              <%= checkbox(f, :enabled) %> <%= if @attendance_sms_setting.enabled, do: gettext("On"), else: gettext("Off") %>
+            </label>
+          </div>
+          <% end %>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <%= form_for @attendance_sms_setting_changeset, Routes.waitlists_waitlist_setting_path(@conn, :update, @waitlist.id, @attendance_sms_setting.id), [method: :put], fn f -> %>
+        <%= textarea(f, :message_content, class: input_field_classes(f, :message_content), rows: 6) %>
+        <small id="emailHelp" class="form-text text-muted"><%= gettext("Please make sure your tags are correctly entered. Every tag should be surrounded by double square braces. For example: ") %><code>[[NAME]]</code> <%= gettext("and") %> <code>[[CANCEL_LINK]]</code></small>
+        <div class="mt-2">
+          <%= submit "Update SMS message", class: "btn btn-outline-secondary btn-block" %>
+        </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

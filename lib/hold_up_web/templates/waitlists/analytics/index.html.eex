@@ -155,5 +155,11 @@
   </div>
 </div>
 <%= else %>
-  <p><%= gettext("There are no analytics available. You need to start adding people to your waitlist.") %></p>
+  <div class="card">
+  <div class="card-body">
+      <div class="col text-center">
+        <span><%= gettext("There are no analytics available. You need to start adding people to your waitlist.") %></span>
+      </div>
+  </div>
+</div>
 <%= end %>

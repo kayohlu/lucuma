@@ -41,6 +41,7 @@ body {
 
 .card {
   box-shadow: 0 4px 5px hsla(0, 0%, 0%, 0.07);
+  border: none;
 
   .card-header {
     font-weight: 500;
@@ -58,27 +59,6 @@ body {
   padding-bottom: 0;
   // padding-top: 1.5rem;
 
-  .navbar-nav {
-    .nav-item {
-      // width: 177px;
-
-      .nav-link {
-        color: #586069;
-        padding: 0.5rem 1.5rem;
-        text-align: center;
-
-        &.active {
-          border-bottom: 2px solid $primary;
-          border-bottom-left-radius: 2px;
-          border-bottom-right-radius: 2px;
-          background-color: $body-bg;
-          border-radius: 3px 3px 0 0;
-          color: $body-color;
-        }
-      }
-    }
-  }
-
   .nav {
     .nav-item {
       // width: 177px;
@@ -86,12 +66,12 @@ body {
       .nav-link {
         color: #586069;
         padding: 0.5rem 1.5rem;
-        text-align: center;
+        // text-align: center;
 
         &.active {
-          border-bottom: 2px solid $primary;
-          border-bottom-left-radius: 2px;
-          border-bottom-right-radius: 2px;
+          // border-bottom: 2px solid $primary;
+          // border-bottom-left-radius: 2px;
+          // border-bottom-right-radius: 2px;
           background-color: $body-bg;
           border-radius: 3px 3px 0 0;
           color: $body-color;
