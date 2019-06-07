@@ -86,7 +86,7 @@ defmodule HoldUp.Waitlists do
       message_content: """
       Hello [[NAME]],
 
-      It's your turn!
+      You've been added to our waitlist. We'll let you know when it's your turn as soon as possible.
 
       Regards,
       Your friendly staff
@@ -101,9 +101,10 @@ defmodule HoldUp.Waitlists do
     AttendanceSmsSetting.changeset(attendance_sms_setting, %{
       enabled: true,
       message_content: """
+
       Hello [[NAME]],
 
-      You've been added to our waitlist. We'll let you know when it's your turn as soon as possible.
+      It's your turn!
 
       Regards,
       Your friendly staff
@@ -122,7 +123,7 @@ defmodule HoldUp.Waitlists do
         message_content: """
         Hello [[NAME]],
 
-        It's your turn!
+        You've been added to our waitlist. We'll let you know when it's your turn as soon as possible.
 
         Regards,
         Your friendly staff
@@ -141,7 +142,7 @@ defmodule HoldUp.Waitlists do
         message_content: """
         Hello [[NAME]],
 
-        You've been added to our waitlist. We'll let you know when it's your turn as soon as possible.
+        It's your turn!
 
         Regards,
         Your friendly staff
