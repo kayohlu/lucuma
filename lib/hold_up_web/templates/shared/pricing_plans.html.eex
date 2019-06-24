@@ -14,11 +14,7 @@
         <li class="pricing-feature"><span class="fa-li"><i class="fas fa-exclamation pr-2" style="color: #929191"></i></span>Customizable SMS alerts</li>
         <li class="pricing-feature"><span class="fa-li"><i class="fas fa-chart-bar pr-2" style="color: #929191"></i></span>Analytics and Statistics</li>
       </ul>
-      <%= if Map.has_key?(@conn.assigns, :current_company) && @conn.assigns.current_company.stripe_payment_plan_id == "plan_Eyp0J9dUxi2tWW" do %>
-        <%= link gettext("Cancel"), to: Routes.billing_subscription_path(@conn, :delete, "plan_Eyp0J9dUxi2tWW"), method: :delete, class: "btn btn-outline-dark pricing-action" %>
-      <% else %>
-       <%= link gettext("Choose plan"), to: @payment_plan_links.pay_as_you_go, class: "btn btn-outline-primary pricing-action" %>
-      <% end %>
+      <%= @payment_plan_links.pay_as_you_go %>
     </div>
 
       <div class="pricing-item pricing__item--featured" style="border-top: 6px solid #24b47e">
@@ -36,11 +32,7 @@
           <li class="pricing-feature"><span class="fa-li"><i class="fas fa-exclamation pr-2" style="color: #24b47e"></i></span>Customizable SMS alerts</li>
           <li class="pricing-feature"><span class="fa-li"><i class="fas fa-chart-bar pr-2" style="color: #24b47e"></i></span>Analytics and Statistics</li>
         </ul>
-        <%= if Map.has_key?(@conn.assigns, :current_company) && @conn.assigns.current_company.stripe_payment_plan_id == "plan_Eyox8DhvcBMAaS" do %>
-          <%= link gettext("Cancel"), to: Routes.billing_subscription_path(@conn, :delete, "plan_Eyox8DhvcBMAaS"), method: :delete, class: "btn btn-outline-dark pricing-action" %>
-        <% else %>
-          <%= link gettext("Choose plan"), to: @payment_plan_links.standard, class: "btn btn-primary pricing-action"  %>
-        <% end %>
+        <%= @payment_plan_links.standard %>
       </div>
 
 
@@ -59,11 +51,7 @@
           <li class="pricing-feature"><span class="fa-li"><i class="fas fa-exclamation pr-2" style="color: #2472b4"></i></span>Customizable SMS alerts</li>
           <li class="pricing-feature"><span class="fa-li"><i class="fas fa-chart-bar pr-2" style="color: #2472b4"></i></span>Analytics and Statistics</li>
         </ul>
-        <%= if Map.has_key?(@conn.assigns, :current_company) && @conn.assigns.current_company.stripe_payment_plan_id == "plan_F7YntQ0ELRD33U" do %>
-          <%= link gettext("Cancel"), to: Routes.billing_subscription_path(@conn, :delete, "plan_F7YntQ0ELRD33U"), method: :delete, class: "btn btn-outline-dark pricing-action" %>
-        <% else %>
-          <%= link gettext("Choose plan"), to: @payment_plan_links.standard, class: "btn btn-primary pricing-action"  %>
-        <% end %>
+        <%= @payment_plan_links.unlimited %>
       </div>
     </div>
   </section>

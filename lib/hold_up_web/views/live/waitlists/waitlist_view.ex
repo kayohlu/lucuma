@@ -36,38 +36,43 @@ defmodule HoldUpWeb.Live.Waitlists.WaitlistView do
   #   {:noreply, assign(socket, changeset: changeset, show_modal: true)}
   # end
 
-   def handle_event("show_modal", "", socket) do
-    IO.inspect {:showmodal}
+  def handle_event("show_modal", "", socket) do
+    IO.inspect({:showmodal})
     {:noreply, assign(socket, show_modal: true)}
   end
 
-  def handle_event("clear_form", %{ "stand_by" => stand_by_params}, socket) do
+  def handle_event("clear_form", %{"stand_by" => stand_by_params}, socket) do
     changeset = Waitlists.change_stand_by(%StandBy{})
 
     {:noreply, assign(socket, changeset: changeset, show_modal: false)}
   end
 
-  def handle_event("save", %{ "stand_by" => stand_by_params}, socket) do
-    case Waitlists.create_stand_by(Map.put(stand_by_params, "waitlist_id", socket.assigns.waitlist.id)) do
+  def handle_event("save", %{"stand_by" => stand_by_params}, socket) do
+    case Waitlists.create_stand_by(
+           Map.put(stand_by_params, "waitlist_id", socket.assigns.waitlist.id)
+         ) do
       {:ok, stand_by} ->
         socket = put_flash(socket, :info, "Stand by created successfully.")
         # |> redirect(to: Routes.waitlists_waitlist_path(conn, :show, waitlist))
         waitlist = Waitlists.get_waitlist!(socket.assigns.waitlist.id)
         stand_bys = Waitlists.get_waitlist_stand_bys(socket.assigns.waitlist.id)
+
         assigns = [
           waitlist: waitlist,
           stand_bys: stand_bys,
-          changeset: Waitlists.change_stand_by(%StandBy{}), # empty changeset so the form is blank.
+          # empty changeset so the form is blank.
+          changeset: Waitlists.change_stand_by(%StandBy{}),
           party_breakdown: Waitlists.party_size_breakdown(waitlist.id),
           average_wait_time: Waitlists.calculate_average_wait_time(waitlist.id),
           show_modal: false
         ]
 
-        IO.inspect {:ok, assigns}
+        IO.inspect({:ok, assigns})
 
         socket = assign(socket, assigns)
 
         {:noreply, socket}
+
       {:error, %Ecto.Changeset{} = changeset} ->
         assigns = [
           changeset: changeset,
@@ -84,6 +89,7 @@ defmodule HoldUpWeb.Live.Waitlists.WaitlistView do
 
     waitlist = Waitlists.get_waitlist!(socket.assigns.waitlist.id)
     stand_bys = Waitlists.get_waitlist_stand_bys(socket.assigns.waitlist.id)
+
     assigns = [
       waitlist: waitlist,
       stand_bys: stand_bys,
@@ -98,6 +104,7 @@ defmodule HoldUpWeb.Live.Waitlists.WaitlistView do
 
     waitlist = Waitlists.get_waitlist!(socket.assigns.waitlist.id)
     stand_bys = Waitlists.get_waitlist_stand_bys(socket.assigns.waitlist.id)
+
     assigns = [
       waitlist: waitlist,
       stand_bys: stand_bys,
@@ -112,6 +119,7 @@ defmodule HoldUpWeb.Live.Waitlists.WaitlistView do
 
     waitlist = Waitlists.get_waitlist!(socket.assigns.waitlist.id)
     stand_bys = Waitlists.get_waitlist_stand_bys(socket.assigns.waitlist.id)
+
     assigns = [
       waitlist: waitlist,
       stand_bys: stand_bys,

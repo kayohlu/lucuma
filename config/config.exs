@@ -17,8 +17,8 @@ config :hold_up, HoldUpWeb.Endpoint,
   render_errors: [view: HoldUpWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: HoldUp.PubSub, adapter: Phoenix.PubSub.PG2],
   live_view: [
-     signing_salt: "imxM3waFXGZE2VjX6SsfoTsv/6EbYmC3"
-   ]
+    signing_salt: "imxM3waFXGZE2VjX6SsfoTsv/6EbYmC3"
+  ]
 
 # Configures Elixir's Logger
 config :logger, :console,

@@ -41,14 +41,20 @@ defmodule HoldUp.BillingTest do
 
     test "update_payment_plan/2 with valid data updates the payment_plan" do
       payment_plan = payment_plan_fixture()
-      assert {:ok, %PaymentPlan{} = payment_plan} = Billing.update_payment_plan(payment_plan, @update_attrs)
+
+      assert {:ok, %PaymentPlan{} = payment_plan} =
+               Billing.update_payment_plan(payment_plan, @update_attrs)
+
       assert payment_plan.active == false
       assert payment_plan.stripe_id == "some updated stripe_id"
     end
 
     test "update_payment_plan/2 with invalid data returns error changeset" do
       payment_plan = payment_plan_fixture()
-      assert {:error, %Ecto.Changeset{}} = Billing.update_payment_plan(payment_plan, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Billing.update_payment_plan(payment_plan, @invalid_attrs)
+
       assert payment_plan == Billing.get_payment_plan!(payment_plan.id)
     end
 

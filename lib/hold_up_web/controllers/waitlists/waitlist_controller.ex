@@ -13,7 +13,6 @@ defmodule HoldUpWeb.Waitlists.WaitlistController do
   end
 
   def show(conn, %{"id" => id}) do
-
     # Since this view is rendered inside a nested layout that makes use
     # of something in the assigns this is a little hack to stop liveview complaining.
     conn = assign(conn, :waitlist, Waitlists.get_waitlist!(id))

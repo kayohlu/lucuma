@@ -11,28 +11,27 @@ defmodule HoldUpWeb.Features.AuthenticationTest do
       user = insert(:user, company: company, email: "a@a.com")
       user_business = insert(:user_business, user_id: user.id, business_id: business.id)
 
-      page = session
-      |> visit("/")
-      |> click(link("Sign In"))
-      |> fill_in(text_field("Email"), with: "a@a.com")
-      |> fill_in(text_field("Password"), with: "123123123")
+      page =
+        session
+        |> visit("/")
+        |> click(link("Sign In"))
+        |> fill_in(text_field("Email"), with: "a@a.com")
+        |> fill_in(text_field("Password"), with: "123123123")
 
       page
       |> find(button("Sign In"))
-      |> Wallaby.Element.click
-
+      |> Wallaby.Element.click()
 
       page
       |> assert_text("Dashboard")
 
-
       page
       |> find(css("#dropdownMenuButton", count: 1))
-      |> Wallaby.Element.click
+      |> Wallaby.Element.click()
 
       page
       |> click(link("Sign out"))
-      |> find(link("Sign In"), & assert has_text?(&1, "Sign In"))
+      |> find(link("Sign In"), &assert(has_text?(&1, "Sign In")))
       |> assert_text("Sign In")
     end
   end

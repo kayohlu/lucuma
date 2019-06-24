@@ -6,15 +6,15 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
 
   def register_user(session) do
     session
-      |> visit("/")
-      |> find(link("Choose plan", count: 3, at: 1), & assert has_text?(&1, "Choose plan"))
-      |> click(link("Choose plan", count: 3, at: 1))
-      |> fill_in(text_field("Email"), with: "a@a.com")
-      |> fill_in(text_field("Full name"), with: "user")
-      |> fill_in(text_field("Company name"), with: "company")
-      |> fill_in(text_field("registration[password]"), with: "123123123")
-      |> fill_in(text_field("registration[password_confirmation]"), with: "123123123")
-      |> click(button("Sign Up"))
+    |> visit("/")
+    |> find(link("Choose plan", count: 3, at: 1), &assert(has_text?(&1, "Choose plan")))
+    |> click(link("Choose plan", count: 3, at: 1))
+    |> fill_in(text_field("Email"), with: "a@a.com")
+    |> fill_in(text_field("Full name"), with: "user")
+    |> fill_in(text_field("Company name"), with: "company")
+    |> fill_in(text_field("registration[password]"), with: "123123123")
+    |> fill_in(text_field("registration[password_confirmation]"), with: "123123123")
+    |> click(button("Sign Up"))
   end
 
   describe "user skips subscription via the registration form" do
@@ -22,10 +22,11 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
       register_user(session)
       |> assert_text("Subscription")
 
-
       session
       |> click(link("skip"))
-      |> assert_text("That's it. Your registration is complete. We've created an initial default waitlist for you. You can add up to 100 people to your waitlist.")
+      |> assert_text(
+        "That's it. Your registration is complete. We've created an initial default waitlist for you. You can add up to 100 people to your waitlist."
+      )
     end
   end
 
@@ -45,12 +46,12 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
         |> click(link("Sign In"))
         |> fill_in(text_field("Email"), with: user.email)
         |> fill_in(text_field("Password"), with: "123123123")
-        |> find(button("Sign In"), & assert has_text?(&1, "Sign In"))
+        |> find(button("Sign In"), &assert(has_text?(&1, "Sign In")))
         |> click(button("Sign In"))
 
       page
       |> find(css("#dropdownMenuButton", count: 1))
-      |> Wallaby.Element.click
+      |> Wallaby.Element.click()
 
       page
       |> click(link("Profile"))
@@ -58,8 +59,10 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
       |> click(link("skip"))
 
       page
-      |> find(css(".alert"), & assert has_css?(&1, css(".alert")))
-      |> assert_text("You are currently using the free trial. You can add up to 100 customers to your waitlist.")
+      |> find(css(".alert"), &assert(has_css?(&1, css(".alert"))))
+      |> assert_text(
+        "You are currently using the free trial. You can add up to 100 customers to your waitlist."
+      )
     end
   end
 
@@ -70,7 +73,7 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
 
       session
       |> find(Wallaby.Query.text("Credit or debit card"))
-      |> Wallaby.Element.click
+      |> Wallaby.Element.click()
 
       session
       |> send_keys("4242424242424242 12 23 346 90210")
@@ -83,8 +86,10 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
       :timer.sleep(1500)
 
       session
-      |> find(Wallaby.Query.text("Dashboard"), & assert has_text?(&1, "Dashboard"))
-      |> assert_text("You're subscription has now been activated. To cancel or change your plan, visit your profile.")
+      |> find(Wallaby.Query.text("Dashboard"), &assert(has_text?(&1, "Dashboard")))
+      |> assert_text(
+        "You're subscription has now been activated. To cancel or change your plan, visit your profile."
+      )
     end
   end
 
@@ -95,7 +100,7 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
 
       session
       |> find(Wallaby.Query.text("Credit or debit card"))
-      |> Wallaby.Element.click
+      |> Wallaby.Element.click()
 
       session
       |> send_keys("4000000000000341 12 23 346 90210")
@@ -118,7 +123,7 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
 
       session
       |> find(Wallaby.Query.text("Credit or debit card"))
-      |> Wallaby.Element.click
+      |> Wallaby.Element.click()
 
       session
       |> send_keys("4000000000009235 12 23 346 90210")
@@ -130,20 +135,20 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
       :timer.sleep(2000)
 
       session
-      |> assert_text("You're subscription has now been activated. To cancel or change your plan, visit your profile.")
+      |> assert_text(
+        "You're subscription has now been activated. To cancel or change your plan, visit your profile."
+      )
     end
   end
-
 
   describe "user enters a valid cc number(4000000000004954), results in a charge with a risk_level of highest" do
     test "renders the payment form with appropriate error message", %{session: session} do
       register_user(session)
       |> assert_text("Subscription")
 
-
       session
       |> find(Wallaby.Query.text("Credit or debit card"))
-      |> Wallaby.Element.click
+      |> Wallaby.Element.click()
 
       session
       |> send_keys("4000000000004954 12 23 346 90210")
@@ -164,10 +169,9 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
       register_user(session)
       |> assert_text("Subscription")
 
-
       session
       |> find(Wallaby.Query.text("Credit or debit card"))
-      |> Wallaby.Element.click
+      |> Wallaby.Element.click()
 
       session
       |> send_keys("4100000000000019 12 23 346 90210")
@@ -190,7 +194,7 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
 
       session
       |> find(Wallaby.Query.text("Credit or debit card"))
-      |> Wallaby.Element.click
+      |> Wallaby.Element.click()
 
       session
       |> send_keys("4000000000000002 12 23 346 90210")
@@ -211,10 +215,9 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
       register_user(session)
       |> assert_text("Subscription")
 
-
       session
       |> find(Wallaby.Query.text("Credit or debit card"))
-      |> Wallaby.Element.click
+      |> Wallaby.Element.click()
 
       session
       |> send_keys("4000000000009995 12 23 346 90210")
@@ -235,10 +238,9 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
       register_user(session)
       |> assert_text("Subscription")
 
-
       session
       |> find(Wallaby.Query.text("Credit or debit card"))
-      |> Wallaby.Element.click
+      |> Wallaby.Element.click()
 
       session
       |> send_keys("4000000000009987 12 23 346 90210")
@@ -259,10 +261,9 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
       register_user(session)
       |> assert_text("Subscription")
 
-
       session
       |> find(Wallaby.Query.text("Credit or debit card"))
-      |> Wallaby.Element.click
+      |> Wallaby.Element.click()
 
       session
       |> send_keys("4000000000009979 12 23 346 90210")
@@ -283,10 +284,9 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
       register_user(session)
       |> assert_text("Subscription")
 
-
       session
       |> find(Wallaby.Query.text("Credit or debit card"))
-      |> Wallaby.Element.click
+      |> Wallaby.Element.click()
 
       session
       |> send_keys("4000000000000069 12 23 346 90210")
@@ -307,10 +307,9 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
       register_user(session)
       |> assert_text("Subscription")
 
-
       session
       |> find(Wallaby.Query.text("Credit or debit card"))
-      |> Wallaby.Element.click
+      |> Wallaby.Element.click()
 
       session
       |> send_keys("4000000000000127 12 23 346 90210")
@@ -331,10 +330,9 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
       register_user(session)
       |> assert_text("Subscription")
 
-
       session
       |> find(Wallaby.Query.text("Credit or debit card"))
-      |> Wallaby.Element.click
+      |> Wallaby.Element.click()
 
       session
       |> send_keys("4000000000000119 12 23 346 90210")
@@ -346,7 +344,9 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
       :timer.sleep(2000)
 
       session
-      |> assert_text("Subscription failed. Could not process your subscription at this time. Please try again.")
+      |> assert_text(
+        "Subscription failed. Could not process your subscription at this time. Please try again."
+      )
     end
   end
 
@@ -355,10 +355,9 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
       register_user(session)
       |> assert_text("Subscription")
 
-
       session
       |> find(Wallaby.Query.text("Credit or debit card"))
-      |> Wallaby.Element.click
+      |> Wallaby.Element.click()
 
       session
       |> send_keys("4242424242424241 12 23 346 90210")
@@ -372,17 +371,16 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
       register_user(session)
       |> assert_text("Subscription")
 
-
       session
       |> find(Wallaby.Query.text("Credit or debit card"))
-      |> Wallaby.Element.click
+      |> Wallaby.Element.click()
 
       session
       |> send_keys("4000000000000101 12 23 346 90210")
       |> click(button("Subscribe"))
 
       # |> find(css(".InputElement"), & assert has_css?(&1, css(".InputElement")))
-      # Fuck it, I had to putaa sleep in here because it looks like some element isn't on the page yet for some reason
+      # Fuck it, I had to put a sleep in here because it looks like some element isn't on the page yet for some reason
       # even though using find to block isn't blocking for long enough to check the text.
       :timer.sleep(2000)
 
@@ -391,6 +389,161 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
     end
   end
 
+  ##################### START 3D Secure Tests ###########################
+  ##################### END 3D Secure Tests ###########################
 
-  ##################### 3D Secure Tests ###########################
+  describe "user cancels their subscription (metered pricing) via the profile page" do
+    test "redirects to the profile page", %{session: session} do
+      session
+      |> visit("/")
+      |> find(link("Choose plan", count: 3, at: 0), &assert(has_text?(&1, "Choose plan")))
+      |> click(link("Choose plan", count: 3, at: 0))
+      |> fill_in(text_field("Email"), with: "a@a.com")
+      |> fill_in(text_field("Full name"), with: "user")
+      |> fill_in(text_field("Company name"), with: "company")
+      |> fill_in(text_field("registration[password]"), with: "123123123")
+      |> fill_in(text_field("registration[password_confirmation]"), with: "123123123")
+      |> click(button("Sign Up"))
+      |> assert_text("Subscription")
+
+      session
+      |> find(Wallaby.Query.text("Credit or debit card"))
+      |> Wallaby.Element.click()
+
+      session
+      |> send_keys("4242424242424242 12 23 346 90210")
+      |> click(button("Subscribe"))
+      |> find(Wallaby.Query.text("Dashboard"), &assert(has_text?(&1, "Dashboard")))
+      |> assert_text(
+        "You're subscription has now been activated. To cancel or change your plan, visit your profile."
+      )
+
+      session
+      |> find(css("#dropdownMenuButton", count: 1))
+      |> Wallaby.Element.click()
+
+      session
+      |> click(link("Profile"))
+      |> click(link("Cancel"))
+      |> assert_text("You're subscription has now been canceled.")
+
+      session
+      |> assert_text(
+        "You are currently using the free trial. You can add up to 100 customers to your waitlist."
+      )
+
+      user = HoldUp.Accounts.get_user_by_email("a@a.com")
+      company = user.company
+
+      assert nil == company.stripe_subscription_id
+      assert nil == company.stripe_payment_plan_id
+    end
+  end
+
+  describe "user cancels their subscription (fixed pricing) via the profile page" do
+    test "redirects to the profile page", %{session: session} do
+      session
+      |> visit("/")
+      |> find(link("Choose plan", count: 3, at: 2), &assert(has_text?(&1, "Choose plan")))
+      |> click(link("Choose plan", count: 3, at: 2))
+      |> fill_in(text_field("Email"), with: "a@a.com")
+      |> fill_in(text_field("Full name"), with: "user")
+      |> fill_in(text_field("Company name"), with: "company")
+      |> fill_in(text_field("registration[password]"), with: "123123123")
+      |> fill_in(text_field("registration[password_confirmation]"), with: "123123123")
+      |> click(button("Sign Up"))
+      |> assert_text("Subscription")
+
+      session
+      |> find(Wallaby.Query.text("Credit or debit card"))
+      |> Wallaby.Element.click()
+
+      session
+      |> send_keys("4242424242424242 12 23 346 90210")
+      |> click(button("Subscribe"))
+
+      # Fuck it, I had to put a sleep in here because it looks like some element isn't on the page yet for some reason
+      # even though using find to block isn't blocking for long enough to check the text.
+      :timer.sleep(1000)
+
+      session
+      |> find(Wallaby.Query.text("Dashboard"), &assert(has_text?(&1, "Dashboard")))
+      |> assert_text(
+        "You're subscription has now been activated. To cancel or change your plan, visit your profile."
+      )
+
+      session
+      # , &assert(has_css?(&1, css("#dropdownMenuButton", count: 1))))
+      |> find(css("#dropdownMenuButton", count: 1))
+      |> Wallaby.Element.click()
+
+      session
+      |> click(link("Profile"))
+      |> click(link("Cancel"))
+      |> assert_text("You're subscription has now been canceled.")
+
+      session
+      |> assert_text(
+        "You are currently using the free trial. You can add up to 100 customers to your waitlist."
+      )
+
+      user = HoldUp.Accounts.get_user_by_email("a@a.com")
+      company = user.company
+
+      assert nil == company.stripe_subscription_id
+      assert nil == company.stripe_payment_plan_id
+    end
+  end
+
+  describe "user upgrades their subscription via the profile page" do
+    test "redirects to the profile page", %{session: session} do
+      register_user(session)
+      |> assert_text("Subscription")
+
+      session
+      |> find(Wallaby.Query.text("Credit or debit card"))
+      |> Wallaby.Element.click()
+
+      session
+      |> send_keys("4242424242424242 12 23 346 90210")
+      |> click(button("Subscribe"))
+
+      # Fuck it, I had to put a sleep in here because it looks like some element isn't on the page yet for some reason
+      # even though using find to block isn't blocking for long enough to check the text.
+      :timer.sleep(1000)
+
+      session
+      |> find(Wallaby.Query.text("Dashboard"), &assert(has_text?(&1, "Dashboard")))
+      |> assert_text(
+        "You're subscription has now been activated. To cancel or change your plan, visit your profile."
+      )
+
+      session
+      |> find(css("#dropdownMenuButton", count: 1))
+      |> Wallaby.Element.click()
+
+      session
+      |> click(link("Profile"))
+      |> find(link("Upgrade", count: 2, at: 1), &assert(has_text?(&1, "Upgrade")))
+      |> click(link("Upgrade", count: 2, at: 1))
+      |> find(Wallaby.Query.text("Credit or debit card"))
+      |> Wallaby.Element.click()
+
+      session
+      |> assert_text("UNLIMITED")
+
+      session
+      |> send_keys("4242424242424242 12 23 346 90210")
+      |> click(button("Subscribe"))
+      |> find(Wallaby.Query.text("Dashboard"), &assert(has_text?(&1, "Dashboard")))
+      |> assert_text(
+        "You're subscription has now been activated. To cancel or change your plan, visit your profile."
+      )
+
+      user = HoldUp.Accounts.get_user_by_email("a@a.com")
+      company = user.company
+
+      assert "plan_F7YntQ0ELRD33U" == company.stripe_payment_plan_id
+    end
+  end
 end

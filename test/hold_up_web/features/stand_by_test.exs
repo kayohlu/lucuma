@@ -21,7 +21,7 @@ defmodule HoldUpWeb.Features.StandByTest do
         |> click(link("Sign In"))
         |> fill_in(text_field("Email"), with: user.email)
         |> fill_in(text_field("Password"), with: "123123123")
-        |> find(button("Sign In"), & assert has_text?(&1, "Sign In"))
+        |> find(button("Sign In"), &assert(has_text?(&1, "Sign In")))
         |> click(button("Sign In"))
         |> click(link("Waitlist"))
 
@@ -53,7 +53,7 @@ defmodule HoldUpWeb.Features.StandByTest do
         |> click(link("Sign In"))
         |> fill_in(text_field("Email"), with: user.email)
         |> fill_in(text_field("Password"), with: "123123123")
-        |> find(button("Sign In"), & assert has_text?(&1, "Sign In"))
+        |> find(button("Sign In"), &assert(has_text?(&1, "Sign In")))
         |> click(button("Sign In"))
         |> click(link("Waitlist"))
 
@@ -62,9 +62,11 @@ defmodule HoldUpWeb.Features.StandByTest do
       assert_has(page, link("Arrive"))
       assert_text(page, stand_by.name)
 
-      refute(page
-      |> click(link("Arrive"))
-      |> has_text?(stand_by.name))
+      refute(
+        page
+        |> click(link("Arrive"))
+        |> has_text?(stand_by.name)
+      )
     end
   end
 
@@ -85,7 +87,7 @@ defmodule HoldUpWeb.Features.StandByTest do
         |> click(link("Sign In"))
         |> fill_in(text_field("Email"), with: user.email)
         |> fill_in(text_field("Password"), with: "123123123")
-        |> find(button("Sign In"), & assert has_text?(&1, "Sign In"))
+        |> find(button("Sign In"), &assert(has_text?(&1, "Sign In")))
         |> click(button("Sign In"))
         |> click(link("Waitlist"))
 
@@ -94,9 +96,11 @@ defmodule HoldUpWeb.Features.StandByTest do
       assert_has(page, link("Arrive"))
       assert_text(page, stand_by.name)
 
-      refute(page
-      |> click(link("No Show"))
-      |> has_text?(stand_by.name))
+      refute(
+        page
+        |> click(link("No Show"))
+        |> has_text?(stand_by.name)
+      )
     end
   end
 
@@ -116,7 +120,7 @@ defmodule HoldUpWeb.Features.StandByTest do
         |> click(link("Sign In"))
         |> fill_in(text_field("Email"), with: user.email)
         |> fill_in(text_field("Password"), with: "123123123")
-        |> find(button("Sign In"), & assert has_text?(&1, "Sign In"))
+        |> find(button("Sign In"), &assert(has_text?(&1, "Sign In")))
         |> click(button("Sign In"))
 
       assert_text(page, "Dashboard")
@@ -124,7 +128,7 @@ defmodule HoldUpWeb.Features.StandByTest do
       page =
         page
         |> click(link("Waitlist"))
-        |> find(link("Add Person"), & assert has_text?(&1, "Add Person"))
+        |> find(link("Add Person"), &assert(has_text?(&1, "Add Person")))
         |> click(link("Add Person"))
         |> fill_in(text_field("Name"), with: "name")
         |> fill_in(text_field("Contact phone number"), with: "+353851761516")

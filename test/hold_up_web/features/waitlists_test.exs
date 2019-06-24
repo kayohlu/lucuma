@@ -20,7 +20,7 @@ defmodule HoldUpWeb.Features.WaitlistTest do
         |> click(link("Sign In"))
         |> fill_in(text_field("Email"), with: user.email)
         |> fill_in(text_field("Password"), with: "123123123")
-        |> find(button("Sign In"), & assert has_text?(&1, "Sign In"))
+        |> find(button("Sign In"), &assert(has_text?(&1, "Sign In")))
         |> click(button("Sign In"))
 
       assert_text(page, "Dashboard")
@@ -54,7 +54,7 @@ defmodule HoldUpWeb.Features.WaitlistTest do
         page
         |> click(link("Waitlist"))
         |> take_screenshot
-        |> find(link("Settings"), & assert has_text?(&1, "Settings"))
+        |> find(link("Settings"), &assert(has_text?(&1, "Settings")))
         |> click(link("Settings"))
 
       find(page, css(".nav-link.active", count: 1))
@@ -110,7 +110,7 @@ defmodule HoldUpWeb.Features.WaitlistTest do
   end
 
   describe "trying to view a waitlist that does not belong to the user's business but another business for the same company" do
-    test "it 404s", %{session: session}  do
+    test "it 404s", %{session: session} do
       company = insert(:company)
       business = insert(:business, company: company)
       user = insert(:user, company: company)
@@ -135,8 +135,8 @@ defmodule HoldUpWeb.Features.WaitlistTest do
         page
         |> click(link("Waitlist"))
 
-
       take_screenshot(page)
+
       page
       |> assert_text("Settings")
 

@@ -81,7 +81,8 @@ defmodule HoldUp.Factory do
 
   def sms_notification_factory(attrs) do
     %HoldUp.Notifications.SmsNotification{
-      message_content: sequence(:sms_notification_message_content, fn n -> "Message content #{n}" end),
+      message_content:
+        sequence(:sms_notification_message_content, fn n -> "Message content #{n}" end),
       recipient_phone_number: "+353861761516"
     }
   end

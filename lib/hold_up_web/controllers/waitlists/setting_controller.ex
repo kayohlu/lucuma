@@ -9,7 +9,8 @@ defmodule HoldUpWeb.Waitlists.SettingController do
   alias HoldUp.Waitlists.AttendanceSmsSetting
 
   def index(conn, params) do
-    render(conn,
+    render(
+      conn,
       "index.html",
       settings_for_page(params)
     )
@@ -22,7 +23,9 @@ defmodule HoldUpWeb.Waitlists.SettingController do
       {:ok, sms_setting} ->
         conn
         |> put_flash(:info, "Settings updated successfully.")
-        |> redirect(to: Routes.waitlists_waitlist_setting_path(conn, :index, sms_setting.waitlist_id))
+        |> redirect(
+          to: Routes.waitlists_waitlist_setting_path(conn, :index, sms_setting.waitlist_id)
+        )
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "index.html", changeset: changeset, sms_setting: sms_setting)
@@ -36,7 +39,9 @@ defmodule HoldUpWeb.Waitlists.SettingController do
       {:ok, sms_setting} ->
         conn
         |> put_flash(:info, "Settings updated successfully.")
-        |> redirect(to: Routes.waitlists_waitlist_setting_path(conn, :index, sms_setting.waitlist_id))
+        |> redirect(
+          to: Routes.waitlists_waitlist_setting_path(conn, :index, sms_setting.waitlist_id)
+        )
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "index.html", changeset: changeset, sms_setting: sms_setting)
@@ -48,12 +53,15 @@ defmodule HoldUpWeb.Waitlists.SettingController do
     waitlist = Waitlists.get_waitlist!(waitlist_id)
     confirmation_sms_setting = Repo.get_by!(ConfirmationSmsSetting, waitlist_id: waitlist.id)
     attendance_sms_setting = Repo.get_by!(AttendanceSmsSetting, waitlist_id: waitlist.id)
+
     [
       waitlist: waitlist,
       confirmation_sms_setting: confirmation_sms_setting,
-      confirmation_sms_setting_changeset: Waitlists.change_confirmation_sms_setting(confirmation_sms_setting),
+      confirmation_sms_setting_changeset:
+        Waitlists.change_confirmation_sms_setting(confirmation_sms_setting),
       attendance_sms_setting: attendance_sms_setting,
-      attendance_sms_setting_changeset: Waitlists.change_attendance_sms_setting(attendance_sms_setting)
+      attendance_sms_setting_changeset:
+        Waitlists.change_attendance_sms_setting(attendance_sms_setting)
     ]
   end
 end

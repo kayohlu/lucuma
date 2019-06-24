@@ -18,8 +18,8 @@ defmodule HoldUp.Repo.Migrations.CreateUsers do
 
       timestamps()
     end
-    create index(:businesses, [:company_id])
 
+    create index(:businesses, [:company_id])
 
     create table(:users) do
       add :company_id, references(:companies, on_delete: :nothing), null: false
@@ -49,6 +49,7 @@ defmodule HoldUp.Repo.Migrations.CreateUsers do
 
       timestamps()
     end
+
     create unique_index(:users, [:email])
 
     create table(:users_businesses) do
@@ -57,8 +58,8 @@ defmodule HoldUp.Repo.Migrations.CreateUsers do
 
       timestamps()
     end
-    create unique_index(:users_businesses, [:user_id, :business_id])
 
+    create unique_index(:users_businesses, [:user_id, :business_id])
 
     create table(:waitlists) do
       add :business_id, references(:businesses, on_delete: :nothing)
@@ -67,6 +68,7 @@ defmodule HoldUp.Repo.Migrations.CreateUsers do
 
       timestamps()
     end
+
     create index(:waitlists, [:business_id])
 
     create table(:stand_bys) do
@@ -85,6 +87,7 @@ defmodule HoldUp.Repo.Migrations.CreateUsers do
 
       timestamps()
     end
+
     create index(:stand_bys, [:business_id])
     create index(:stand_bys, [:waitlist_id])
 
@@ -95,7 +98,9 @@ defmodule HoldUp.Repo.Migrations.CreateUsers do
 
       timestamps()
     end
+
     create index(:confirmation_sms_settings, [:waitlist_id])
+
     create table(:attendance_sms_settings) do
       add :enabled, :boolean
       add :message_content, :string
@@ -103,6 +108,7 @@ defmodule HoldUp.Repo.Migrations.CreateUsers do
 
       timestamps()
     end
+
     create index(:attendance_sms_settings, [:waitlist_id])
 
     create table(:sms_notifications) do
@@ -114,6 +120,7 @@ defmodule HoldUp.Repo.Migrations.CreateUsers do
 
       timestamps()
     end
+
     create index(:sms_notifications, [:stand_by_id])
   end
 end

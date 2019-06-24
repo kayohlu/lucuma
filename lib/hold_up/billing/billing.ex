@@ -27,6 +27,7 @@ defmodule HoldUp.Billing do
   def get_current_subscription(nil) do
     nil
   end
+
   def get_current_subscription(stripe_subscription_id) do
     {:ok, subscription} = Stripe.Subscription.retrieve(stripe_subscription_id)
     subscription
@@ -50,8 +51,7 @@ defmodule HoldUp.Billing do
       multi_result =
         Ecto.Multi.new()
         |> Ecto.Multi.run(:create_stripe_customer, fn repo, previous_steps ->
-
-          Logger.debug "Creating Stripe customer"
+          Logger.debug("Creating Stripe customer")
 
           create_stripe_customer(user, company, stripe_credit_card_token)
         end)
@@ -60,12 +60,9 @@ defmodule HoldUp.Billing do
                                                             create_stripe_customer:
                                                               stripe_customer
                                                           } ->
+          Logger.debug("Creating Stripe Subscription")
 
-          Logger.debug "Creating Stripe Subscription"
-
-          result = create_stripe_subscription(stripe_customer, stripe_payment_plan_id)
-          IO.inspect result
-          result
+          create_stripe_subscription(stripe_customer, stripe_payment_plan_id)
         end)
         |> Ecto.Multi.update(:update_company_with_stripe_data, fn %{
                                                                     create_stripe_customer:
@@ -80,8 +77,6 @@ defmodule HoldUp.Billing do
               stripe_subscription_id: stripe_subscription.id
             })
 
-          IO.inspect(changeset)
-          IO.inspect(changeset.valid?)
           changeset
         end)
         |> Repo.transaction()
@@ -185,30 +180,60 @@ defmodule HoldUp.Billing do
           destroy_stripe_subscription(stripe_subscription)
           {:error, "Could not process your subscription at this time. Please try again."}
 
-          {:error, add_error_to_form_changeset(
-            changeset,
-            "Could not process your subscription at this time. Please try again."
-          )}
+          {:error,
+           add_error_to_form_changeset(
+             changeset,
+             "Could not process your subscription at this time. Please try again."
+           )}
       end
     end
   end
 
-  def cancel_subscription(user, company, stripe_payment_plan_id) do
-    # https://stripe.com/docs/billing/subscriptions/canceling-pausing
-    {:ok, success_response} = case stripe_payment_plan_id do
-      # This is the metered plan we need cancel right away by deleting the subscription.
-      "plan_Eyp0J9dUxi2tWW" ->
-        Stripe.Subscription.delete(company.stripe_subscription_id)
-      _ ->
-        Stripe.Subscription.update(company.stripe_subscription_id, %{cancel_at_period_end: true})
-    end
-
-    {:ok, _updated_company} =
-      update_company(company, %{stripe_payment_plan_id: nil, stripe_subscription_id: nil})
-
+  @doc """
+  This is the metered plan we need cancel right away by deleting the subscription.
+  https://stripe.com/docs/billing/subscriptions/canceling-pausing
+  """
+  def cancel_subscription(company, "plan_Eyp0J9dUxi2tWW") do
+    {:ok, success_response} = Stripe.Subscription.delete(company.stripe_subscription_id)
     Logger.info(inspect(success_response))
+    {:ok, _updated_company} = update_company(company, %{stripe_payment_plan_id: nil, stripe_subscription_id: nil})
 
     :ok
+  end
+  def cancel_subscription(company, stripe_payment_plan_id) do
+    {:ok, success_response} = Stripe.Subscription.update(company.stripe_subscription_id, %{cancel_at_period_end: true})
+    Logger.info(inspect(success_response))
+    {:ok, _updated_company} = update_company(company, %{stripe_payment_plan_id: nil, stripe_subscription_id: nil})
+
+    :ok
+  end
+
+  @doc """
+  https://stripe.com/docs/billing/subscriptions/upgrading-downgrading
+  """
+  def update_subscription(company, stripe_payment_plan_id) do
+    {:ok, original_subscription} = Stripe.Subscription.retrieve(company.stripe_subscription_id)
+
+    [subscription_item | _] = original_subscription.items.data
+
+    {:ok, updated_subscription} =
+      Stripe.Subscription.update(
+        company.stripe_subscription_id,
+        %{
+          cancel_at_period_end: false,
+          items: [
+            %{
+              id: subscription_item.id,
+              plan: stripe_payment_plan_id
+            }
+          ]
+        }
+      )
+  end
+
+  def update_to_licensed_subscription do
+  end
+  def update_to_metered_subscription do
   end
 
   defp create_stripe_customer(user, company, stripe_credit_card_token) do
@@ -249,7 +274,8 @@ defmodule HoldUp.Billing do
 
   def add_error_to_form_changeset(changeset, error_message) do
     # add_error_to_form_changeset(changeset, "Your card was declined. Please try another card.")
-    {:error, %{changeset | action: :subscription_payment}
-    |> Ecto.Changeset.add_error(:credit_or_debit_card, error_message)}
+    {:error,
+     %{changeset | action: :subscription_payment}
+     |> Ecto.Changeset.add_error(:credit_or_debit_card, error_message)}
   end
 end
