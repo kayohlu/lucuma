@@ -497,7 +497,16 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
 
   describe "user upgrades their subscription via the profile page" do
     test "redirects to the profile page", %{session: session} do
-      register_user(session)
+      session
+      |> visit("/")
+      |> find(link("Choose plan", count: 3, at: 0), &assert(has_text?(&1, "Choose plan")))
+      |> click(link("Choose plan", count: 3, at: 0))
+      |> fill_in(text_field("Email"), with: "a@a.com")
+      |> fill_in(text_field("Full name"), with: "user")
+      |> fill_in(text_field("Company name"), with: "company")
+      |> fill_in(text_field("registration[password]"), with: "123123123")
+      |> fill_in(text_field("registration[password_confirmation]"), with: "123123123")
+      |> click(button("Sign Up"))
       |> assert_text("Subscription")
 
       session
@@ -525,19 +534,14 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
       session
       |> click(link("Profile"))
       |> find(link("Upgrade", count: 2, at: 1), &assert(has_text?(&1, "Upgrade")))
-      |> click(link("Upgrade", count: 2, at: 1))
-      |> find(Wallaby.Query.text("Credit or debit card"))
-      |> Wallaby.Element.click()
+
+      alert_message = accept_alert session, fn(session) ->
+        click(session, link("Upgrade", count: 2, at: 1))
+      end
 
       session
-      |> assert_text("UNLIMITED")
-
-      session
-      |> send_keys("4242424242424242 12 23 346 90210")
-      |> click(button("Subscribe"))
-      |> find(Wallaby.Query.text("Dashboard"), &assert(has_text?(&1, "Dashboard")))
       |> assert_text(
-        "You're subscription has now been activated. To cancel or change your plan, visit your profile."
+        "You're subscription has now been updated."
       )
 
       user = HoldUp.Accounts.get_user_by_email("a@a.com")

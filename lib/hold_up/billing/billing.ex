@@ -211,12 +211,26 @@ defmodule HoldUp.Billing do
   @doc """
   https://stripe.com/docs/billing/subscriptions/upgrading-downgrading
   """
-  def update_subscription(company, stripe_payment_plan_id) do
-    {:ok, original_subscription} = Stripe.Subscription.retrieve(company.stripe_subscription_id)
+  def update_subscription(company, new_stripe_payment_plan_id) do
+    {:ok, existing_subscription} = Stripe.Subscription.retrieve(company.stripe_subscription_id)
 
-    [subscription_item | _] = original_subscription.items.data
+    [subscription_item | _] = existing_subscription.items.data
 
-    {:ok, updated_subscription} =
+    if existing_subscription.plan.usage_type == "metered" do
+
+      :ok = cancel_subscription(company, existing_subscription.plan.id)
+
+      {:ok, stripe_customer} = Stripe.Customer.retrieve(company.stripe_customer_id)
+
+      {:ok, new_subscription} = create_stripe_subscription(stripe_customer, new_stripe_payment_plan_id, [enable_incomplete_payments: true])
+
+       Company.changeset(company, %{
+              stripe_payment_plan_id: new_stripe_payment_plan_id,
+              stripe_subscription_id: new_subscription.id
+            })
+       |> Repo.update
+    else
+      {:ok, subscription} =
       Stripe.Subscription.update(
         company.stripe_subscription_id,
         %{
@@ -224,16 +238,18 @@ defmodule HoldUp.Billing do
           items: [
             %{
               id: subscription_item.id,
-              plan: stripe_payment_plan_id
+              plan: new_stripe_payment_plan_id
             }
           ]
         }
       )
-  end
 
-  def update_to_licensed_subscription do
-  end
-  def update_to_metered_subscription do
+      Company.changeset(company, %{
+              stripe_payment_plan_id: new_stripe_payment_plan_id,
+              stripe_subscription_id: subscription.id
+            })
+       |> Repo.update
+    end
   end
 
   defp create_stripe_customer(user, company, stripe_credit_card_token) do
@@ -250,18 +266,18 @@ defmodule HoldUp.Billing do
     |> Stripe.Customer.create()
   end
 
-  defp create_stripe_subscription(stripe_customer, stripe_playment_plan_id) do
+  defp create_stripe_subscription(stripe_customer, stripe_payment_plan_id, opts \\ []) do
     %{
       customer: stripe_customer.id,
       billing: "charge_automatically",
       items: [
         %{
-          plan: stripe_playment_plan_id
+          plan: stripe_payment_plan_id
         }
       ],
       expand: ["latest_invoice.payment_intent"]
     }
-    |> Stripe.Subscription.create()
+    |> Stripe.Subscription.create(opts)
   end
 
   defp destroy_stripe_customer(stripe_customer) do
