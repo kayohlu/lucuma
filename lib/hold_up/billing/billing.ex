@@ -196,14 +196,21 @@ defmodule HoldUp.Billing do
   def cancel_subscription(company, "plan_Eyp0J9dUxi2tWW") do
     {:ok, success_response} = Stripe.Subscription.delete(company.stripe_subscription_id)
     Logger.info(inspect(success_response))
-    {:ok, _updated_company} = update_company(company, %{stripe_payment_plan_id: nil, stripe_subscription_id: nil})
+
+    {:ok, _updated_company} =
+      update_company(company, %{stripe_payment_plan_id: nil, stripe_subscription_id: nil})
 
     :ok
   end
+
   def cancel_subscription(company, stripe_payment_plan_id) do
-    {:ok, success_response} = Stripe.Subscription.update(company.stripe_subscription_id, %{cancel_at_period_end: true})
+    {:ok, success_response} =
+      Stripe.Subscription.update(company.stripe_subscription_id, %{cancel_at_period_end: true})
+
     Logger.info(inspect(success_response))
-    {:ok, _updated_company} = update_company(company, %{stripe_payment_plan_id: nil, stripe_subscription_id: nil})
+
+    {:ok, _updated_company} =
+      update_company(company, %{stripe_payment_plan_id: nil, stripe_subscription_id: nil})
 
     :ok
   end
@@ -217,38 +224,40 @@ defmodule HoldUp.Billing do
     [subscription_item | _] = existing_subscription.items.data
 
     if existing_subscription.plan.usage_type == "metered" do
-
       :ok = cancel_subscription(company, existing_subscription.plan.id)
 
       {:ok, stripe_customer} = Stripe.Customer.retrieve(company.stripe_customer_id)
 
-      {:ok, new_subscription} = create_stripe_subscription(stripe_customer, new_stripe_payment_plan_id, [enable_incomplete_payments: true])
-
-       Company.changeset(company, %{
-              stripe_payment_plan_id: new_stripe_payment_plan_id,
-              stripe_subscription_id: new_subscription.id
-            })
-       |> Repo.update
-    else
-      {:ok, subscription} =
-      Stripe.Subscription.update(
-        company.stripe_subscription_id,
-        %{
-          cancel_at_period_end: false,
-          items: [
-            %{
-              id: subscription_item.id,
-              plan: new_stripe_payment_plan_id
-            }
-          ]
-        }
-      )
+      {:ok, new_subscription} =
+        create_stripe_subscription(stripe_customer, new_stripe_payment_plan_id,
+          enable_incomplete_payments: true
+        )
 
       Company.changeset(company, %{
-              stripe_payment_plan_id: new_stripe_payment_plan_id,
-              stripe_subscription_id: subscription.id
-            })
-       |> Repo.update
+        stripe_payment_plan_id: new_stripe_payment_plan_id,
+        stripe_subscription_id: new_subscription.id
+      })
+      |> Repo.update()
+    else
+      {:ok, subscription} =
+        Stripe.Subscription.update(
+          company.stripe_subscription_id,
+          %{
+            cancel_at_period_end: false,
+            items: [
+              %{
+                id: subscription_item.id,
+                plan: new_stripe_payment_plan_id
+              }
+            ]
+          }
+        )
+
+      Company.changeset(company, %{
+        stripe_payment_plan_id: new_stripe_payment_plan_id,
+        stripe_subscription_id: subscription.id
+      })
+      |> Repo.update()
     end
   end
 
@@ -293,5 +302,15 @@ defmodule HoldUp.Billing do
     {:error,
      %{changeset | action: :subscription_payment}
      |> Ecto.Changeset.add_error(:credit_or_debit_card, error_message)}
+  end
+
+  def upcoming_invoice(company) do
+    {:ok, upcoming_invoice} =
+      Stripe.Invoice.upcoming(%{
+        subscription: company.stripe_subscription_id,
+        customer: company.stripe_customer_id
+      })
+
+    upcoming_invoice
   end
 end

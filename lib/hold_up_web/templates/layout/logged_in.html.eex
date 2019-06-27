@@ -17,6 +17,7 @@
     <%= render "flash.html", conn: @conn %>
     <%= if is_nil(Map.get(assigns, :inner_layout)) do %>
       <div class="container">
+        <br/>
         <%= render @view_module, @view_template, assigns %>
       </div>
     <% else %>

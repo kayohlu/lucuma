@@ -495,7 +495,7 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
     end
   end
 
-  describe "user upgrades their subscription via the profile page" do
+  describe "user upgrades their subscription (from metered to licensed) via the profile page" do
     test "redirects to the profile page", %{session: session} do
       session
       |> visit("/")
@@ -535,14 +535,13 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
       |> click(link("Profile"))
       |> find(link("Upgrade", count: 2, at: 1), &assert(has_text?(&1, "Upgrade")))
 
-      alert_message = accept_alert session, fn(session) ->
-        click(session, link("Upgrade", count: 2, at: 1))
-      end
+      alert_message =
+        accept_alert(session, fn session ->
+          click(session, link("Upgrade", count: 2, at: 1))
+        end)
 
       session
-      |> assert_text(
-        "You're subscription has now been updated."
-      )
+      |> assert_text("You're subscription has now been updated.")
 
       user = HoldUp.Accounts.get_user_by_email("a@a.com")
       company = user.company

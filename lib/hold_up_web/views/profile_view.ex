@@ -35,18 +35,23 @@ defmodule HoldUpWeb.ProfileView do
 
   def generate_cancel_link(conn, plan_id) do
     link(gettext("Cancel"),
-        to: Routes.billing_subscription_path(conn, :delete, plan_id),
-        method: :delete,
-        class: "btn btn-outline-dark pricing-action"
-      )
+      to: Routes.billing_subscription_path(conn, :delete, plan_id),
+      method: :delete,
+      class: "btn btn-outline-dark pricing-action"
+    )
   end
 
   def generate_upgrade_link(conn, plan_id) do
     link(gettext("Upgrade"),
-        to: Routes.billing_subscription_path(HoldUpWeb.Endpoint, :update, plan_id),
-        class: "btn btn-primary pricing-action",
-        method: :put,
-        data: [confirm: "Are you sure?"]
-      )
+      to: Routes.billing_subscription_path(HoldUpWeb.Endpoint, :update, plan_id),
+      class: "btn btn-primary pricing-action",
+      method: :put,
+      data: [confirm: "Are you sure?"]
+    )
+  end
+
+  def format_due_date(unix_stamp) do
+    {:ok, date_time} = DateTime.from_unix(unix_stamp)
+    "#{date_time.day}-#{date_time.month}-#{date_time.year}"
   end
 end

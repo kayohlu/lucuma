@@ -8,6 +8,8 @@ defmodule HoldUpWeb.ProfileController do
     subscription =
       Billing.get_current_subscription(conn.assigns.current_company.stripe_subscription_id)
 
-    render(conn, "show.html", subscription: subscription)
+    upcoming_invoice = Billing.upcoming_invoice(conn.assigns.current_company)
+
+    render(conn, "show.html", subscription: subscription, upcoming_invoice: upcoming_invoice)
   end
 end

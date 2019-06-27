@@ -55,7 +55,8 @@ defmodule HoldUp.MixProject do
       {:wallaby, github: "keathley/wallaby", runtime: false, only: [:test, :ci]},
       {:canada, "~> 1.0.1"},
       {:phoenix_live_view, github: "phoenixframework/phoenix_live_view"},
-      {:stripity_stripe, "~> 2.2.2"}
+      {:stripity_stripe, "~> 2.2.2"},
+      {:number, "~> 1.0.0"}
     ]
   end
 

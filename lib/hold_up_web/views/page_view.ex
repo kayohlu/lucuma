@@ -22,6 +22,9 @@ defmodule HoldUpWeb.PageView do
   end
 
   def generate_new_sub_link(conn, plan_id) do
-    link gettext("Choose plan"), to: Routes.registration_path(HoldUpWeb.Endpoint, :new, payment_plan_id: plan_id), class: "btn btn-primary pricing-action"
+    link(gettext("Choose plan"),
+      to: Routes.registration_path(HoldUpWeb.Endpoint, :new, payment_plan_id: plan_id),
+      class: "btn btn-primary pricing-action"
+    )
   end
 end
