@@ -1,12 +1,38 @@
 defmodule HoldUpWeb.ProfileView do
   use HoldUpWeb, :view
 
+  def payment_plan_links(conn, nil) do
+    %{
+      pay_as_you_go: pay_as_you_go_link(conn),
+      standard: standard_link(conn),
+      unlimited: unlimited_link(conn)
+    }
+  end
   def payment_plan_links(conn, %Stripe.Subscription{} = subscription) do
     %{
       pay_as_you_go: pay_as_you_go_link(conn, subscription),
       standard: standard_link(conn, subscription),
       unlimited: unlimited_link(conn, subscription)
     }
+  end
+
+  def pay_as_you_go_link(conn) do
+    generate_new_sub_link(conn, "plan_Eyp0J9dUxi2tWW")
+  end
+
+  def standard_link(conn) do
+    generate_new_sub_link(conn, "plan_Eyox8DhvcBMAaS")
+  end
+
+  def unlimited_link(conn) do
+    generate_new_sub_link(conn, "plan_F7YntQ0ELRD33U")
+  end
+
+  def generate_new_sub_link(conn, plan_id) do
+    link(gettext("Choose plan"),
+      to: Routes.billing_payment_plan_path(HoldUpWeb.Endpoint, :edit, plan_id),
+      class: "btn btn-primary pricing-action"
+    )
   end
 
   def pay_as_you_go_link(conn, %Stripe.Subscription{} = subscription) do

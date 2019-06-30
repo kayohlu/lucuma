@@ -1,7 +1,4 @@
 defmodule HoldUpWeb.Billing.PaymentPlanController do
-  @doc """
-  I'm using this controller for handling creating a user's first subscription via registration or the profile page.
-  """
   use HoldUpWeb, :controller
 
   alias HoldUp.Billing

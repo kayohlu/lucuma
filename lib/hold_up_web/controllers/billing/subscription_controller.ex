@@ -1,7 +1,4 @@
 defmodule HoldUpWeb.Billing.SubscriptionController do
-  @doc """
-  I'm using this controller for handling canceling or updating a user's subscription.
-  """
   use HoldUpWeb, :controller
 
   alias HoldUp.Billing
