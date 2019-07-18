@@ -1,4 +1,8 @@
 defmodule HoldUpWeb.Billing.SubscriptionController do
+  @moduledoc """
+  This controller is used to handle subscriptions when they have registered..
+  """
+
   use HoldUpWeb, :controller
 
   alias HoldUp.Billing

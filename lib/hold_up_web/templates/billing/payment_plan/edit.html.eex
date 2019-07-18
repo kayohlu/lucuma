@@ -38,7 +38,7 @@
         </div>
         <% end %>
         <%= form_group_for_credit_card(f, :credit_or_debit_card) %>
-        <%= submit "Subscribe", class: "btn btn-primary btn-block mt-4" %>
+        <%= submit "Subscribe", class: "btn btn-primary btn-block mt-4", id: "sub_submit_btn" %>
         <% end %>
       </div>
     </div>

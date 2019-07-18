@@ -69,11 +69,14 @@ var card = elements.create('card', {
   form.addEventListener('submit', function(event) {
     event.preventDefault();
 
+    document.getElementById("sub_submit_btn").setAttribute("disabled", "disabled");
+
     stripe.createToken(card).then(function(result) {
       if (result.error) {
         // Inform the user if there was an error.
         var errorElement = document.getElementById('card-errors');
         errorElement.textContent = result.error.message;
+        document.getElementById("sub_submit_btn").removeAttribute("disabled");
       } else {
         // Send the token to your server.
         stripeTokenHandler(result.token);
