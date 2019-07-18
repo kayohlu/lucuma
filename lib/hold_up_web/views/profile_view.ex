@@ -8,6 +8,7 @@ defmodule HoldUpWeb.ProfileView do
       unlimited: unlimited_link(conn)
     }
   end
+
   def payment_plan_links(conn, %Stripe.Subscription{} = subscription) do
     %{
       pay_as_you_go: pay_as_you_go_link(conn, subscription),
