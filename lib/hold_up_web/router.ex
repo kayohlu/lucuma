@@ -91,4 +91,10 @@ defmodule HoldUpWeb.Router do
     resources "/subscriptions/", SubscriptionController, only: [:delete, :update]
     resources "/subscriptions_skip/", SubscriptionSkipController, only: [:create]
   end
+
+  scope "/billing", HoldUpWeb.Billing, as: :billing do
+    pipe_through :api
+
+    resources "/webhooks/", WebhookController, only: [:create]
+  end
 end

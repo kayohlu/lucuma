@@ -1,6 +1,17 @@
 defmodule HoldUpWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :hold_up
 
+  def cache_raw_body(conn, opts) do
+    case conn.path_info == ["billing", "webhooks"] do
+      true ->
+        {:ok, body, conn} = Plug.Conn.read_body(conn, opts)
+        conn = update_in(conn.assigns[:raw_body], &[body | (&1 || [])])
+        {:ok, body, conn}
+      _ ->
+        {:ok, body, conn} = Plug.Conn.read_body(conn, opts)
+    end
+  end
+
   # Checking if the SQL sandbox env is present because during feature/integrations tests
   # the endpoint is running and we want to enable concurrent testing.
   if Application.get_env(:hold_up, :sql_sandbox) do
@@ -39,6 +50,7 @@ defmodule HoldUpWeb.Endpoint do
 
   plug Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
+    body_reader: {HoldUpWeb.Endpoint, :cache_raw_body, []},
     pass: ["*/*"],
     json_decoder: Phoenix.json_library()
 
