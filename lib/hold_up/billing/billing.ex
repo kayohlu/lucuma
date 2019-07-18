@@ -124,16 +124,8 @@ defmodule HoldUp.Billing do
             "Could not process your subscription at this time. Please try again."
           )
 
-        {:error, :create_stripe_customer,
-         %Stripe.Error{
-           extra: %{card_code: :card_declined, raw_error: %{"decline_code" => decline_code}}
-         } = failed_value, _changes_so_far} ->
-          Logger.info("Card decline response: #{inspect(failed_value)}")
-          {:error, "Your card was declined. Please try again."}
-          add_error_to_form_changeset(changeset, "Your card was declined. Please try again.")
-
         {:error, :create_stripe_customer, failed_value, _changes_so_far} ->
-          Logger.info("Card decline response: #{inspect(failed_value)}")
+          Logger.info("Error during create_stripe_customer response: #{inspect(failed_value)}")
           {:error, "Could not process your subscription at this time. Please try again."}
 
           add_error_to_form_changeset(
@@ -156,7 +148,9 @@ defmodule HoldUp.Billing do
 
         {:error, :create_stripe_subscription, failed_value,
          %{create_stripe_customer: stripe_customer}} ->
-          Logger.info("Card decline response: #{inspect(failed_value)}")
+          Logger.info(
+            "Error during create_stripe_subscription response: #{inspect(failed_value)}"
+          )
 
           case destroy_stripe_customer(stripe_customer) do
             {:error, response} ->
@@ -186,6 +180,8 @@ defmodule HoldUp.Billing do
              "Could not process your subscription at this time. Please try again."
            )}
       end
+    else
+      {:error, changeset}
     end
   end
 
@@ -312,5 +308,25 @@ defmodule HoldUp.Billing do
       })
 
     upcoming_invoice
+  end
+
+  def handle_invoice_payment_fail(stripe_event) do
+    %Stripe.Event{
+      data: %{
+        object: %Stripe.Invoice{
+          attempted: true,
+          customer: stripe_customer_id,
+          paid: false
+        }
+      }
+    } = stripe_event
+
+    case Repo.get_by(Company, stripe_customer_id: stripe_customer_id) do
+      nil ->
+          nil
+      company ->
+          cancel_subscription(company, company.stripe_payment_plan_id)
+
+    end
   end
 end
