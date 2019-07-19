@@ -23,7 +23,8 @@ defmodule HoldUpWeb.Live.Waitlists.WaitlistView do
       party_breakdown: party_breakdown,
       average_wait_time: average_wait_time,
       changeset: changeset,
-      show_modal: false
+      show_modal: false,
+      current_company: session.current_company
     ]
 
     {:ok, assign(socket, assigns)}
@@ -37,7 +38,6 @@ defmodule HoldUpWeb.Live.Waitlists.WaitlistView do
   # end
 
   def handle_event("show_modal", "", socket) do
-    IO.inspect({:showmodal})
     {:noreply, assign(socket, show_modal: true)}
   end
 
@@ -49,7 +49,8 @@ defmodule HoldUpWeb.Live.Waitlists.WaitlistView do
 
   def handle_event("save", %{"stand_by" => stand_by_params}, socket) do
     case Waitlists.create_stand_by(
-           Map.put(stand_by_params, "waitlist_id", socket.assigns.waitlist.id)
+           Map.put(stand_by_params, "waitlist_id", socket.assigns.waitlist.id),
+           socket.assigns.current_company
          ) do
       {:ok, stand_by} ->
         socket = put_flash(socket, :info, "Stand by created successfully.")

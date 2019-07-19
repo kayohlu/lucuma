@@ -11,13 +11,14 @@ defmodule HoldUpWeb.Billing.PaymentPlanController do
   plug :put_layout, {HoldUpWeb.LayoutView, :only_form} when action in [:edit, :update]
 
   def edit(conn, %{"id" => id}) do
-    if conn.assigns.current_company.stripe_subscription_id && conn.assigns.current_company.stripe_payment_plan_id do
+    if conn.assigns.current_company.stripe_subscription_id &&
+         conn.assigns.current_company.stripe_payment_plan_id do
       conn
-        |> put_flash(
-          :info,
-          "You have already subscribed."
-        )
-        |> redirect(to: Routes.dashboard_path(conn, :index))
+      |> put_flash(
+        :info,
+        "You have already subscribed."
+      )
+      |> redirect(to: Routes.dashboard_path(conn, :index))
     else
       changeset = Billing.change_subscription_form(%SubscriptionForm{})
       payment_plan = Billing.get_payment_plan(id)
@@ -32,18 +33,23 @@ defmodule HoldUpWeb.Billing.PaymentPlanController do
   end
 
   def update(conn, params) do
-    if conn.assigns.current_company.stripe_subscription_id && conn.assigns.current_company.stripe_payment_plan_id do
+    if conn.assigns.current_company.stripe_subscription_id &&
+         conn.assigns.current_company.stripe_payment_plan_id do
       conn
-        |> put_flash(
-          :info,
-          "You have already subscribed."
-        )
-        |> redirect(to: Routes.dashboard_path(conn, :index))
+      |> put_flash(
+        :info,
+        "You have already subscribed."
+      )
+      |> redirect(to: Routes.dashboard_path(conn, :index))
     else
       %{"id" => stripe_payment_plan_id, "stripeToken" => stripe_credit_card_token} = params
 
       res =
-        Billing.create_subscription(conn.assigns.current_user, conn.assigns.current_company, params)
+        Billing.create_subscription(
+          conn.assigns.current_user,
+          conn.assigns.current_company,
+          params
+        )
 
       case res do
         :ok ->

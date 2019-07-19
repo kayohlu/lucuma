@@ -5,7 +5,6 @@ defmodule HoldUp.Billing do
   require Logger
   import Ecto.Query, warn: false
   alias HoldUp.Repo
-
   alias HoldUp.Accounts.Company
   alias HoldUp.Billing.SubscriptionForm
 
@@ -323,10 +322,38 @@ defmodule HoldUp.Billing do
 
     case Repo.get_by(Company, stripe_customer_id: stripe_customer_id) do
       nil ->
-          nil
-      company ->
-          cancel_subscription(company, company.stripe_payment_plan_id)
+        nil
 
+      company ->
+        cancel_subscription(company, company.stripe_payment_plan_id)
     end
+  end
+
+  def report_usage(company, "plan_Eyp0J9dUxi2tWW") do
+    %Stripe.Subscription{
+      items: %Stripe.List{
+        data: [
+          %Stripe.SubscriptionItem{
+            created: 1_563_469_253,
+            deleted: nil,
+            id: subscription_item_id,
+            plan: %Stripe.Plan{
+              id: "plan_Eyp0J9dUxi2tWW"
+            }
+          }
+        ]
+      }
+    } = get_current_subscription(company.stripe_subscription_id)
+
+    params = %{
+      quantity: 1,
+      action: "increment",
+      timestamp: DateTime.utc_now() |> DateTime.to_unix()
+    }
+
+    {:ok, record} = Stripe.SubscriptionItem.Usage.create(subscription_item_id, params)
+  end
+
+  def report_usage(company, any_other_plan) do
   end
 end

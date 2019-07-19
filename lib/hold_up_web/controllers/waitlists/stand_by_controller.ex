@@ -15,7 +15,10 @@ defmodule HoldUpWeb.Waitlists.StandByController do
   def create(conn, %{"stand_by" => stand_by_params}) do
     waitlist = Waitlists.get_waitlist!(conn.params["waitlist_id"])
 
-    case Waitlists.create_stand_by(Map.put(stand_by_params, "waitlist_id", waitlist.id)) do
+    case Waitlists.create_stand_by(
+           Map.put(stand_by_params, "waitlist_id", waitlist.id),
+           conn.assigns.current_company
+         ) do
       {:ok, stand_by} ->
         conn
         |> put_flash(:info, "Stand by created successfully.")

@@ -303,8 +303,9 @@ defmodule HoldUp.BillingTest do
   end
 
   describe "#handle_invoice_payment_fail/2" do
-    test "cancels the subscription and removes the relevant info from the company record", state do
-     company = insert(:company)
+    test "cancels the subscription and removes the relevant info from the company record",
+         state do
+      company = insert(:company)
       user = insert(:user, company: company, email: "a@a.com")
 
       result =
@@ -319,11 +320,11 @@ defmodule HoldUp.BillingTest do
       company_with_stripe_data = Repo.get(Company, user.company_id)
 
       stripe_event = %Stripe.Event{
-      data: %{
-        object: %Stripe.Invoice{
-          attempted: true,
-          customer: company_with_stripe_data.stripe_customer_id,
-          paid: false
+        data: %{
+          object: %Stripe.Invoice{
+            attempted: true,
+            customer: company_with_stripe_data.stripe_customer_id,
+            paid: false
           }
         }
       }

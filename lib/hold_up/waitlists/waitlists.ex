@@ -6,6 +6,7 @@ defmodule HoldUp.Waitlists do
   import Ecto.Query, warn: false
   alias HoldUp.Repo
 
+  alias HoldUp.Billing
   alias HoldUp.Waitlists.Waitlist
   alias HoldUp.Waitlists.StandBy
   alias HoldUp.Notifications
@@ -185,7 +186,7 @@ defmodule HoldUp.Waitlists do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_stand_by(attrs \\ %{}, notification_module \\ Notifications) do
+  def create_stand_by(attrs \\ %{}, company, notification_module \\ Notifications) do
     case %StandBy{} |> StandBy.changeset(attrs) |> Repo.insert() do
       {:ok, stand_by} ->
         confirmation_sms_setting =
@@ -210,6 +211,8 @@ defmodule HoldUp.Waitlists do
             stand_by.id
           )
         end
+
+        Billing.report_usage(company, company.stripe_payment_plan_id)
 
         {:ok, stand_by}
 
@@ -314,9 +317,6 @@ defmodule HoldUp.Waitlists do
   def calculate_average_wait_time(waitlist_id) do
     {:ok, start_of_today} = NaiveDateTime.new(Date.utc_today(), ~T[00:00:00])
 
-    IO.inspect(waitlist_id)
-    IO.inspect(start_of_today)
-
     db_result =
       Repo.one(
         from s in StandBy,
@@ -325,8 +325,6 @@ defmodule HoldUp.Waitlists do
               s.inserted_at > ^start_of_today,
           select: avg(s.notified_at - s.inserted_at)
       )
-
-    IO.inspect(db_result)
 
     case db_result do
       %Postgrex.Interval{days: _d, months: _m, secs: seconds} -> round(seconds / 60)

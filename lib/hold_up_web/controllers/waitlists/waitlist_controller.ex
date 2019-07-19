@@ -23,7 +23,8 @@ defmodule HoldUpWeb.Waitlists.WaitlistController do
       HoldUpWeb.Live.Waitlists.WaitlistView,
       session: %{
         current_user_id: conn.assigns.current_user.id,
-        waitlist_id: id
+        waitlist_id: id,
+        current_company: conn.assigns.current_company
       }
     )
   end
