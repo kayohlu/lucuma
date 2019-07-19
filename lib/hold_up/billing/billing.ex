@@ -334,8 +334,6 @@ defmodule HoldUp.Billing do
       items: %Stripe.List{
         data: [
           %Stripe.SubscriptionItem{
-            created: 1_563_469_253,
-            deleted: nil,
             id: subscription_item_id,
             plan: %Stripe.Plan{
               id: "plan_Eyp0J9dUxi2tWW"

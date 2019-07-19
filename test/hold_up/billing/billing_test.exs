@@ -337,4 +337,24 @@ defmodule HoldUp.BillingTest do
       assert company_without_stripe_data.stripe_payment_plan_id == nil
     end
   end
+
+  describe "#report_usage/2" do
+    test "returns {:ok, usage_record}", state do
+      company = insert(:company)
+      user = insert(:user, company: company, email: "a@a.com")
+
+      result =
+        Billing.create_subscription(
+          user,
+          company,
+          %{"id" => "plan_Eyp0J9dUxi2tWW", "stripeToken" => "tok_visa"}
+        )
+
+      assert :ok = result
+
+      company_with_stripe_data = Repo.get(Company, user.company_id)
+
+      assert {:ok, response_object} = Billing.report_usage(company_with_stripe_data, "plan_Eyp0J9dUxi2tWW")
+    end
+  end
 end
