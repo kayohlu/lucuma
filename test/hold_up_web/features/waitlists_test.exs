@@ -107,6 +107,113 @@ defmodule HoldUpWeb.Features.WaitlistTest do
       assert_text(page, "updated attendance message content")
       assert_text(page, "Settings updated successfully.")
     end
+
+    test "editing the message content and adding an imbalanced number of braces for the content tags shows an error", %{session: session} do
+      company = insert(:company)
+      business = insert(:business, company: company)
+      user = insert(:user, company: company)
+      user_business = insert(:user_business, user_id: user.id, business_id: business.id)
+      waitlist = insert(:waitlist, business: business)
+      insert(:confirmation_sms_setting, waitlist: waitlist)
+      insert(:attendance_sms_setting, waitlist: waitlist)
+
+      page =
+        session
+        |> visit("/")
+        |> click(link("Sign In"))
+        |> fill_in(text_field("Email"), with: user.email)
+        |> fill_in(text_field("Password"), with: "123123123")
+        |> click(button("Sign In"))
+
+      assert_text(page, "Dashboard")
+
+      page =
+        page
+        |> click(link("Waitlist"))
+        |> take_screenshot
+        |> find(link("Settings"), &assert(has_text?(&1, "Settings")))
+        |> click(link("Settings"))
+
+      find(page, css(".nav-link.active", count: 1))
+      |> assert_text("Settings")
+
+
+      # confirmation settings
+      page
+      |> fill_in(text_field("confirmation_sms_setting[message_content]"),
+        with: "updated confirmation message content with extra ["
+      )
+      |> find(button("Update SMS message", count: 2))
+      |> List.first()
+      |> Wallaby.Element.click()
+
+      assert_text(page, "You have an extra unnecessary '['. You need to surround your tags with [[ and ]] (double square braces)")
+
+      # attendance settings
+      page
+      |> fill_in(text_field("attendance_sms_setting[message_content]"),
+        with: "updated attendance message content with extra ]"
+      )
+      |> find(button("Update SMS message", count: 2))
+      |> List.last()
+      |> Wallaby.Element.click()
+
+      assert_text(page, "You have an extra unnecessary ']'. You need to surround your tags with [[ and ]] (double square braces)")
+    end
+
+    test "editing the message content and adding an invalid tag (one that does not exist)", %{session: session} do
+      company = insert(:company)
+      business = insert(:business, company: company)
+      user = insert(:user, company: company)
+      user_business = insert(:user_business, user_id: user.id, business_id: business.id)
+      waitlist = insert(:waitlist, business: business)
+      insert(:confirmation_sms_setting, waitlist: waitlist)
+      insert(:attendance_sms_setting, waitlist: waitlist)
+
+      page =
+        session
+        |> visit("/")
+        |> click(link("Sign In"))
+        |> fill_in(text_field("Email"), with: user.email)
+        |> fill_in(text_field("Password"), with: "123123123")
+        |> click(button("Sign In"))
+
+      assert_text(page, "Dashboard")
+
+      page =
+        page
+        |> click(link("Waitlist"))
+        |> take_screenshot
+        |> find(link("Settings"), &assert(has_text?(&1, "Settings")))
+        |> click(link("Settings"))
+
+      find(page, css(".nav-link.active", count: 1))
+      |> assert_text("Settings")
+
+
+      # confirmation settings
+      page
+      |> fill_in(text_field("confirmation_sms_setting[message_content]"),
+        with: "updated confirmation message content with [[XX]]"
+      )
+      |> find(button("Update SMS message", count: 2))
+      |> List.first()
+      |> Wallaby.Element.click()
+
+      assert_text(page, "You have added invalid tags to the message. They are [[XX]]")
+
+
+      # attendance settings
+      page
+      |> fill_in(text_field("attendance_sms_setting[message_content]"),
+        with: "updated attendance message content with [[XX]]"
+      )
+      |> find(button("Update SMS message", count: 2))
+      |> List.last()
+      |> Wallaby.Element.click()
+
+      assert_text(page, "You have added invalid tags to the message. They are [[XX]]")
+    end
   end
 
   describe "trying to view a waitlist that does not belong to the user's business but another business for the same company" do

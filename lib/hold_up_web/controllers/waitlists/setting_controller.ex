@@ -9,10 +9,21 @@ defmodule HoldUpWeb.Waitlists.SettingController do
   alias HoldUp.Waitlists.AttendanceSmsSetting
 
   def index(conn, params) do
+    %{"waitlist_id" => waitlist_id} = params
+    waitlist = Waitlists.get_waitlist!(waitlist_id)
+    confirmation_sms_setting = Repo.get_by!(ConfirmationSmsSetting, waitlist_id: waitlist.id)
+    attendance_sms_setting = Repo.get_by!(AttendanceSmsSetting, waitlist_id: waitlist.id)
+
     render(
       conn,
       "index.html",
-      settings_for_page(params)
+      waitlist: waitlist,
+      confirmation_sms_setting: confirmation_sms_setting,
+      confirmation_sms_setting_changeset:
+        Waitlists.change_confirmation_sms_setting(confirmation_sms_setting),
+      attendance_sms_setting: attendance_sms_setting,
+      attendance_sms_setting_changeset:
+        Waitlists.change_attendance_sms_setting(attendance_sms_setting)
     )
   end
 
@@ -28,7 +39,22 @@ defmodule HoldUpWeb.Waitlists.SettingController do
         )
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "index.html", changeset: changeset, sms_setting: sms_setting)
+        # render(conn, "index.html", changeset: changeset, sms_setting: sms_setting)
+
+        waitlist = Waitlists.get_waitlist!(conn.params["waitlist_id"])
+        confirmation_sms_setting = Repo.get_by!(ConfirmationSmsSetting, waitlist_id: waitlist.id)
+        attendance_sms_setting = Repo.get_by!(AttendanceSmsSetting, waitlist_id: waitlist.id)
+
+        render(
+          conn,
+          "index.html",
+          waitlist: waitlist,
+          confirmation_sms_setting: confirmation_sms_setting,
+          confirmation_sms_setting_changeset: changeset,
+          attendance_sms_setting: attendance_sms_setting,
+          attendance_sms_setting_changeset:
+            Waitlists.change_attendance_sms_setting(attendance_sms_setting)
+        )
     end
   end
 
@@ -44,24 +70,22 @@ defmodule HoldUpWeb.Waitlists.SettingController do
         )
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "index.html", changeset: changeset, sms_setting: sms_setting)
+        # render(conn, "index.html", changeset: changeset, sms_setting: sms_setting)
+
+        waitlist = Waitlists.get_waitlist!(conn.params["waitlist_id"])
+        confirmation_sms_setting = Repo.get_by!(ConfirmationSmsSetting, waitlist_id: waitlist.id)
+        attendance_sms_setting = Repo.get_by!(AttendanceSmsSetting, waitlist_id: waitlist.id)
+
+        render(
+          conn,
+          "index.html",
+          waitlist: waitlist,
+          confirmation_sms_setting: confirmation_sms_setting,
+          confirmation_sms_setting_changeset:
+            Waitlists.change_confirmation_sms_setting(confirmation_sms_setting),
+          attendance_sms_setting: attendance_sms_setting,
+          attendance_sms_setting_changeset: changeset
+        )
     end
-  end
-
-  def settings_for_page(params) do
-    %{"waitlist_id" => waitlist_id} = params
-    waitlist = Waitlists.get_waitlist!(waitlist_id)
-    confirmation_sms_setting = Repo.get_by!(ConfirmationSmsSetting, waitlist_id: waitlist.id)
-    attendance_sms_setting = Repo.get_by!(AttendanceSmsSetting, waitlist_id: waitlist.id)
-
-    [
-      waitlist: waitlist,
-      confirmation_sms_setting: confirmation_sms_setting,
-      confirmation_sms_setting_changeset:
-        Waitlists.change_confirmation_sms_setting(confirmation_sms_setting),
-      attendance_sms_setting: attendance_sms_setting,
-      attendance_sms_setting_changeset:
-        Waitlists.change_attendance_sms_setting(attendance_sms_setting)
-    ]
   end
 end

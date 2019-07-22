@@ -354,7 +354,8 @@ defmodule HoldUp.BillingTest do
 
       company_with_stripe_data = Repo.get(Company, user.company_id)
 
-      assert {:ok, response_object} = Billing.report_usage(company_with_stripe_data, "plan_Eyp0J9dUxi2tWW")
+      assert {:ok, response_object} =
+               Billing.report_usage(company_with_stripe_data, "plan_Eyp0J9dUxi2tWW")
     end
   end
 end
