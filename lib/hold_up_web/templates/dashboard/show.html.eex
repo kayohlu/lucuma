@@ -1,1 +1,40 @@
-<h1><%= gettext("Dashboard") %></h1>
+<div class="card">
+  <div class="card-header">
+    Today
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col text-center align-self-center">
+        <h1 class="display-1 d-inline"><%= @waitlisted %></h1>
+        <p class="text-muted"><%= gettext("Waitlisted") %></p>
+      </div>
+      <div class="col text-center align-self-center">
+        <h1 class="display-1 d-inline"><%= @waiting %></h1>
+        <p class="text-muted"><%= gettext("Waiting") %></p>
+      </div>
+      <div class="col text-center align-self-center">
+        <h1 class="display-1 d-inline"><%= @average_wait_time %></h1><small class="text-muted">mins</small>
+        <p class="text-muted"><%= gettext("Average wait time") %></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="card mt-4">
+  <div class="card-header">
+    <%= gettext("Busiest hours for today (average amount of people served for today's day)") %>
+  </div>
+  <div class="card-body">
+      <div class="col">
+      <%#   <%= content_tag(:div, nil,
+          [
+            {:data,
+               [waitlist_average_served_per_hour_per_day_data: Jason.encode!(convert_to_highcharts_named_series(@average_served_per_hour_for_todays_day))]
+            },
+            id: "waitlist-average-served-per-hour-per-day-container"
+          ])
+        %>
+      </div>
+  </div>
+</div>

@@ -20,7 +20,7 @@ defmodule HoldUp.MixProject do
   def application do
     [
       mod: {HoldUp.Application, []},
-      extra_applications: [:logger, :runtime_tools, :ex_phone_number, :ex_twilio]
+      extra_applications: [:logger, :runtime_tools, :ex_phone_number, :ex_twilio, :timex]
     ]
   end
 
@@ -56,6 +56,7 @@ defmodule HoldUp.MixProject do
       {:canada, "~> 1.0.1"},
       {:phoenix_live_view, github: "phoenixframework/phoenix_live_view"},
       {:stripity_stripe, "~> 2.4.0"},
+      {:timex, "~> 3.5"},
       {:number, "~> 1.0.0"}
     ]
   end

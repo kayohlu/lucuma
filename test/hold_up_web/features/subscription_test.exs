@@ -8,7 +8,8 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
     session
     |> visit("/")
 
-    :timer.sleep(300) # getting the odd intermittent failure.. prob some js
+    # getting the odd intermittent failure.. prob some js
+    :timer.sleep(300)
 
     session
     |> find(link("Choose plan", count: 3, at: 1), &assert(has_text?(&1, "Choose plan")))
@@ -164,7 +165,9 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
       :timer.sleep(2000)
 
       session
-      |> assert_text("You're subscription has now been activated. To cancel or change your plan, visit your profile.")
+      |> assert_text(
+        "You're subscription has now been activated. To cancel or change your plan, visit your profile."
+      )
     end
   end
 
