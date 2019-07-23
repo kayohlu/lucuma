@@ -30,12 +30,16 @@ defmodule HoldUp.WaitlistsTests.StandByTest do
     end
 
     test "create_stand_by/2 with valid data creates a stand_by" do
-      waitlist = insert_waitlist
+      company = insert(:company, stripe_payment_plan_id: "some-id")
+      waitlist = insert(:waitlist, business: insert(:business, company: company))
+      insert(:confirmation_sms_setting, waitlist: waitlist)
+      insert(:attendance_sms_setting, waitlist: waitlist)
       stand_by_params = params_for(:stand_by)
 
       assert {:ok, %StandBy{} = stand_by} =
                Waitlists.create_stand_by(
                  Map.put(stand_by_params, :waitlist_id, waitlist.id),
+                 company,
                  NotificationsMock
                )
 

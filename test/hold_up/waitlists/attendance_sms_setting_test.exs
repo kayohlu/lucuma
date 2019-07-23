@@ -26,8 +26,10 @@ defmodule HoldUp.WaitlistsTests.AttendanceSmsSettingTest do
     end
 
     test "create_attendance_sms_settings/1 with invalid data returns error changeset" do
+      waitlist = insert(:waitlist, business: insert(:business, company: insert(:company)))
+
       assert {:error, %Ecto.Changeset{}} =
-               Waitlists.create_attendance_sms_setting(%{enabled: nil})
+               Waitlists.create_attendance_sms_setting(%{enabled: nil, waitlist_id: waitlist.id})
     end
 
     test "update_attendance_sms_settings/1 with valid data updates the attendance_sms_setting" do

@@ -14,11 +14,11 @@ defmodule HoldUpWeb.Billing.SubscriptionSkipController do
           :info,
           "That's it. Your registration is complete. We've created an initial default waitlist for you. You can add up to 100 people to your waitlist."
         )
-        |> redirect(to: Routes.dashboard_path(conn, :index))
+        |> redirect(to: Routes.dashboard_path(conn, :show))
 
       true ->
         conn
-        |> redirect(to: Routes.dashboard_path(conn, :index))
+        |> redirect(to: Routes.dashboard_path(conn, :show))
     end
   end
 end

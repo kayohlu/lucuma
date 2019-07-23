@@ -18,7 +18,7 @@ defmodule HoldUpWeb.Billing.PaymentPlanController do
         :info,
         "You have already subscribed."
       )
-      |> redirect(to: Routes.dashboard_path(conn, :index))
+      |> redirect(to: Routes.dashboard_path(conn, :show))
     else
       changeset = Billing.change_subscription_form(%SubscriptionForm{})
       payment_plan = Billing.get_payment_plan(id)
@@ -40,7 +40,7 @@ defmodule HoldUpWeb.Billing.PaymentPlanController do
         :info,
         "You have already subscribed."
       )
-      |> redirect(to: Routes.dashboard_path(conn, :index))
+      |> redirect(to: Routes.dashboard_path(conn, :show))
     else
       %{"id" => stripe_payment_plan_id, "stripeToken" => stripe_credit_card_token} = params
 
@@ -58,7 +58,7 @@ defmodule HoldUpWeb.Billing.PaymentPlanController do
             :info,
             "You're subscription has now been activated. To cancel or change your plan, visit your profile."
           )
-          |> redirect(to: Routes.dashboard_path(conn, :index))
+          |> redirect(to: Routes.dashboard_path(conn, :show))
 
         {:error, changeset} ->
           [credit_or_debit_card: {message, []}] = changeset.errors

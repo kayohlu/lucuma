@@ -20,7 +20,7 @@ defmodule HoldUpWeb.SessionController do
         |> put_session(:current_user_id, user.id)
         |> put_session(:current_company_id, user.company.id)
         |> put_session(:current_business_id, hd(user.company.businesses).id)
-        |> redirect(to: Routes.dashboard_path(conn, :index))
+        |> redirect(to: Routes.dashboard_path(conn, :show))
 
       {:error, user} ->
         render(conn, "new.html")

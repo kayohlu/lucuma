@@ -102,7 +102,6 @@ defmodule HoldUp.Waitlists do
     AttendanceSmsSetting.changeset(attendance_sms_setting, %{
       enabled: true,
       message_content: """
-
       Hello [[NAME]],
 
       It's your turn!

@@ -59,7 +59,7 @@ defmodule HoldUpWeb.Router do
     pipe_through :protected
 
     delete "/signout", SessionController, :delete
-    resources "/dashboard", DashboardController, only: [:index]
+    resources "/dashboard", DashboardController, only: [:show], singleton: true
     resources "/profile", ProfileController, only: [:show], singleton: true
   end
 

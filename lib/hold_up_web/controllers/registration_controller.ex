@@ -65,7 +65,7 @@ defmodule HoldUpWeb.RegistrationController do
   end
 
   def registration_complete_redirect_path(conn, nil) do
-    Routes.dashboard_path(conn, :index)
+    Routes.dashboard_path(conn, :show)
   end
 
   def registration_complete_redirect_path(conn, payment_plan_id) do

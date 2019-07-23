@@ -108,7 +108,8 @@ defmodule HoldUpWeb.Features.WaitlistTest do
       assert_text(page, "Settings updated successfully.")
     end
 
-    test "editing the message content and adding an imbalanced number of braces for the content tags shows an error", %{session: session} do
+    test "editing the message content and adding an imbalanced number of braces for the content tags shows an error",
+         %{session: session} do
       company = insert(:company)
       business = insert(:business, company: company)
       user = insert(:user, company: company)
@@ -136,7 +137,6 @@ defmodule HoldUpWeb.Features.WaitlistTest do
 
       find(page, css(".nav-link.active", count: 1))
       |> assert_text("Settings")
-
 
       # confirmation settings
       page
@@ -147,7 +147,10 @@ defmodule HoldUpWeb.Features.WaitlistTest do
       |> List.first()
       |> Wallaby.Element.click()
 
-      assert_text(page, "You have an extra unnecessary '['. You need to surround your tags with [[ and ]] (double square braces)")
+      assert_text(
+        page,
+        "You have an extra unnecessary '['. You need to surround your tags with [[ and ]] (double square braces)"
+      )
 
       # attendance settings
       page
@@ -158,10 +161,15 @@ defmodule HoldUpWeb.Features.WaitlistTest do
       |> List.last()
       |> Wallaby.Element.click()
 
-      assert_text(page, "You have an extra unnecessary ']'. You need to surround your tags with [[ and ]] (double square braces)")
+      assert_text(
+        page,
+        "You have an extra unnecessary ']'. You need to surround your tags with [[ and ]] (double square braces)"
+      )
     end
 
-    test "editing the message content and adding an invalid tag (one that does not exist)", %{session: session} do
+    test "editing the message content and adding an invalid tag (one that does not exist)", %{
+      session: session
+    } do
       company = insert(:company)
       business = insert(:business, company: company)
       user = insert(:user, company: company)
@@ -189,7 +197,6 @@ defmodule HoldUpWeb.Features.WaitlistTest do
 
       find(page, css(".nav-link.active", count: 1))
       |> assert_text("Settings")
-
 
       # confirmation settings
       page
@@ -201,7 +208,6 @@ defmodule HoldUpWeb.Features.WaitlistTest do
       |> Wallaby.Element.click()
 
       assert_text(page, "You have added invalid tags to the message. They are [[XX]]")
-
 
       # attendance settings
       page

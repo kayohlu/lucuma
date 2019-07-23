@@ -63,7 +63,7 @@ defmodule HoldUp.RegistrationsTest do
       assert confirmation_sms_setting.message_content == """
              Hello [[NAME]],
 
-             It's your turn!
+             You've been added to our waitlist. We'll let you know when it's your turn as soon as possible.
 
              Regards,
              Your friendly staff
@@ -78,7 +78,7 @@ defmodule HoldUp.RegistrationsTest do
       assert attendance_sms_setting.message_content == """
              Hello [[NAME]],
 
-             You've been added to our waitlist. We'll let you know when it's your turn as soon as possible.
+             It's your turn!
 
              Regards,
              Your friendly staff

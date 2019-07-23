@@ -6,7 +6,7 @@ defmodule HoldUpWeb.Plugs.RedirectLoggedIn do
   def redirect_if_logged_in(conn, _params) do
     if get_session(conn, :current_user_id) do
       conn
-      |> redirect(to: Helpers.dashboard_path(conn, :index))
+      |> redirect(to: Helpers.dashboard_path(conn, :show))
       |> halt()
     else
       conn

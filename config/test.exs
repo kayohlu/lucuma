@@ -25,5 +25,5 @@ config :bcrypt_elixir, :log_rounds, 4
 config :wallaby,
   driver: Wallaby.Experimental.Chrome,
   chrome: [
-    headless: false
+    headless: true
   ]

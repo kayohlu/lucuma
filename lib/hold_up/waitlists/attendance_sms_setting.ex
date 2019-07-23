@@ -17,6 +17,8 @@ defmodule HoldUp.Waitlists.AttendanceSmsSetting do
   def changeset(sms_setting, attrs) do
     sms_setting
     |> cast(attrs, [:enabled, :message_content, :waitlist_id])
+    |> validate_required([:enabled, :message_content, :waitlist_id])
+    |> validate_inclusion(:enabled, [true, false])
     |> validate_matching_braces(:message_content)
     |> validate_tags(:message_content)
   end
@@ -28,24 +30,39 @@ defmodule HoldUp.Waitlists.AttendanceSmsSetting do
 
       cond do
         balance_value > 0 ->
-          [{field, options[:message] || "You have an extra unnecessary '['. You need to surround your tags with [[ and ]] (double square braces)"}]
+          [
+            {field,
+             options[:message] ||
+               "You have an extra unnecessary '['. You need to surround your tags with [[ and ]] (double square braces)"}
+          ]
+
         balance_value < 0 ->
-          [{field, options[:message] || "You have an extra unnecessary ']'. You need to surround your tags with [[ and ]] (double square braces)"}]
-        true -> []
+          [
+            {field,
+             options[:message] ||
+               "You have an extra unnecessary ']'. You need to surround your tags with [[ and ]] (double square braces)"}
+          ]
+
+        true ->
+          []
       end
     end)
   end
 
   def validate_tags(changeset, field, options \\ []) do
     validate_change(changeset, field, fn _, message_content ->
-      invalid_tags = Regex.scan(~r/(\[\[\w+\]\])/, message_content)
-                     |> List.flatten
-                     |> Enum.filter(fn tag -> tag not in @valid_tags end)
-                     |> Enum.uniq
-
+      invalid_tags =
+        Regex.scan(~r/(\[\[\w+\]\])/, message_content)
+        |> List.flatten()
+        |> Enum.filter(fn tag -> tag not in @valid_tags end)
+        |> Enum.uniq()
 
       if invalid_tags != [] do
-        [{field, options[:message] || "You have added invalid tags to the message. They are #{Enum.join(invalid_tags, ",")}"}]
+        [
+          {field,
+           options[:message] ||
+             "You have added invalid tags to the message. They are #{Enum.join(invalid_tags, ",")}"}
+        ]
       else
         []
       end
