@@ -15,7 +15,7 @@ defmodule HoldUpWeb.Features.RegistrationTest do
       |> fill_in(text_field("registration[password]"), with: "123123123")
       |> fill_in(text_field("registration[password_confirmation]"), with: "123123123")
       |> click(button("Sign Up"))
-      |> assert_text("Dashboard")
+      |> assert_text("Today")
     end
   end
 

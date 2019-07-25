@@ -91,7 +91,7 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
       :timer.sleep(1500)
 
       session
-      |> find(Wallaby.Query.text("Dashboard"), &assert(has_text?(&1, "Dashboard")))
+      |> find(Wallaby.Query.text("Today"), &assert(has_text?(&1, "Today")))
       |> assert_text(
         "You're subscription has now been activated. To cancel or change your plan, visit your profile."
       )
@@ -420,7 +420,7 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
       session
       |> send_keys("4242424242424242 12 23 346 90210")
       |> click(button("Subscribe"))
-      |> find(Wallaby.Query.text("Dashboard"), &assert(has_text?(&1, "Dashboard")))
+      |> find(Wallaby.Query.text("Today"), &assert(has_text?(&1, "Today")))
       |> assert_text(
         "You're subscription has now been activated. To cancel or change your plan, visit your profile."
       )
@@ -474,7 +474,7 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
       :timer.sleep(1000)
 
       session
-      |> find(Wallaby.Query.text("Dashboard"), &assert(has_text?(&1, "Dashboard")))
+      |> find(Wallaby.Query.text("Today"), &assert(has_text?(&1, "Today")))
       |> assert_text(
         "You're subscription has now been activated. To cancel or change your plan, visit your profile."
       )
@@ -529,7 +529,7 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
       :timer.sleep(1000)
 
       session
-      |> find(Wallaby.Query.text("Dashboard"), &assert(has_text?(&1, "Dashboard")))
+      |> find(Wallaby.Query.text("Today"), &assert(has_text?(&1, "Today")))
       |> assert_text(
         "You're subscription has now been activated. To cancel or change your plan, visit your profile."
       )

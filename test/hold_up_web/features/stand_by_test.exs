@@ -123,7 +123,7 @@ defmodule HoldUpWeb.Features.StandByTest do
         |> find(button("Sign In"), &assert(has_text?(&1, "Sign In")))
         |> click(button("Sign In"))
 
-      assert_text(page, "Dashboard")
+      assert_text(page, "Today")
 
       page =
         page

@@ -1,4 +1,4 @@
-defmodule HoldUp.WaitlistsTests.AnalyticsTest do
+defmodule HoldUp.WaitlistsTests.TodayTest do
   use HoldUp.DataCase, async: true
   use Timex
 
@@ -179,7 +179,7 @@ defmodule HoldUp.WaitlistsTests.AnalyticsTest do
       # 2 is the average count value.
       # [day int value, hour, avg count value]
       expected_results = [
-        [2, 12, 3]
+        [Date.utc_today() |> Date.day_of_week(), 12, 3]
       ]
 
       assert Today.average_served_per_hour_for_todays_day(waitlist.id) == expected_results

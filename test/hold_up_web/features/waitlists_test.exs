@@ -1,5 +1,5 @@
 defmodule HoldUpWeb.Features.WaitlistTest do
-  use HoldUp.FeatureCase, async: true
+  use HoldUp.FeatureCase, async: false
 
   import HoldUp.Factory
   import Wallaby.Query
@@ -23,7 +23,7 @@ defmodule HoldUpWeb.Features.WaitlistTest do
         |> find(button("Sign In"), &assert(has_text?(&1, "Sign In")))
         |> click(button("Sign In"))
 
-      assert_text(page, "Dashboard")
+      assert_text(page, "Today")
 
       page
       |> click(link("Waitlist"))
@@ -48,12 +48,11 @@ defmodule HoldUpWeb.Features.WaitlistTest do
         |> fill_in(text_field("Password"), with: "123123123")
         |> click(button("Sign In"))
 
-      assert_text(page, "Dashboard")
+      assert_text(page, "Today")
 
       page =
         page
         |> click(link("Waitlist"))
-        |> take_screenshot
         |> find(link("Settings"), &assert(has_text?(&1, "Settings")))
         |> click(link("Settings"))
 
@@ -126,12 +125,11 @@ defmodule HoldUpWeb.Features.WaitlistTest do
         |> fill_in(text_field("Password"), with: "123123123")
         |> click(button("Sign In"))
 
-      assert_text(page, "Dashboard")
+      assert_text(page, "Today")
 
       page =
         page
         |> click(link("Waitlist"))
-        |> take_screenshot
         |> find(link("Settings"), &assert(has_text?(&1, "Settings")))
         |> click(link("Settings"))
 
@@ -186,12 +184,11 @@ defmodule HoldUpWeb.Features.WaitlistTest do
         |> fill_in(text_field("Password"), with: "123123123")
         |> click(button("Sign In"))
 
-      assert_text(page, "Dashboard")
+      assert_text(page, "Today")
 
       page =
         page
         |> click(link("Waitlist"))
-        |> take_screenshot
         |> find(link("Settings"), &assert(has_text?(&1, "Settings")))
         |> click(link("Settings"))
 
@@ -242,13 +239,11 @@ defmodule HoldUpWeb.Features.WaitlistTest do
         |> fill_in(text_field("Password"), with: "123123123")
         |> click(button("Sign In"))
 
-      assert_text(page, "Dashboard")
+      assert_text(page, "Today")
 
       page =
         page
         |> click(link("Waitlist"))
-
-      take_screenshot(page)
 
       page
       |> assert_text("Settings")

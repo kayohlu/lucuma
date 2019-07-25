@@ -23,7 +23,7 @@ defmodule HoldUpWeb.Features.AuthenticationTest do
       |> Wallaby.Element.click()
 
       page
-      |> assert_text("Dashboard")
+      |> assert_text("Today")
 
       page
       |> find(css("#dropdownMenuButton", count: 1))
