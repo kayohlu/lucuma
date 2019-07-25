@@ -27,12 +27,12 @@
   </div>
   <div class="card-body">
       <div class="col">
-      <%#   <%= content_tag(:div, nil,
+        <%= content_tag(:div, nil,
           [
             {:data,
-               [waitlist_average_served_per_hour_per_day_data: Jason.encode!(convert_to_highcharts_named_series(@average_served_per_hour_for_todays_day))]
+               [waitlist_average_served_per_hour_for_day_data: Jason.encode!(convert_to_highcharts_named_series(@average_served_per_hour_for_todays_day))]
             },
-            id: "waitlist-average-served-per-hour-per-day-container"
+            id: "waitlist-average-served-per-hour-for-day-container"
           ])
         %>
       </div>

@@ -24,6 +24,15 @@ defmodule HoldUpWeb.DashboardController do
       |> Enum.map(fn {task, result_tuple} -> result_tuple || Task.shutdown(task, :brutal_kill) end)
       |> Enum.map(fn {:ok, result} -> result end)
 
+    IO.puts("==========================================================")
+
+    IO.inspect(
+      waitlisted: waitlisted,
+      waiting: waiting,
+      average_wait_time: average_wait_time,
+      average_served_per_hour_for_todays_day: average_served_per_hour_for_todays_day
+    )
+
     render(conn, "show.html",
       waitlisted: waitlisted,
       waiting: waiting,

@@ -44,7 +44,11 @@ defmodule HoldUp.Waitlists.Analytics do
           select: count(s.id)
       )
 
-    count / total_count * (100 / 1)
+    if total_count == 0 do
+      0
+    else
+      count / total_count * (100 / 1)
+    end
   end
 
   def no_show_percentage(waitlist_id) do
@@ -64,7 +68,11 @@ defmodule HoldUp.Waitlists.Analytics do
           select: count(s.id)
       )
 
-    count / total_count * (100 / 1)
+    if total_count == 0 do
+      0
+    else
+      count / total_count * (100 / 1)
+    end
   end
 
   def cancellation_percentage(waitlist_id) do
@@ -84,7 +92,11 @@ defmodule HoldUp.Waitlists.Analytics do
           select: count(s.id)
       )
 
-    count / total_count * (100 / 1)
+    if total_count == 0 do
+      0
+    else
+      count / total_count * (100 / 1)
+    end
   end
 
   def waitlisted_per_date(waitlist_id) do
