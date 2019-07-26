@@ -4,8 +4,9 @@ defmodule HoldUp.Registrations do
   """
 
   import Ecto.Query, warn: false
-  alias HoldUp.Repo
+  require Logger
 
+  alias HoldUp.Repo
   alias HoldUp.Registrations.RegistrationForm
   alias HoldUp.Accounts
   alias HoldUp.Waitlists
@@ -37,7 +38,8 @@ defmodule HoldUp.Registrations do
             email: registration_form.email,
             full_name: registration_form.full_name,
             password_hash: Comeonin.Bcrypt.hashpwsalt(registration_form.password),
-            company_id: company.id
+            company_id: company.id,
+            roles: ["company_admin"]
           }
 
           changeset =
@@ -103,9 +105,9 @@ defmodule HoldUp.Registrations do
           {:ok, steps.user}
 
         {:error, failed_operation, failed_value, changes_so_far} ->
-          IO.inspect(failed_operation)
-          IO.inspect(failed_value)
-          IO.inspect(changes_so_far)
+          Logger.info inspect(failed_operation)
+          Logger.info inspect(failed_value)
+          Logger.info inspect(changes_so_far)
           {:error, %{changeset | action: :registration}}
       end
     else

@@ -60,11 +60,13 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
 
       page
       |> click(link("Profile"))
+      |> click(link("Billing"))
       |> click(link("Choose plan", count: 3, at: 0))
+
+      page
       |> click(link("skip"))
 
       page
-      |> find(css(".alert"), &assert(has_css?(&1, css(".alert"))))
       |> assert_text(
         "You are currently using the free trial. You can add up to 100 customers to your waitlist."
       )
@@ -431,6 +433,7 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
 
       session
       |> click(link("Profile"))
+      |> click(link("Billing"))
       |> click(link("Cancel"))
       |> assert_text("You're subscription has now been canceled.")
 
@@ -486,6 +489,7 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
 
       session
       |> click(link("Profile"))
+      |> click(link("Billing"))
       |> click(link("Cancel"))
       |> assert_text("You're subscription has now been canceled.")
 
@@ -540,6 +544,7 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
 
       session
       |> click(link("Profile"))
+      |> click(link("Billing"))
       |> find(link("Upgrade", count: 2, at: 1), &assert(has_text?(&1, "Upgrade")))
 
       alert_message =

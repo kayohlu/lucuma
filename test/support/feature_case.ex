@@ -24,7 +24,7 @@ defmodule HoldUp.FeatureCase do
     metadata = Phoenix.Ecto.SQL.Sandbox.metadata_for(HoldUp.Repo, self())
 
     {:ok, session} =
-      Wallaby.start_session(metadata: metadata, window_size: [width: 1200, height: 1200])
+      Wallaby.start_session(metadata: metadata, window_size: [width: 1200, height: 1400])
 
     IO.inspect(session)
 

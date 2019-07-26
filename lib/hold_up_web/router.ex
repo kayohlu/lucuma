@@ -60,7 +60,6 @@ defmodule HoldUpWeb.Router do
 
     delete "/signout", SessionController, :delete
     resources "/dashboard", DashboardController, only: [:show], singleton: true
-    resources "/profile", ProfileController, only: [:show], singleton: true
   end
 
   scope "/waitlists", HoldUpWeb.Waitlists, as: :waitlists do
@@ -80,6 +79,14 @@ defmodule HoldUpWeb.Router do
     resources "/attendances", AttendanceController, only: [:create]
     resources "/no_shows", NoShowController, only: [:create]
     resources "/c", CancellationController, only: [:show, :index]
+  end
+
+  scope "/settings", HoldUpWeb.Settings, as: :settings do
+    pipe_through :protected
+
+    resources "/profile", ProfileController, only: [:show], singleton: true
+    resources "/billing", BillingController, only: [:show], singleton: true
+    resources "/staff", StaffController, only: [:show], singleton: true
   end
 
   scope "/billing", HoldUpWeb.Billing, as: :billing do

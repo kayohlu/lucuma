@@ -17,7 +17,7 @@ defmodule HoldUpWeb.Billing.SubscriptionController do
       end
 
     apply(Phoenix.Controller, :put_flash, flash_opts)
-    |> redirect(to: Routes.profile_path(conn, :show))
+    |> redirect(to: Routes.settings_billing_path(conn, :show))
   end
 
   def update(conn, %{"id" => stripe_payment_plan_id} = params) do
@@ -28,6 +28,6 @@ defmodule HoldUpWeb.Billing.SubscriptionController do
       end
 
     apply(Phoenix.Controller, :put_flash, flash_opts)
-    |> redirect(to: Routes.profile_path(conn, :show))
+    |> redirect(to: Routes.settings_billing_path(conn, :show))
   end
 end

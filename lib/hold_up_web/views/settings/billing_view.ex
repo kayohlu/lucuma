@@ -1,4 +1,4 @@
-defmodule HoldUpWeb.ProfileView do
+defmodule HoldUpWeb.Settings.BillingView do
   use HoldUpWeb, :view
 
   def payment_plan_links(conn, nil) do

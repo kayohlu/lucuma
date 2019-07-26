@@ -10,6 +10,7 @@ defmodule HoldUp.Accounts.User do
     field :full_name, :string
     field :password_hash, :string
     field :reset_password_token, :string
+    field :roles, {:array, :string}, default: ["company_admin"]
 
     belongs_to :company, HoldUp.Accounts.Company
     many_to_many :businesses, HoldUp.Accounts.Business, join_through: HoldUp.Accounts.UserBusiness
@@ -32,5 +33,6 @@ defmodule HoldUp.Accounts.User do
     ])
     |> unique_constraint(:email, name: "users_email_index")
     |> validate_required([:email, :full_name, :password_hash, :company_id])
+    |> validate_inclusion(:roles, ["master_admin", "company_admin", "business_admin", "staff"])
   end
 end

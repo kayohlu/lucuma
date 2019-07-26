@@ -1,8 +1,9 @@
-defmodule HoldUpWeb.ProfileController do
+defmodule HoldUpWeb.Settings.BillingController do
   use HoldUpWeb, :controller
 
-  alias HoldUp.Accounts
   alias HoldUp.Billing
+
+  plug :put_layout, :settings
 
   def show(conn, params) do
     assigns =

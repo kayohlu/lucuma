@@ -46,6 +46,7 @@ defmodule HoldUp.Repo.Migrations.CreateUsers do
       add :confirmation_sent_at, :utc_datetime
       # rememberable
       add :remember_created_at, :utc_datetime
+      add :roles, {:array, :string}, default: ["company_admin"]
 
       timestamps()
     end
