@@ -48,10 +48,15 @@ defmodule HoldUp.Repo.Migrations.CreateUsers do
       add :remember_created_at, :utc_datetime
       add :roles, {:array, :string}, default: ["company_admin"]
 
+      add :invitation_token, :string
+      add :invitation_accepted_at, :utc_datetime
+      add :invited_by_id, references("users", on_delete: :nothing)
+
       timestamps()
     end
 
     create unique_index(:users, [:email])
+    create unique_index(:users, [:invitation_token])
 
     create table(:users_businesses) do
       add :user_id, references(:users, on_delete: :nothing)
