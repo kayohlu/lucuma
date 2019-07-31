@@ -1,0 +1,18 @@
+<h1>Show Invitation</h1>
+
+<ul>
+
+  <li>
+    <strong>Full name:</strong>
+    <%= @invitation.full_name %>
+  </li>
+
+  <li>
+    <strong>Email:</strong>
+    <%= @invitation.email %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.invitation_path(@conn, :edit, @invitation) %></span>
+<span><%= link "Back", to: Routes.invitation_path(@conn, :index) %></span>

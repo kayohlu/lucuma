@@ -35,4 +35,16 @@ defmodule HoldUp.Accounts.User do
     |> validate_required([:email, :full_name, :password_hash, :company_id])
     |> validate_inclusion(:roles, ["master_admin", "company_admin", "business_admin", "staff"])
   end
+
+  def invitation_changeset(user, attrs) do
+    user
+    |> cast(attrs, [
+      :email,
+      :full_name,
+      :company_id
+    ])
+    |> unique_constraint(:email, name: "users_email_index")
+    |> validate_required([:email, :full_name, :company_id])
+    |> change(%{roles: ["staff"]})
+  end
 end

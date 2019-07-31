@@ -78,6 +78,17 @@ defmodule HoldUp.Accounts do
     User.changeset(user, %{})
   end
 
+  def change_invitation(%User{} = user) do
+    User.invitation_changeset(user, %{})
+  end
+
+  def create_invitation(attrs \\ %{}) do
+    IO.inspect attrs
+    %User{}
+    |> User.invitation_changeset(attrs)
+    |> Repo.insert
+  end
+
   def get_user_by_email(email) do
     require Logger
     Logger.debug("inside get_user_by_email")

@@ -2,7 +2,7 @@
   <div class="card-header">
     Staff
 
-    <%= link "Add Staff", to: "#" %>
+    <%= link "Add Staff", to: Routes.invitation_path(@conn, :new) %>
   </div>
   <div class="card-body">
      <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>

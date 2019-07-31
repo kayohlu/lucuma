@@ -26,7 +26,7 @@ defmodule HoldUp.Repo.Migrations.CreateUsers do
       add :email, :string, null: false
       add :full_name, :string, null: false
       # authenticatable
-      add :password_hash, :string, null: false
+      add :password_hash, :string
       # recoverable
       add :reset_password_token, :string
       add :reset_password_sent_at, :utc_datetime
@@ -54,6 +54,17 @@ defmodule HoldUp.Repo.Migrations.CreateUsers do
 
       timestamps()
     end
+
+    # create table(:invitationss) do
+    #   add :company_id, references(:companies, on_delete: :nothing), null: false
+    #   add :email, :string, null: false
+    #   add :full_name, :string, null: false
+    #   add :invitation_token, :string
+    #   add :invitation_accepted_at, :utc_datetime
+    #   add :invited_by_id, references("users", on_delete: :nothing)
+
+    #   timestamps()
+    # end
 
     create unique_index(:users, [:email])
     create unique_index(:users, [:invitation_token])
