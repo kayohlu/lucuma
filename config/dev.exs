@@ -79,5 +79,4 @@ config :ex_twilio,
   account_sid: {:system, "TWILIO_ACCOUNT_SID"},
   auth_token: {:system, "TWILIO_AUTH_TOKEN"}
 
-config :hold_up, HoldUpWeb.Mailer,
-  adapter: Bamboo.LocalAdapter
+config :hold_up, HoldUpWeb.Mailer, adapter: Bamboo.LocalAdapter

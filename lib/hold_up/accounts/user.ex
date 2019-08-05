@@ -11,8 +11,12 @@ defmodule HoldUp.Accounts.User do
     field :password_hash, :string
     field :reset_password_token, :string
     field :roles, {:array, :string}, default: ["company_admin"]
+    field :invitation_token, :string
+    field :invitation_accepted_at, :utc_datetime
+    field :invited_by_id, :id
 
     belongs_to :company, HoldUp.Accounts.Company
+    belongs_to :inviter, HoldUp.Accounts.Company, foreign_key: :invited_by_id
     many_to_many :businesses, HoldUp.Accounts.Business, join_through: HoldUp.Accounts.UserBusiness
 
     timestamps()
@@ -41,10 +45,12 @@ defmodule HoldUp.Accounts.User do
     |> cast(attrs, [
       :email,
       :full_name,
-      :company_id
+      :company_id,
+      :invited_by_id
     ])
     |> unique_constraint(:email, name: "users_email_index")
-    |> validate_required([:email, :full_name, :company_id])
+    |> validate_required([:email, :full_name, :company_id, :invited_by_id])
+    |> change(%{invitation_token: UUID.generate()})
     |> change(%{roles: ["staff"]})
   end
 end

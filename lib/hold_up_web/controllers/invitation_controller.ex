@@ -10,14 +10,20 @@ defmodule HoldUpWeb.InvitationController do
   end
 
   def create(conn, %{"user" => invitation_params}) do
-    case Accounts.create_invitation(Map.put(invitation_params, "company_id", conn.assigns.current_company.id)) do
-      {:ok, invitation} ->
+    params =
+      invitation_params
+      |> Map.put("company_id", conn.assigns.current_company.id)
+      |> Map.put("invited_by_id", conn.assigns.current_user.id)
+
+    case Accounts.create_invited_user(params) do
+      {:ok, invited_user} ->
+        HoldUpWeb.Emails.Email.invitation_email(invited_user) |> HoldUpWeb.Mailer.deliver_now()
+
         conn
         |> put_flash(:info, "Invitation created successfully.")
-        |> redirect(to: Routes.invitation_path(conn, :show, invitation))
+        |> redirect(to: Routes.settings_stagg_path(conn, :show))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        IO.inspect changeset
         render(conn, "new.html", changeset: changeset)
     end
   end

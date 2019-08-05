@@ -35,7 +35,7 @@ defmodule HoldUpWeb.Router do
     plug :put_layout, {HoldUpWeb.LayoutView, :logged_in}
   end
 
-  if Mix.env == :dev do
+  if Mix.env() == :dev do
     forward "/sent_emails", Bamboo.SentEmailViewerPlug
   end
 

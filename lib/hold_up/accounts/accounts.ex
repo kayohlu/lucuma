@@ -82,11 +82,10 @@ defmodule HoldUp.Accounts do
     User.invitation_changeset(user, %{})
   end
 
-  def create_invitation(attrs \\ %{}) do
-    IO.inspect attrs
+  def create_invited_user(attrs \\ %{}) do
     %User{}
     |> User.invitation_changeset(attrs)
-    |> Repo.insert
+    |> Repo.insert()
   end
 
   def get_user_by_email(email) do

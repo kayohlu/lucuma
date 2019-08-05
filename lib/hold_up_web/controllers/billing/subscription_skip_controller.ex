@@ -4,7 +4,7 @@ defmodule HoldUpWeb.Billing.SubscriptionSkipController do
   def create(conn, params) do
     %{"payment_form_referer" => payment_form_referer} = params
 
-    IO.puts payment_form_referer
+    IO.puts(payment_form_referer)
 
     cond do
       [Routes.settings_billing_url(conn, :show)] == payment_form_referer ->

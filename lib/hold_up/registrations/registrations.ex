@@ -105,9 +105,9 @@ defmodule HoldUp.Registrations do
           {:ok, steps.user}
 
         {:error, failed_operation, failed_value, changes_so_far} ->
-          Logger.info inspect(failed_operation)
-          Logger.info inspect(failed_value)
-          Logger.info inspect(changes_so_far)
+          Logger.info(inspect(failed_operation))
+          Logger.info(inspect(failed_value))
+          Logger.info(inspect(changes_so_far))
           {:error, %{changeset | action: :registration}}
       end
     else
