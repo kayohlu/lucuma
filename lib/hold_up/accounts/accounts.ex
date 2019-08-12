@@ -116,12 +116,11 @@ defmodule HoldUp.Accounts do
     multi_result =
       Ecto.Multi.new()
       |> Ecto.Multi.insert(:user, user_changeset)
-      |> Ecto.Multi.insert(
-        :business, fn previous_steps ->
-          UserBusiness.changeset(%UserBusiness{}, %{
-              user_id: previous_steps.user.id,
-              business_id: business.id
-            })
+      |> Ecto.Multi.insert(:business, fn previous_steps ->
+        UserBusiness.changeset(%UserBusiness{}, %{
+          user_id: previous_steps.user.id,
+          business_id: business.id
+        })
       end)
       |> Repo.transaction()
 

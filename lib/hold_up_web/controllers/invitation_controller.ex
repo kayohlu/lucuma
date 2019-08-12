@@ -32,8 +32,20 @@ defmodule HoldUpWeb.InvitationController do
 
   def show(conn, %{"id" => id}) do
     user = Accounts.get_user_by_invitation!(id)
-    changeset = Accounts.change_user(user)
-    render(conn, "show.html", changeset: changeset, user: user)
+
+    case user.invitation_accepted_at do
+      nil ->
+        changeset = Accounts.change_user(user)
+        render(conn, "show.html", changeset: changeset, user: user)
+
+      _ ->
+        conn
+        |> put_status(:not_found)
+        |> put_view(HoldUpWeb.ErrorView)
+        |> put_layout({HoldUpWeb.LayoutView, :app})
+        |> render(:"404")
+        |> halt()
+    end
   end
 
   def update(conn, %{"id" => id, "invitation" => invited_user_params}) do
