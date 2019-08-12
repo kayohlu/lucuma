@@ -37,7 +37,8 @@ defmodule HoldUp.Registrations do
           user_attrs = %{
             email: registration_form.email,
             full_name: registration_form.full_name,
-            password_hash: Comeonin.Bcrypt.hashpwsalt(registration_form.password),
+            password: registration_form.password,
+            password_confirmation: registration_form.password_confirmation,
             company_id: company.id,
             roles: ["company_admin"]
           }

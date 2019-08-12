@@ -128,23 +128,22 @@ defmodule HoldUpWeb.Features.StandByTest do
       page =
         page
         |> click(link("Waitlist"))
-        |> find(link("Add Person"), &assert(has_text?(&1, "Add Person")))
-        |> click(link("Add Person"))
+        |> find(button("Add Person"), &assert(has_text?(&1, "Add Person")))
+        |> click(button("Add Person"))
         |> fill_in(text_field("Name"), with: "name")
         |> fill_in(text_field("Contact phone number"), with: "+353851761516")
         |> fill_in(text_field("Party size"), with: "2")
         |> fill_in(text_field("Estimated wait time"), with: "12")
         |> fill_in(text_field("Notes"), with: "a note")
-        |> click(button("Add"))
+        |> click(css(".btn.btn-primary", text: "Add", count: 2, at: 1))
 
-      assert_text(page, "Stand by created successfully.")
       assert_text(page, "+353851761516")
       assert_has(page, link("Notify"))
       assert_has(page, link("No Show"))
       assert_has(page, link("Arrive"))
 
       find(page, css(".nav-link.active", count: 1))
-      |> assert_text("Details")
+      |> assert_text("Waitlist")
     end
   end
 end

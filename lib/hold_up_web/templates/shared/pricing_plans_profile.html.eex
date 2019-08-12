@@ -1,0 +1,49 @@
+<div class="card-deck mb-3 text-center">
+  <div class="card mb-4 box-shadow" style="border-top: 3px solid #929191">
+    <div class="card-header">
+      <span class="text-uppercase" style="letter-spacing: 5px; font-size: 1rem; color: #929191"><%= gettext("Pay as you go") %></span>
+    </div>
+    <div class="card-body">
+      <h2 class="mb-4">$0.20 <small class="text-muted" style="font-size: 60%">/ <%= gettext("customer") %></small></h2>
+      <ul class="text-left fa-ul">
+        <li class="my-3"><span class="fa-li"><i class="fas fa-exclamation pr-2" style="color: #929191"></i></span>Customizable SMS alerts</li>
+        <li class="my-3"><span class="fa-li"><i class="fas fa-chart-bar pr-2" style="color: #929191"></i></span>Analytics and Statistics</li>
+      </ul>
+    </div>
+    <div class="card-footer text-muted">
+    <%= @payment_plan_links.pay_as_you_go %>
+  </div>
+  </div>
+  <div class="card mb-4 box-shadow" style="border-top: 3px solid #24b47e">
+    <div class="card-header">
+      <span class="text-uppercase" style="letter-spacing: 5px; font-size: 1rem; color: #24b47e"><%= gettext("Standard") %></span>
+    </div>
+    <div class="card-body">
+      <h2 class="mb-4">$30 <small class="text-muted" style="font-size: 60%">/ <%= gettext("month") %></small></h2>
+      <ul class="text-left fa-ul">
+        <li class="my-3"><span class="fa-li"><i class="fas fa-user-clock pr-2" style="color: #24b47e"></i></span>First 5000 customers free</li>
+        <li class="my-3"><span class="fa-li"><i class="fas fa-exclamation pr-2" style="color: #24b47e"></i></span>Customizable SMS alerts</li>
+        <li class="my-3"><span class="fa-li"><i class="fas fa-chart-bar pr-2" style="color: #24b47e"></i></span>Analytics and Statistics</li>
+      </ul>
+    </div>
+    <div class="card-footer text-muted">
+    <%= @payment_plan_links.standard %>
+  </div>
+  </div>
+  <div class="card mb-4 box-shadow" style="border-top: 3px solid #2472b4">
+    <div class="card-header">
+      <span class="text-uppercase" style="letter-spacing: 5px; font-size: 1rem; color: #2472b4"><%= gettext("Enterprise") %></span>
+    </div>
+    <div class="card-body">
+      <h2 class="mb-4">$50 <small class="text-muted" style="font-size: 60%">/ <%= gettext("month") %></small></h2>
+      <ul class="text-left fa-ul">
+        <li class="my-3"><span class="fa-li"><i class="fas fa-user-clock pr-2"  style="color: #2472b4"></i></span>Unlimited number of customers</li>
+        <li class="my-3"><span class="fa-li"><i class="fas fa-exclamation pr-2" style="color: #2472b4"></i></span>Customizable SMS alerts</li>
+        <li class="my-3"><span class="fa-li"><i class="fas fa-chart-bar pr-2" style="color: #2472b4"></i></span>Analytics and Statistics</li>
+      </ul>
+    </div>
+    <div class="card-footer text-muted">
+    <%= @payment_plan_links.unlimited %>
+  </div>
+  </div>
+</div>

@@ -16,10 +16,7 @@ defmodule HoldUpWeb.SessionController do
 
     case Bcrypt.check_pass(potential_user, params["password"]) do
       {:ok, user} ->
-        conn
-        |> put_session(:current_user_id, user.id)
-        |> put_session(:current_company_id, user.company.id)
-        |> put_session(:current_business_id, hd(user.company.businesses).id)
+        HoldUpWeb.Plugs.Authentication.sign_in_user(conn, user)
         |> redirect(to: Routes.dashboard_path(conn, :show))
 
       {:error, user} ->

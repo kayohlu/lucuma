@@ -10,6 +10,7 @@ defmodule HoldUpWeb.Features.AuthenticationTest do
       business = insert(:business, company: company)
       user = insert(:user, company: company, email: "a@a.com")
       user_business = insert(:user_business, user_id: user.id, business_id: business.id)
+      waitlist = insert(:waitlist, business: business)
 
       page =
         session

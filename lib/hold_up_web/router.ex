@@ -13,7 +13,7 @@ defmodule HoldUpWeb.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    plug :redirect_if_logged_in
+    # plug :redirect_if_logged_in
   end
 
   pipeline :api do
@@ -33,10 +33,6 @@ defmodule HoldUpWeb.Router do
     plug :authorise
 
     plug :put_layout, {HoldUpWeb.LayoutView, :logged_in}
-  end
-
-  if Mix.env() == :dev do
-    forward "/sent_emails", Bamboo.SentEmailViewerPlug
   end
 
   scope "/", HoldUpWeb do
@@ -64,7 +60,7 @@ defmodule HoldUpWeb.Router do
 
     delete "/signout", SessionController, :delete
     resources "/dashboard", DashboardController, only: [:show], singleton: true
-    resources "/invitations", InvitationController
+    resources "/invitations", InvitationController, only: [:new, :create]
   end
 
   scope "/waitlists", HoldUpWeb.Waitlists, as: :waitlists do
@@ -107,5 +103,11 @@ defmodule HoldUpWeb.Router do
     pipe_through :api
 
     resources "/webhooks/", WebhookController, only: [:create]
+  end
+
+  scope "/", HoldUpWeb do
+    pipe_through :browser
+
+    resources "/invitations", InvitationController, only: [:show, :update]
   end
 end

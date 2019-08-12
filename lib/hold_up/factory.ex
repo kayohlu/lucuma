@@ -16,6 +16,8 @@ defmodule HoldUp.Factory do
     %HoldUp.Accounts.User{
       email: sequence(:user_email, fn n -> "email-user-#{n}@example.com" end),
       full_name: sequence(:user_full_name, fn n -> "Full Name #{n}" end),
+      password: "123123123",
+      password_confirmation: "123123123",
       password_hash: Comeonin.Bcrypt.hashpwsalt("123123123"),
       confirmation_sent_at: DateTime.utc_now(),
       confirmation_token: "some confirmation_token",

@@ -3,9 +3,11 @@ defmodule HoldUp.Accounts do
   The Accounts context.
   """
 
-  import Ecto.Query, warn: false
-  alias HoldUp.Repo
+  require Logger
 
+  import Ecto.Query, warn: false
+
+  alias HoldUp.Repo
   alias HoldUp.Accounts.User
   alias HoldUp.Accounts.Company
   alias HoldUp.Accounts.Business
@@ -20,6 +22,19 @@ defmodule HoldUp.Accounts do
   def get_user(id), do: Repo.get(User, id)
 
   def get_current_company(%User{} = user), do: Repo.get(Company, user.company_id)
+
+  def get_user_by_invitation!(id) do
+    query =
+      from user in HoldUp.Accounts.User,
+        join: company in HoldUp.Accounts.Company,
+        where: company.id == user.company_id,
+        join: businesses in HoldUp.Accounts.Business,
+        where: businesses.company_id == company.id,
+        where: user.invitation_token == ^id,
+        preload: [company: {company, businesses: businesses}]
+
+    Repo.one(query)
+  end
 
   @doc """
   Creates a user.
@@ -37,6 +52,14 @@ defmodule HoldUp.Accounts do
     %User{}
     |> User.changeset(attrs)
     |> Repo.insert()
+  end
+
+  def accept_user_invite(%User{} = user, attrs) do
+    attrs = Map.put_new(attrs, "invitation_accepted_at", DateTime.utc_now())
+
+    user
+    |> User.changeset(attrs)
+    |> Repo.update()
   end
 
   @doc """
@@ -82,16 +105,40 @@ defmodule HoldUp.Accounts do
     User.invitation_changeset(user, %{})
   end
 
-  def create_invited_user(attrs \\ %{}) do
-    %User{}
-    |> User.invitation_changeset(attrs)
-    |> Repo.insert()
+  def create_invited_user(inviting_user, company, business, attrs \\ %{}) do
+    user_changeset =
+      %User{
+        company_id: company.id,
+        invited_by_id: inviting_user.id
+      }
+      |> User.invitation_changeset(attrs)
+
+    multi_result =
+      Ecto.Multi.new()
+      |> Ecto.Multi.insert(:user, user_changeset)
+      |> Ecto.Multi.insert(
+        :business, fn previous_steps ->
+          UserBusiness.changeset(%UserBusiness{}, %{
+              user_id: previous_steps.user.id,
+              business_id: business.id
+            })
+      end)
+      |> Repo.transaction()
+
+    case multi_result do
+      {:ok, steps} ->
+        {:ok, Repo.preload(steps.user, :inviter, force: true)}
+
+      {:error, failed_operation, failed_value, changes_so_far} ->
+        Logger.info("User invitation failed.")
+        Logger.info(inspect(failed_operation))
+        Logger.info(inspect(failed_value))
+        Logger.info(inspect(changes_so_far))
+        {:error, %{user_changeset | action: :invitation}}
+    end
   end
 
   def get_user_by_email(email) do
-    require Logger
-    Logger.debug("inside get_user_by_email")
-
     query =
       from user in HoldUp.Accounts.User,
         join: company in HoldUp.Accounts.Company,
