@@ -1,10 +1,26 @@
 <div class="card">
-  <div class="card-header">
-    Staff
+  <div class="card-header d-flex">
+    <div class="d-flex align-items-center"><%= gettext("Staff") %></div>
 
-    <%= link "Add Staff", to: Routes.invitation_path(@conn, :new) %>
+    <div class="d-flex flex-fill align-items-center justify-content-end">
+    <%= link gettext("Add Staff Member"), to: Routes.invitation_path(@conn, :new), class: "btn btn-primary pull-right" %>
   </div>
-  <div class="card-body">
-     <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+  </div>
+  <div>
+    <ul class="list-group list-group-flush">
+      <%= for staff_member <- @staff do %>
+      <div class="list-group-item">
+        <div class="d-flex w-100 justify-content-between">
+          <div class="d-flex align-items-center">
+            <div><%= staff_member.full_name %></div>
+          </div>
+          <div class="d-flex flex-fill align-items-center justify-content-end">
+            <%= link "Delete", to: Routes.settings_staff_path(@conn, :delete, staff_member.id, method: :destroy), class: "btn btn-outline-danger", method: :delete, data: [confirm: gettext("Are you sure?")] %>
+          </div>
+        </div>
+      </div>
+
+      <% end %>
+    </ul>
   </div>
 </div>

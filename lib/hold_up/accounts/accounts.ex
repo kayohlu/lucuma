@@ -36,6 +36,20 @@ defmodule HoldUp.Accounts do
     Repo.one(query)
   end
 
+  def list_staff(business) do
+    query =
+      from user in User,
+        join: businesses in HoldUp.Accounts.Business,
+        where: businesses.company_id == ^business.id,
+        where: "staff" in user.roles
+    Repo.all(query)
+  end
+
+  def delete_staff_memeber(user_id) do
+    get_user(user_id)
+    |> delete_user
+  end
+
   @doc """
   Creates a user.
 

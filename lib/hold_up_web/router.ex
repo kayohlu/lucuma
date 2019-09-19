@@ -88,6 +88,7 @@ defmodule HoldUpWeb.Router do
     resources "/profile", ProfileController, only: [:show], singleton: true
     resources "/billing", BillingController, only: [:show], singleton: true
     resources "/staff", StaffController, only: [:show], singleton: true
+    resources "/staff", StaffController, only: [:delete]
   end
 
   scope "/billing", HoldUpWeb.Billing, as: :billing do
