@@ -40,7 +40,4 @@ defmodule HoldUpWeb.DashboardController do
       average_served_per_hour_for_todays_day: average_served_per_hour_for_todays_day
     )
   end
-
-  defp tasks do
-  end
 end

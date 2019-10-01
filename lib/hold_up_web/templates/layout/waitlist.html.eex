@@ -19,14 +19,16 @@
           <%= gettext("Analytics") %>
           <% end %>
         </li>
-        <li class="nav-item">
-          <%= link to: Routes.waitlists_waitlist_setting_path(@conn, :index, @waitlist.id), class: "nav-link pl-0 #{activate_link(@conn, Routes.waitlists_waitlist_setting_path(@conn, :index, @waitlist.id))}" do %>
-          <span class="mr-1 fa-li">
-          <i class="fas fa-cog"></i>
-          </span>
-          <%= gettext("Settings") %>
-          <% end %>
-        </li>
+        <%= if HoldUpWeb.Permissions.permitted_to?(@conn, HoldUpWeb.Waitlists.SettingController, :index) do %>
+          <li class="nav-item">
+            <%= link to: Routes.waitlists_waitlist_setting_path(@conn, :index, @waitlist.id), class: "nav-link pl-0 #{activate_link(@conn, Routes.waitlists_waitlist_setting_path(@conn, :index, @waitlist.id))}" do %>
+            <span class="mr-1 fa-li">
+            <i class="fas fa-cog"></i>
+            </span>
+            <%= gettext("Settings") %>
+            <% end %>
+          </li>
+        <% end %>
       </ul>
     </div>
   </div>

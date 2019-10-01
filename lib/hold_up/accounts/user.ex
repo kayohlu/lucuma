@@ -19,7 +19,10 @@ defmodule HoldUp.Accounts.User do
 
     belongs_to :company, HoldUp.Accounts.Company
     belongs_to :inviter, HoldUp.Accounts.User, foreign_key: :invited_by_id
-    many_to_many :businesses, HoldUp.Accounts.Business, join_through: HoldUp.Accounts.UserBusiness, on_delete: :delete_all
+
+    many_to_many :businesses, HoldUp.Accounts.Business,
+      join_through: HoldUp.Accounts.UserBusiness,
+      on_delete: :delete_all
 
     timestamps()
   end

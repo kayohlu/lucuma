@@ -24,6 +24,7 @@ defmodule HoldUpWeb do
       import Plug.Conn
       import HoldUpWeb.Gettext
       alias HoldUpWeb.Router.Helpers, as: Routes
+      use HoldUpWeb.Permissions
     end
   end
 

@@ -42,6 +42,7 @@ defmodule HoldUp.Accounts do
         join: businesses in HoldUp.Accounts.Business,
         where: businesses.company_id == ^business.id,
         where: "staff" in user.roles
+
     Repo.all(query)
   end
 
