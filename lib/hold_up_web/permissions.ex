@@ -46,8 +46,9 @@ defmodule HoldUpWeb.Permissions do
         action in get_in(permission_rules, [role, controller])
       else
         # get the keys in the hash
-        actions = get_in(permission_rules, [role, controller])
-        |> Map.keys
+        actions =
+          get_in(permission_rules, [role, controller])
+          |> Map.keys()
 
         action in actions
       end
