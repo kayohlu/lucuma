@@ -66,6 +66,29 @@ defmodule HoldUp.Accounts.User do
     |> change(%{roles: ["staff"]})
   end
 
+  @doc false
+  def profile_changeset(user, attrs) do
+    user
+    |> cast(attrs, [
+      :email,
+      :full_name
+    ])
+    |> unique_constraint(:email, name: "users_email_index")
+    |> validate_format(:email, ~r/@/)
+  end
+
+  def password_changeset(user, attrs) do
+    user
+    |> cast(attrs, [
+      :password,
+      :password_confirmation
+    ])
+    |> validate_required([:password, :password_confirmation])
+    |> validate_confirmation(:password)
+    |> validate_length(:password, min: 6, max: 32)
+    |> hash_password()
+  end
+
   @doc """
   When an invitation is sent and the person clicks the accept invite link
   from their email, it uses the changeset function above for the form.

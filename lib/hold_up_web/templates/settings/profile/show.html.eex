@@ -1,46 +1,35 @@
 <div class="card">
   <div class="card-header">
-    Billing Overview
+    Your Profile
   </div>
   <div class="card-body">
-     <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-  </div>
+    <%= form_for @profile_changeset, "#", fn f -> %>
+      <%= if @profile_changeset.action do %>
+        <div class="alert alert-danger text-center">
+          <span>Oops, something went wrong!</span>
+        </div>
+      <% end %>
+      <%= form_group(f, :email, using: :text_input) %>
+      <%= form_group(f, :full_name) %>
+
+      <div>
+        <%= submit gettext("Save"), class: "btn btn-primary btn-block mt-4" %>
+      </div>
+    <% end %>
+    <hr/>
+    <%= form_for @password_changeset, "#", fn f -> %>
+      <%= if @password_changeset.action do %>
+        <div class="alert alert-danger text-center">
+          <span>Oops, something went wrong!</span>
+        </div>
+      <% end %>
+      <%= form_group(f, :password) %>
+      <%= form_group(f, :password_confirmation) %>
+
+      <div>
+        <%= submit gettext("Save"), class: "btn btn-outline-primary btn-block mt-4" %>
+      </div>
+    <% end %>
+ </div>
 </div>
 <br/>
-
-<div class="card text-center">
-  <div class="card-header">
-    <ul class="nav nav-pills card-header-pills">
-      <li class="nav-item">
-        <a class="nav-link active" href="#">Active</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="#">Disabled</a>
-      </li>
-    </ul>
-  </div>
-  <div class="card-body">
-    <h5 class="card-title">Special title treatment</h5>
-    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
-  </div>
-</div>
-
-<br/>
-
-<div class="card text-center">
-  <div class="card-header">
-    Featured
-  </div>
-  <div class="card-body">
-    <h5 class="card-title">Special title treatment</h5>
-    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
-  </div>
-  <div class="card-footer text-muted">
-    2 days ago
-  </div>
-</div>

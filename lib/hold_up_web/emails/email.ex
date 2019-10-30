@@ -6,9 +6,9 @@ defmodule HoldUpWeb.Emails.Email do
 
   def invitation_email(invited_user) do
     new_email(
-      to: "john@example.com",
-      from: "support@myapp.com",
-      subject: "Invitation",
+      to: invited_user.email,
+      from: "noreply@holdup.com",
+      subject: "HoldUp Invitation",
       html_body: invitation_email_content(invited_user)
     )
   end

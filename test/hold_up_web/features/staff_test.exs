@@ -1,0 +1,203 @@
+defmodule HoldUpWeb.Features.StaffTest do
+  use HoldUp.FeatureCase, async: false
+
+  import HoldUp.Factory
+  import Wallaby.Query
+
+  test "the staff page lists the staff members for the current business only", %{session: session} do
+    company = insert(:company)
+    business = insert(:business, company: company)
+    user = insert(:user, company: company, roles: ["company_admin"])
+    user_business = insert(:user_business, user_id: user.id, business_id: business.id)
+    waitlist = insert(:waitlist, business: business)
+    insert(:confirmation_sms_setting, waitlist: waitlist)
+    insert(:attendance_sms_setting, waitlist: waitlist)
+
+    # another staff user in another business within the parent company
+    another_business = insert(:business, company: company)
+    another_user_in_another_business = insert(:user, company: company, roles: ["staff"])
+
+    user_business =
+      insert(:user_business,
+        user_id: another_user_in_another_business.id,
+        business_id: another_business.id
+      )
+
+    # Staff user
+    staff_user = insert(:user, company: company, roles: ["staff"])
+    staff_user_business = insert(:user_business, user_id: staff_user.id, business_id: business.id)
+
+    page =
+      session
+      |> visit("/")
+      |> click(link("Sign In"))
+      |> fill_in(text_field("Email"), with: user.email)
+      |> fill_in(text_field("Password"), with: "123123123")
+      |> click(button("Sign In"))
+
+    assert_text(page, "Today")
+
+    page
+    |> find(css("#dropdownMenuButton", count: 1))
+    |> Wallaby.Element.click()
+
+    page
+    |> click(link("Settings"))
+    |> click(link("Staff"))
+
+    page
+    |> has?(link("Add Staff Member"))
+
+    assert_text(page, "Staff")
+    assert_has(page, css(".list-group-item", count: 1))
+    assert_has(page, link("Delete", count: 1))
+    assert_text(page, staff_user.full_name)
+  end
+
+  test "the staff page allows you to add a staff member", %{session: session} do
+    company = insert(:company)
+    business = insert(:business, company: company)
+    user = insert(:user, company: company, roles: ["company_admin"])
+    user_business = insert(:user_business, user_id: user.id, business_id: business.id)
+    waitlist = insert(:waitlist, business: business)
+    insert(:confirmation_sms_setting, waitlist: waitlist)
+    insert(:attendance_sms_setting, waitlist: waitlist)
+
+    invited_user = build(:user, invited_by_id: user.id, inviter: user)
+
+    page =
+      session
+      |> visit("/")
+      |> click(link("Sign In"))
+      |> fill_in(text_field("Email"), with: user.email)
+      |> fill_in(text_field("Password"), with: "123123123")
+      |> click(button("Sign In"))
+
+    assert_text(page, "Today")
+
+    page
+    |> find(css("#dropdownMenuButton", count: 1))
+    |> Wallaby.Element.click()
+
+    page
+    |> click(link("Settings"))
+    |> click(link("Staff"))
+
+    page
+    |> has?(link("Add Staff Member"))
+
+    page
+    |> click(link("Add Staff Member"))
+    |> fill_in(text_field("Email"), with: invited_user.email)
+    |> fill_in(text_field("Full name"), with: "user")
+    |> click(button("Invite"))
+
+    # expect staff user to have been created and associated with the current company and current business
+    query =
+      from user in HoldUp.Accounts.User,
+        join: user_business in HoldUp.Accounts.UserBusiness,
+        on: user_business.user_id == user.id,
+        where: "staff" in user.roles and user_business.business_id == ^business.id
+
+    staff_user = Repo.one(query)
+
+    assert staff_user.company_id == company.id
+
+    page
+    |> has?(link("Add Staff Member"))
+
+    assert_text(page, "Staff")
+    assert_has(page, css(".list-group-item", count: 1))
+    assert_has(page, link("Delete", count: 1))
+    assert_text(page, staff_user.full_name)
+  end
+
+  test "the staff page allows you to remove a staff member", %{session: session} do
+    company = insert(:company)
+    business = insert(:business, company: company)
+    user = insert(:user, company: company, roles: ["company_admin"])
+    user_business = insert(:user_business, user_id: user.id, business_id: business.id)
+    waitlist = insert(:waitlist, business: business)
+    insert(:confirmation_sms_setting, waitlist: waitlist)
+    insert(:attendance_sms_setting, waitlist: waitlist)
+
+    # Staff user
+    staff_user = insert(:user, company: company, roles: ["staff"])
+    staff_user_business = insert(:user_business, user_id: staff_user.id, business_id: business.id)
+
+    page =
+      session
+      |> visit("/")
+      |> click(link("Sign In"))
+      |> fill_in(text_field("Email"), with: user.email)
+      |> fill_in(text_field("Password"), with: "123123123")
+      |> click(button("Sign In"))
+
+    assert_text(page, "Today")
+
+    page
+    |> find(css("#dropdownMenuButton", count: 1))
+    |> Wallaby.Element.click()
+
+    page
+    |> click(link("Settings"))
+    |> click(link("Staff"))
+
+    page
+    |> has?(link("Add Staff Member"))
+
+    assert_text(page, "Staff")
+    assert_has(page, css(".list-group-item", count: 1))
+    assert_has(page, link("Delete", count: 1))
+    assert_text(page, staff_user.full_name)
+
+    alert_message =
+      accept_alert(page, fn page ->
+        click(page, link("Delete"))
+      end)
+
+    refute_has(page, css(".list-group-item", count: 1))
+    refute_has(page, link("Delete", count: 1))
+
+    query =
+      from user in HoldUp.Accounts.User,
+        join: user_business in HoldUp.Accounts.UserBusiness,
+        on: user_business.user_id == user.id,
+        where: "staff" in user.roles and user_business.business_id == ^business.id
+
+    assert Repo.one(query) == 0
+  end
+
+  test "the invitation email has a link that allows a staff member to register as a staff member",
+       %{session: session} do
+    company = insert(:company)
+    business = insert(:business, company: company)
+    user = insert(:user, company: company, roles: ["company_admin"])
+    user_business = insert(:user_business, user_id: user.id, business_id: business.id)
+    waitlist = insert(:waitlist, business: business)
+    insert(:confirmation_sms_setting, waitlist: waitlist)
+    insert(:attendance_sms_setting, waitlist: waitlist)
+
+    invited_user =
+      insert(:user, invited_by_id: user.id, inviter: user, company: company, roles: ["staff"])
+
+    insert(:user_business, user_id: invited_user.id, business_id: business.id)
+
+    invitation_url =
+      HoldUpWeb.Router.Helpers.invitation_url(
+        HoldUpWeb.Endpoint,
+        :show,
+        invited_user.invitation_token
+      )
+
+    page =
+      session
+      |> visit(invitation_url)
+      |> fill_in(text_field("invitation[password]"), with: "123123123")
+      |> fill_in(text_field("invitation[password_confirmation]"), with: "123123123")
+      |> click(button("Accept Invite"))
+      |> take_screenshot
+
+    assert_text(page, "Invitation accepted successfully")
+  end
+end

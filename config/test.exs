@@ -27,3 +27,5 @@ config :wallaby,
   chrome: [
     headless: true
   ]
+
+config :hold_up, HoldUpWeb.Mailer, adapter: Bamboo.TestAdapter

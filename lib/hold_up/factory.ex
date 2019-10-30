@@ -22,7 +22,8 @@ defmodule HoldUp.Factory do
       confirmation_sent_at: DateTime.utc_now(),
       confirmation_token: "some confirmation_token",
       confirmed_at: DateTime.utc_now() |> DateTime.add(3),
-      reset_password_token: "some reset_password_token"
+      reset_password_token: "some reset_password_token",
+      invitation_token: sequence(:user_email, fn n -> "invite_token_#{n}" end)
     }
     |> merge_attributes(attrs)
   end

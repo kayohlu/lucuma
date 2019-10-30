@@ -27,9 +27,9 @@ defmodule HoldUp.Accounts do
     query =
       from user in HoldUp.Accounts.User,
         join: company in HoldUp.Accounts.Company,
-        where: company.id == user.company_id,
+        on: company.id == user.company_id,
         join: businesses in HoldUp.Accounts.Business,
-        where: businesses.company_id == company.id,
+        on: businesses.company_id == company.id,
         where: user.invitation_token == ^id,
         preload: [company: {company, businesses: businesses}]
 
@@ -39,9 +39,9 @@ defmodule HoldUp.Accounts do
   def list_staff(business) do
     query =
       from user in User,
-        join: businesses in HoldUp.Accounts.Business,
-        where: businesses.company_id == ^business.id,
-        where: "staff" in user.roles
+        join: user_business in HoldUp.Accounts.UserBusiness,
+        on: user_business.user_id == user.id,
+        where: "staff" in user.roles and user_business.business_id == ^business.id
 
     Repo.all(query)
   end
@@ -114,6 +114,14 @@ defmodule HoldUp.Accounts do
 
   def change_user(%User{} = user) do
     User.changeset(user, %{})
+  end
+
+  def change_user_profile(%User{} = user) do
+    User.profile_changeset(user, %{})
+  end
+
+  def change_user_password(%User{} = user) do
+    User.password_changeset(user, %{})
   end
 
   def change_invitation(%User{} = user) do

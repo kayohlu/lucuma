@@ -254,31 +254,30 @@ defmodule HoldUpWeb.Features.WaitlistTest do
     end
   end
 
-  test "the settings link is not available to the staff user", %{
-      session: session
-    } do
-      company = insert(:company)
-      business = insert(:business, company: company)
-      user = insert(:user, company: company, roles: ["staff"])
-      user_business = insert(:user_business, user_id: user.id, business_id: business.id)
-      waitlist = insert(:waitlist, business: business)
-      insert(:confirmation_sms_setting, waitlist: waitlist)
-      insert(:attendance_sms_setting, waitlist: waitlist)
+  test "the settings link is not available to staff users", %{
+    session: session
+  } do
+    company = insert(:company)
+    business = insert(:business, company: company)
+    user = insert(:user, company: company, roles: ["staff"])
+    user_business = insert(:user_business, user_id: user.id, business_id: business.id)
+    waitlist = insert(:waitlist, business: business)
+    insert(:confirmation_sms_setting, waitlist: waitlist)
+    insert(:attendance_sms_setting, waitlist: waitlist)
 
-      page =
-        session
-        |> visit("/")
-        |> click(link("Sign In"))
-        |> fill_in(text_field("Email"), with: user.email)
-        |> fill_in(text_field("Password"), with: "123123123")
-        |> click(button("Sign In"))
+    page =
+      session
+      |> visit("/")
+      |> click(link("Sign In"))
+      |> fill_in(text_field("Email"), with: user.email)
+      |> fill_in(text_field("Password"), with: "123123123")
+      |> click(button("Sign In"))
 
-      assert_text(page, "Today")
+    assert_text(page, "Today")
 
-      page =
-        page
-        |> click(link("Waitlist"))
-        |> refute_has(link("Settings"))
-
-    end
+    page =
+      page
+      |> click(link("Waitlist"))
+      |> refute_has(link("Settings"))
+  end
 end
