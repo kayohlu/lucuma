@@ -135,6 +135,7 @@ defmodule HoldUpWeb.Permissions do
         HoldUpWeb.Settings.ProfileController => [:show, :update],
         HoldUpWeb.Settings.BillingController => [:show],
         HoldUpWeb.Settings.StaffController => [:show, :delete],
+        HoldUpWeb.Settings.PasswordChangeController => [:update],
 
         # billing
         HoldUpWeb.Billing.PaymentPlanController => [:edit],
@@ -157,7 +158,8 @@ defmodule HoldUpWeb.Permissions do
         HoldUpWeb.StandBys.NoShowController => [:create],
 
         # settings
-        HoldUpWeb.Settings.ProfileController => [:show, :update]
+        HoldUpWeb.Settings.ProfileController => [:show, :update],
+        HoldUpWeb.Settings.PasswordChangeController => [:update]
       }
     }
   end

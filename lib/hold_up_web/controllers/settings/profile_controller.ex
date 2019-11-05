@@ -16,7 +16,7 @@ defmodule HoldUpWeb.Settings.ProfileController do
   end
 
   def update(conn, params) do
-    case Accounts.update_user_prodile(conn.assigns.current_user, params["user"]) do
+    case Accounts.update_user_profile(conn.assigns.current_user, params["user"]) do
       {:ok, updated_user} ->
         conn
         |> put_flash(:info, "Profile update successfully.")

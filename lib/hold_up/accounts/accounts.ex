@@ -95,9 +95,15 @@ defmodule HoldUp.Accounts do
     |> Repo.update()
   end
 
-  def update_user_prodile(%User{} = user, attrs) do
+  def update_user_profile(%User{} = user, attrs) do
     user
     |> User.profile_changeset(attrs)
+    |> Repo.update()
+  end
+
+  def update_user_password(%User{} = user, attrs) do
+    user
+    |> User.password_changeset(attrs)
     |> Repo.update()
   end
 
