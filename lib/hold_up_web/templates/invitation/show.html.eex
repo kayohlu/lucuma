@@ -2,7 +2,7 @@
   <div class="card-body">
     <h5 class="card-title text-center"><%= gettext("Invitation") %></h5>
     <div class="mt-3">
-      <%= form_for @changeset, Routes.invitation_path(@conn, :update, @user.invitation_token), [as: :invitation], fn f -> %>
+      <%= form_for @changeset, Routes.invitations_path(@conn, :update, @user.invitation_token), [as: :invitation], fn f -> %>
         <%= if @changeset.action do %>
           <div class="alert alert-danger text-center">
             <span>Oops, something went wrong!</span>

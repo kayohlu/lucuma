@@ -5,6 +5,7 @@ defmodule HoldUpWeb.Permissions do
 
   defmacro __using__(opts) do
     quote do
+      require Logger
       import HoldUpWeb.Permissions
 
       def action(conn, _) do
@@ -14,13 +15,26 @@ defmodule HoldUpWeb.Permissions do
 
         if Map.has_key?(conn.assigns, :current_user) do
           [role | _] = conn.assigns.current_user.roles
+          Logger.info("Checking permissions for user_id: #{conn.assigns.current_user.id}")
+          Logger.info("Role for user_id #{conn.assigns.current_user.id} is #{role}.")
 
           if has_permission?(conn, role, controller, action) do
+            Logger.info(
+              "user_id #{conn.assigns.current_user.id} has permission on #{controller}##{action}"
+            )
+
             apply(__MODULE__, action, args)
           else
+            Logger.info(
+              "user_id #{conn.assigns.current_user.id} has NO permission on #{controller}##{
+                action
+              }, handling un authorisation.."
+            )
+
             handle_un_authorisation(conn)
           end
         else
+          Logger.info(":currenet_user key not existing in the structure.")
           apply(__MODULE__, action, args)
         end
       end

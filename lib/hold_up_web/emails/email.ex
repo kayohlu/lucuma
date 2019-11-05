@@ -14,7 +14,7 @@ defmodule HoldUpWeb.Emails.Email do
   end
 
   def invitation_email_content(invited_user) do
-    accept_link = Routes.invitation_url(HoldUpWeb.Endpoint, :show, invited_user.invitation_token)
+    accept_link = Routes.invitations_url(HoldUpWeb.Endpoint, :show, invited_user.invitation_token)
 
     ~e"""
     Hi <%= invited_user.full_name %>,

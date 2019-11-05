@@ -107,6 +107,8 @@ defmodule HoldUpWeb.Router do
   scope "/", HoldUpWeb do
     pipe_through :browser
 
-    resources "/invitations", InvitationController, only: [:show, :update]
+    resources "/invitations", InvitationController, only: [:show, :update], as: :invitations do
+      resources "/expiry", InvitationExpiryController, only: [:show], singleton: true
+    end
   end
 end

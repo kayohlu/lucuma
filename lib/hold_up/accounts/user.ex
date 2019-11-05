@@ -3,6 +3,8 @@ defmodule HoldUp.Accounts.User do
   import Ecto.Changeset
   require Ecto.UUID
 
+  @invitation_expiry_days 5
+
   schema "users" do
     field :confirmation_sent_at, :utc_datetime
     field :confirmation_token, :string
@@ -16,6 +18,7 @@ defmodule HoldUp.Accounts.User do
     field :roles, {:array, :string}, default: ["company_admin"]
     field :invitation_token, :string
     field :invitation_accepted_at, :utc_datetime
+    field :invitation_expiry_at, :utc_datetime
 
     belongs_to :company, HoldUp.Accounts.Company
     belongs_to :inviter, HoldUp.Accounts.User, foreign_key: :invited_by_id
@@ -63,6 +66,10 @@ defmodule HoldUp.Accounts.User do
     |> unique_constraint(:email, name: "users_email_index")
     |> validate_required([:email, :full_name, :company_id, :invited_by_id])
     |> change(%{invitation_token: Ecto.UUID.generate()})
+    |> change(%{
+      invitation_expiry_at:
+        Timex.shift(Timex.now(), days: @invitation_expiry_days) |> DateTime.truncate(:second)
+    })
     |> change(%{roles: ["staff"]})
   end
 

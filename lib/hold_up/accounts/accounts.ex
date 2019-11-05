@@ -23,7 +23,7 @@ defmodule HoldUp.Accounts do
 
   def get_current_company(%User{} = user), do: Repo.get(Company, user.company_id)
 
-  def get_user_by_invitation!(id) do
+  def get_user_by_invitation(id) do
     query =
       from user in HoldUp.Accounts.User,
         join: company in HoldUp.Accounts.Company,
@@ -158,6 +158,13 @@ defmodule HoldUp.Accounts do
         Logger.info(inspect(changes_so_far))
         {:error, %{user_changeset | action: :invitation}}
     end
+  end
+
+  def user_invitation_expired(user) do
+    current_time = DateTime.utc_now()
+    user_invitation_expiry_time = user.invitation_expiry_at
+
+    Timex.compare(user_invitation_expiry_time, current_time) in [-1, 0]
   end
 
   def get_user_by_email(email) do

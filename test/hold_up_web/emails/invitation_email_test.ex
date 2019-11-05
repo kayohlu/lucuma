@@ -11,9 +11,9 @@ defmodule HoldUpWeb.Emails.InvitationEmailTest do
     user = insert(:user, company: company, roles: ["company_admin"])
     user_business = insert(:user_business, user_id: user.id, business_id: business.id)
 
-
     invited_user =
       insert(:user, invited_by_id: user.id, inviter: user, company: company, roles: ["staff"])
+
     insert(:user_business, user_id: invited_user.id, business_id: business.id)
 
     email = HoldUpWeb.Emails.Email.invitation_email(invited_user)
@@ -24,7 +24,12 @@ defmodule HoldUpWeb.Emails.InvitationEmailTest do
   end
 
   def invitation_email_content(invited_user) do
-    accept_link = HoldUpWeb.Router.Helpers.invitation_url(HoldUpWeb.Endpoint, :show, invited_user.invitation_token)
+    accept_link =
+      HoldUpWeb.Router.Helpers.invitations_url(
+        HoldUpWeb.Endpoint,
+        :show,
+        invited_user.invitation_token
+      )
 
     ~e"""
     Hi <%= invited_user.full_name %>,

@@ -165,39 +165,6 @@ defmodule HoldUpWeb.Features.StaffTest do
         on: user_business.user_id == user.id,
         where: "staff" in user.roles and user_business.business_id == ^business.id
 
-    assert Repo.one(query) == 0
-  end
-
-  test "the invitation email has a link that allows a staff member to register as a staff member",
-       %{session: session} do
-    company = insert(:company)
-    business = insert(:business, company: company)
-    user = insert(:user, company: company, roles: ["company_admin"])
-    user_business = insert(:user_business, user_id: user.id, business_id: business.id)
-    waitlist = insert(:waitlist, business: business)
-    insert(:confirmation_sms_setting, waitlist: waitlist)
-    insert(:attendance_sms_setting, waitlist: waitlist)
-
-    invited_user =
-      insert(:user, invited_by_id: user.id, inviter: user, company: company, roles: ["staff"])
-
-    insert(:user_business, user_id: invited_user.id, business_id: business.id)
-
-    invitation_url =
-      HoldUpWeb.Router.Helpers.invitation_url(
-        HoldUpWeb.Endpoint,
-        :show,
-        invited_user.invitation_token
-      )
-
-    page =
-      session
-      |> visit(invitation_url)
-      |> fill_in(text_field("invitation[password]"), with: "123123123")
-      |> fill_in(text_field("invitation[password_confirmation]"), with: "123123123")
-      |> click(button("Accept Invite"))
-      |> take_screenshot
-
-    assert_text(page, "Invitation accepted successfully")
+    assert Repo.one(query) == nil
   end
 end

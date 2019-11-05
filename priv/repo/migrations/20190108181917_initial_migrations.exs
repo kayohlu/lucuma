@@ -50,6 +50,7 @@ defmodule HoldUp.Repo.Migrations.CreateUsers do
 
       add :invitation_token, :string
       add :invitation_accepted_at, :utc_datetime
+      add :invitation_expiry_at, :utc_datetime
       add :invited_by_id, references("users", on_delete: :nothing)
 
       timestamps()
