@@ -37,7 +37,7 @@
     <div class="row mb-6">
       <div class="col-md-4 d-flex justify-content-between h-25">
         <div class="d-flex flex-column w-75">
-          <span class="text-muted"><%= gettext("This is the SMS your customers receive when they are added to the waitlist.") %></span>
+          <span class="text-muted"><%= gettext("This is the SMS your customers receive when you notify them that they are next.") %></span>
         </div>
         <div class="d-flex">
           <%= form_for @attendance_sms_setting_changeset, Routes.waitlists_waitlist_setting_path(@conn, :update, @waitlist.id, @attendance_sms_setting.id), [method: :put], fn f -> %>

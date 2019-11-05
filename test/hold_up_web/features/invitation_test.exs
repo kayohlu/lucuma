@@ -20,8 +20,7 @@ defmodule HoldUpWeb.Features.InvitationTest do
           inviter: user,
           company: company,
           roles: ["staff"],
-          invitation_expiry_at:
-            Timex.shift(Timex.now(), days: 4) |> DateTime.truncate(:second)
+          invitation_expiry_at: Timex.shift(Timex.now(), days: 4) |> DateTime.truncate(:second)
         )
 
       insert(:user_business, user_id: invited_user.id, business_id: business.id)
@@ -60,8 +59,7 @@ defmodule HoldUpWeb.Features.InvitationTest do
           inviter: user,
           company: company,
           roles: ["staff"],
-          invitation_expiry_at:
-            Timex.shift(Timex.now(), days: -5) |> DateTime.truncate(:second)
+          invitation_expiry_at: Timex.shift(Timex.now(), days: -5) |> DateTime.truncate(:second)
         )
 
       insert(:user_business, user_id: invited_user.id, business_id: business.id)
