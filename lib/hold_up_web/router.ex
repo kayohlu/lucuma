@@ -83,7 +83,7 @@ defmodule HoldUpWeb.Router do
   scope "/settings", HoldUpWeb.Settings, as: :settings do
     pipe_through :protected
 
-    resources "/profile", ProfileController, only: [:show], singleton: true
+    resources "/profile", ProfileController, only: [:show, :update], singleton: true
     resources "/billing", BillingController, only: [:show], singleton: true
     resources "/staff", StaffController, only: [:show], singleton: true
     resources "/staff", StaffController, only: [:delete]

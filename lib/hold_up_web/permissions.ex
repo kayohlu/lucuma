@@ -132,7 +132,7 @@ defmodule HoldUpWeb.Permissions do
         HoldUpWeb.StandBys.CancellationController => [:show, :index],
 
         # settings
-        HoldUpWeb.Settings.ProfileController => [:show],
+        HoldUpWeb.Settings.ProfileController => [:show, :update],
         HoldUpWeb.Settings.BillingController => [:show],
         HoldUpWeb.Settings.StaffController => [:show, :delete],
 
@@ -157,7 +157,7 @@ defmodule HoldUpWeb.Permissions do
         HoldUpWeb.StandBys.NoShowController => [:create],
 
         # settings
-        HoldUpWeb.Settings.ProfileController => [:show]
+        HoldUpWeb.Settings.ProfileController => [:show, :update]
       }
     }
   end

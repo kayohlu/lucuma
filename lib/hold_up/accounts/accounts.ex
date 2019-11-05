@@ -95,6 +95,12 @@ defmodule HoldUp.Accounts do
     |> Repo.update()
   end
 
+  def update_user_prodile(%User{} = user, attrs) do
+    user
+    |> User.profile_changeset(attrs)
+    |> Repo.update()
+  end
+
   def delete_user(%User{} = user) do
     Repo.delete(user)
   end
