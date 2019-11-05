@@ -52,6 +52,7 @@ defmodule HoldUp.Accounts.User do
     |> validate_confirmation(:password)
     |> validate_length(:password, min: 6, max: 32)
     |> validate_inclusion(:roles, ["master_admin", "company_admin", "business_admin", "staff"])
+    |> clean_email
     |> hash_password()
   end
 
@@ -71,6 +72,7 @@ defmodule HoldUp.Accounts.User do
         Timex.shift(Timex.now(), days: @invitation_expiry_days) |> DateTime.truncate(:second)
     })
     |> change(%{roles: ["staff"]})
+    |> clean_email
   end
 
   @doc false
@@ -80,8 +82,10 @@ defmodule HoldUp.Accounts.User do
       :email,
       :full_name
     ])
+    |> validate_required([:email])
     |> unique_constraint(:email, name: "users_email_index")
     |> validate_format(:email, ~r/@/)
+    |> clean_email
   end
 
   def password_changeset(user, attrs) do
@@ -112,5 +116,11 @@ defmodule HoldUp.Accounts.User do
         hash = Comeonin.Bcrypt.hashpwsalt(password)
         put_change(changeset, :password_hash, hash)
     end
+  end
+
+  def clean_email(changeset) do
+    changeset
+    |> update_change(:email, &String.downcase/1)
+    |> update_change(:email, &String.trim/1)
   end
 end
