@@ -30,7 +30,7 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
       session
       |> click(link("skip"))
       |> assert_text(
-        "That's it. Your registration is complete. We've created an initial default waitlist for you. You can add up to 100 people to your waitlist."
+        "Your registration is complete. We've setup a waitlist for you. You can add up to 100 people to your waitlist before you need to subscribe."
       )
     end
   end
@@ -39,7 +39,7 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
     test "redirects to the profile page", %{session: session} do
       company = insert(:company)
       business = insert(:business, company: company)
-      user = insert(:user, company: company)
+      user = insert(:user, company: company, roles: ["company_admin"])
       user_business = insert(:user_business, user_id: user.id, business_id: business.id)
       waitlist = insert(:waitlist, business: business)
       insert(:confirmation_sms_setting, waitlist: waitlist)
@@ -59,7 +59,8 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
       |> Wallaby.Element.click()
 
       page
-      |> click(link("Profile"))
+      |> click(link("Settings"))
+      |> find(link("Billing"), &assert(has_text?(&1, "Billing")))
       |> click(link("Billing"))
       |> click(link("Choose plan", count: 3, at: 0))
 
@@ -100,28 +101,28 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
     end
   end
 
-  # describe "user enters an invalid cc number(4000000000000341), attaching this card to a Customer object succeeds, but attempts to charge the customer fail" do
-  #   test "renders the payment form with appropriate error message", %{session: session} do
-  #     register_user(session)
-  #     |> assert_text("Subscription")
+  describe "user enters an invalid cc number(4000000000000341), attaching this card to a Customer object succeeds, but attempts to charge the customer fail (sub status == incomplete)" do
+    test "renders the payment form with appropriate error message", %{session: session} do
+      register_user(session)
+      |> assert_text("Subscription")
 
-  #     session
-  #     |> find(Wallaby.Query.text("Credit or debit card"))
-  #     |> Wallaby.Element.click()
+      session
+      |> find(Wallaby.Query.text("Credit or debit card"))
+      |> Wallaby.Element.click()
 
-  #     session
-  #     |> send_keys("4000000000000341 12 23 346 90210")
-  #     |> click(button("Subscribe"))
+      session
+      |> send_keys("4000000000000341 12 23 346 90210")
+      |> click(button("Subscribe"))
 
-  #     # |> find(css(".InputElement"), & assert has_css?(&1, css(".InputElement")))
-  #     # Fuck it, I had to putaa sleep in here because it looks like some element isn't on the page yet for some reason
-  #     # even though using find to block isn't blocking for long enough to check the text.
-  #     :timer.sleep(2000)
+      # |> find(css(".InputElement"), & assert has_css?(&1, css(".InputElement")))
+      # Fuck it, I had to putaa sleep in here because it looks like some element isn't on the page yet for some reason
+      # even though using find to block isn't blocking for long enough to check the text.
+      :timer.sleep(1000)
 
-  #     session
-  #     |> assert_text("Subscription failed. Your card was declined. Please try another card.")
-  #   end
-  # end
+      session
+      |> assert_text("Could not process your subscription at this time. Please try again.")
+    end
+  end
 
   describe "user enters a valid cc number(4000000000009235), results in a charge with a risk_level of elevated" do
     test "redirects successfully", %{session: session} do
@@ -148,7 +149,7 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
     end
   end
 
-  describe "user enters a valid cc number(4000000000004954), results in a charge with a risk_level of highest" do
+  describe "user enters a valid cc number(4000000000004954), results in a charge with a risk_level of highest (status == incomplete)" do
     test "renders the payment form with appropriate error message", %{session: session} do
       register_user(session)
       |> assert_text("Subscription")
@@ -164,11 +165,12 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
       # |> find(css(".InputElement"), & assert has_css?(&1, css(".InputElement")))
       # Fuck it, I had to putaa sleep in here because it looks like some element isn't on the page yet for some reason
       # even though using find to block isn't blocking for long enough to check the text.
-      :timer.sleep(2000)
+      :timer.sleep(1000)
+
 
       session
       |> assert_text(
-        "You're subscription has now been activated. To cancel or change your plan, visit your profile."
+        "Could not process your subscription at this time. Please try again."
       )
     end
   end
@@ -182,17 +184,18 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
       |> find(Wallaby.Query.text("Credit or debit card"))
       |> Wallaby.Element.click()
 
+      # assert has_css?(session, ".InputElement")
+
       session
       |> send_keys("4100000000000019 12 23 346 90210")
       |> click(button("Subscribe"))
 
-      # |> find(css(".InputElement"), & assert has_css?(&1, css(".InputElement")))
-      # Fuck it, I had to putaa sleep in here because it looks like some element isn't on the page yet for some reason
+      # Fuck it, I had to put a sleep in here because it looks like some element isn't on the page yet for some reason
       # even though using find to block isn't blocking for long enough to check the text.
       :timer.sleep(2000)
 
       session
-      |> assert_text("Subscription failed. Your card was declined. Please try another card.")
+      |> assert_text("Could not process your subscription at this time. Please try again.")
     end
   end
 
@@ -350,7 +353,7 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
       # |> find(css(".InputElement"), & assert has_css?(&1, css(".InputElement")))
       # Fuck it, I had to putaa sleep in here because it looks like some element isn't on the page yet for some reason
       # even though using find to block isn't blocking for long enough to check the text.
-      :timer.sleep(2000)
+      :timer.sleep(3000)
 
       session
       |> assert_text(
@@ -422,6 +425,10 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
       session
       |> send_keys("4242424242424242 12 23 346 90210")
       |> click(button("Subscribe"))
+
+      :timer.sleep(1000)
+
+      session
       |> find(Wallaby.Query.text("Today"), &assert(has_text?(&1, "Today")))
       |> assert_text(
         "You're subscription has now been activated. To cancel or change your plan, visit your profile."
@@ -432,9 +439,12 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
       |> Wallaby.Element.click()
 
       session
-      |> click(link("Profile"))
+      |> click(link("Settings"))
       |> click(link("Billing"))
+      |> find(link("Cancel"), &assert(has_text?(&1, "Cancel")))
       |> click(link("Cancel"))
+
+      session
       |> assert_text("You're subscription has now been canceled.")
 
       session
@@ -488,7 +498,7 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
       |> Wallaby.Element.click()
 
       session
-      |> click(link("Profile"))
+      |> click(link("Settings"))
       |> click(link("Billing"))
       |> click(link("Cancel"))
       |> assert_text("You're subscription has now been canceled.")
@@ -543,7 +553,7 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
       |> Wallaby.Element.click()
 
       session
-      |> click(link("Profile"))
+      |> click(link("Settings"))
       |> click(link("Billing"))
       |> find(link("Upgrade", count: 2, at: 1), &assert(has_text?(&1, "Upgrade")))
 
@@ -551,6 +561,8 @@ defmodule HoldUpWeb.Features.SubscriptionTest do
         accept_alert(session, fn session ->
           click(session, link("Upgrade", count: 2, at: 1))
         end)
+
+      :timer.sleep(1000)
 
       session
       |> assert_text("You're subscription has now been updated.")

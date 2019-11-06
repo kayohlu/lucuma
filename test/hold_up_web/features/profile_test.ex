@@ -44,10 +44,10 @@ defmodule HoldUpWeb.Features.ProfileTest do
 
       assert_text(page, "Profile update successfully.")
 
-       updated_user = Repo.get!(HoldUp.Accounts.User, user.id)
+      updated_user = Repo.get!(HoldUp.Accounts.User, user.id)
 
-       assert updated_user.email == "b@b.com"
-       assert updated_user.full_name == "aa bb"
+      assert updated_user.email == "b@b.com"
+      assert updated_user.full_name == "aa bb"
     end
   end
 

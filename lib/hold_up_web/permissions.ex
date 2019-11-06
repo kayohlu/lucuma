@@ -138,8 +138,7 @@ defmodule HoldUpWeb.Permissions do
         HoldUpWeb.Settings.PasswordChangeController => [:update],
 
         # billing
-        HoldUpWeb.Billing.PaymentPlanController => [:edit],
-        HoldUpWeb.Billing.PaymentPlanController => [:update],
+        HoldUpWeb.Billing.PaymentPlanController => [:edit, :update],
         HoldUpWeb.Billing.SubscriptionController => [:delete, :update],
         HoldUpWeb.Billing.SubscriptionSkipController => [:create]
       },

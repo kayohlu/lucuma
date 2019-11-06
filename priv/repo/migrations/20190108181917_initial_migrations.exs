@@ -140,5 +140,17 @@ defmodule HoldUp.Repo.Migrations.CreateUsers do
     end
 
     create index(:sms_notifications, [:stand_by_id])
+
+    create table(:payment_plans) do
+      add :company_id, references(:companies, on_delete: :delete_all), null: false
+      add :stripe_customer_id, :string
+      add :stripe_payment_plan_id, :string
+      add :stripe_subscription_id, :string
+      add :stripe_subscription_data, :map
+
+      timestamps()
+    end
+
+    create index(:payment_plans, [:company_id])
   end
 end

@@ -3,9 +3,12 @@ defmodule HoldUp.Billing.PaymentPlan do
   import Ecto.Changeset
 
   schema "payment_plans" do
-    field :active, :boolean, default: false
-    field :stripe_id, :string
-    field :company_id, :id
+    field :stripe_customer_id, :string
+    field :stripe_payment_plan_id, :string
+    field :stripe_subscription_id, :string
+    field :stripe_subscription_data, :map
+
+    belongs_to :company, HoldUp.Accounts.Company
 
     timestamps()
   end
@@ -13,7 +16,20 @@ defmodule HoldUp.Billing.PaymentPlan do
   @doc false
   def changeset(payment_plan, attrs) do
     payment_plan
-    |> cast(attrs, [:stripe_id, :active])
-    |> validate_required([:stripe_id, :active])
+    |> cast(attrs, [
+      :company_id,
+      :stripe_customer_id,
+      :stripe_payment_plan_id,
+      :stripe_subscription_id,
+      :stripe_subscription_data
+    ])
+    |> validate_required([
+      :company_id,
+      :stripe_customer_id,
+      :stripe_payment_plan_id,
+      :stripe_subscription_id,
+      :stripe_subscription_data
+    ])
+    |> foreign_key_constraint(:company_id)
   end
 end

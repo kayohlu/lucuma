@@ -14,7 +14,7 @@ defmodule HoldUpWeb.Billing.SubscriptionSkipController do
         conn
         |> put_flash(
           :info,
-          "That's it. Your registration is complete. We've created an initial default waitlist for you. You can add up to 100 people to your waitlist."
+          "Your registration is complete. We've setup a waitlist for you. You can add up to 100 people to your waitlist before you need to subscribe."
         )
         |> redirect(to: Routes.dashboard_path(conn, :show))
 

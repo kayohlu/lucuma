@@ -7,6 +7,7 @@ defmodule HoldUp.Billing do
   alias HoldUp.Repo
   alias HoldUp.Accounts.Company
   alias HoldUp.Billing.SubscriptionForm
+  alias HoldUp.Billing.PaymentPlan
 
   def change_subscription_form(%SubscriptionForm{} = registration_form) do
     SubscriptionForm.changeset(registration_form, %{})
@@ -61,14 +62,40 @@ defmodule HoldUp.Billing do
                                                           } ->
           Logger.debug("Creating Stripe Subscription")
 
-          create_stripe_subscription(stripe_customer, stripe_payment_plan_id)
+          stripe_response = create_stripe_subscription(stripe_customer, stripe_payment_plan_id)
+          Logger.info(inspect(stripe_response))
+          stripe_response
+        end)
+        |> Ecto.Multi.run(:check_initial_payment_succeeded, fn %{
+                                                                 create_stripe_customer:
+                                                                   stripe_customer,
+                                                                 create_stripe_subscription:
+                                                                   stripe_subscription
+                                                               } ->
+          # See https://stripe.com/docs/api/subscriptions/object#subscription_object-status
+          # Even though the subscription was created successfully, I wan't to check that the
+          # payment/charge went through. If not we want to return an error
+          if stripe_subscription.status == "active" do
+            {:ok, stripe_subscription.status}
+          else
+            {:error, stripe_subscription.status}
+          end
         end)
         |> Ecto.Multi.update(:update_company_with_stripe_data, fn %{
                                                                     create_stripe_customer:
                                                                       stripe_customer,
                                                                     create_stripe_subscription:
-                                                                      stripe_subscription
+                                                                      stripe_subscription,
+                                                                    check_initial_payment_succeeded:
+                                                                      subscription_status
                                                                   } ->
+          # create_payment_plan_record(
+          #   company,
+          #   stripe_customer,
+          #   stripe_subscription,
+          #   stripe_payment_plan_id
+          # )
+
           changeset =
             Company.changeset(company, %{
               stripe_customer_id: stripe_customer.id,
@@ -82,6 +109,7 @@ defmodule HoldUp.Billing do
 
       case multi_result do
         {:ok, steps} ->
+          Logger.info("Subscription created successfully.")
           :ok
 
         {:error, :create_stripe_customer,
@@ -135,10 +163,12 @@ defmodule HoldUp.Billing do
         {:error, :create_stripe_subscription,
          %Stripe.Error{
            extra: %{card_code: :card_declined, raw_error: %{"decline_code" => decline_code}}
-         } = failed_value, _changes_so_far} ->
+         } = failed_value, %{create_stripe_customer: stripe_customer}} ->
           Logger.info("Card declined because #{decline_code}")
           Logger.info("Card decline response: #{inspect(failed_value)}")
           {:error, "Your card was declined. Please try another card."}
+
+          destroy_stripe_customer(stripe_customer)
 
           add_error_to_form_changeset(
             changeset,
@@ -164,13 +194,32 @@ defmodule HoldUp.Billing do
             "Could not process your subscription at this time. Please try again."
           )
 
+        {:error, :check_initial_payment_succeeded, failed_value,
+         %{
+           create_stripe_customer: stripe_customer,
+           create_stripe_subscription: stripe_subscription
+         }} ->
+          Logger.info(
+            "Error during check_initial_payment_succeeded response: #{inspect(failed_value)}"
+          )
+
+          {:error, "Could not process your subscription at this time. Please try again."}
+
+          destroy_stripe_subscription(stripe_subscription)
+          destroy_stripe_customer(stripe_customer)
+
+          add_error_to_form_changeset(
+            changeset,
+            "Could not process your subscription at this time. Please try again."
+          )
+
         {:error, :update_company_with_stripe_data, changeset,
          %{
            create_stripe_customer: stripe_customer,
            create_stripe_subscription: stripe_subscription
          }} ->
-          destroy_stripe_customer(stripe_customer)
           destroy_stripe_subscription(stripe_subscription)
+          destroy_stripe_customer(stripe_customer)
           {:error, "Could not process your subscription at this time. Please try again."}
 
           {:error,
@@ -284,12 +333,31 @@ defmodule HoldUp.Billing do
     |> Stripe.Subscription.create(opts)
   end
 
+  def create_payment_plan_record(
+        company,
+        stripe_customer,
+        stripe_subscription,
+        stripe_payment_plan_id
+      ) do
+    attrs = %{
+      company_id: company.id,
+      stripe_customer_id: stripe_customer.id,
+      stripe_payment_plan_id: stripe_payment_plan_id,
+      stripe_subscription_id: stripe_subscription.id,
+      stripe_subscription_data: %{}
+    }
+
+    %PaymentPlan{}
+    |> PaymentPlan.changeset(attrs)
+    |> Repo.insert!()
+  end
+
   defp destroy_stripe_customer(stripe_customer) do
-    Stripe.Customer.delete(stripe_customer.id)
+    {:ok, success_response} = Stripe.Customer.delete(stripe_customer.id)
   end
 
   defp destroy_stripe_subscription(stripe_subscription) do
-    Stripe.Subscription.delete(stripe_subscription.id)
+    {:ok, success_response} = Stripe.Subscription.delete(stripe_subscription.id)
   end
 
   def add_error_to_form_changeset(changeset, error_message) do
