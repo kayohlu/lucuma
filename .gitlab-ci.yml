@@ -13,11 +13,14 @@ test:
     MIX_ENV: test
   script:
     - echo $MIX_ENV
-    - echo "Testing the app"
+    - echo "Dependencies ======================================================"
+    - mix local.rebar --force
     - mix local.hex --force
     - mix deps.get --only test
+    - echo "DB migrations ====================================================="
     - mix ecto.create
     - mix ecto.migrate
+    - echo "Testing the app ==================================================="
     - mix test
 
 deploy_production:
