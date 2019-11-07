@@ -1,4 +1,4 @@
-image: bitwalker/alpine-elixir-phoenix:latest
+image: circleci/elixir:latest-node-browsers
 
 stages:
   - test
@@ -13,11 +13,6 @@ test:
     MIX_ENV: test
   script:
     - echo $MIX_ENV
-    - echo @edge http://nl.alpinelinux.org/alpine/edge/community >> /etc/apk/repositories &&
-    - echo @edge http://nl.alpinelinux.org/alpine/edge/main >> /etc/apk/repositories &&
-    - apk add --no-cache chromium@edge harfbuzz@edge nss@edge chromium-chromedriver@edge
-    - rm -rf /var/cache/*
-    - chromedriver &
     - echo "Testing the app"
     - mix local.hex --force
     - mix deps.get --only test
