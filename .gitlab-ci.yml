@@ -20,6 +20,8 @@ test:
     - echo "DB migrations ====================================================="
     - mix ecto.create
     - mix ecto.migrate
+    - echo "Building static assets ============================================"
+    - cd ./assets && npm run deploy && cd ..
     - echo "Testing the app ==================================================="
     - mix test
 
