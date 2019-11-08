@@ -13,6 +13,7 @@ test:
     MIX_ENV: test
   script:
     - echo $MIX_ENV
+    - echo `node -v`
     - echo "Dependencies ======================================================"
     - mix local.rebar --force
     - mix local.hex --force
