@@ -63,7 +63,6 @@ defmodule HoldUpWeb.Features.SettingsTest do
 
       page
       |> click(link("Settings"))
-      |> find(css(".nav-link.active", count: 1))
       |> assert_text("Profile")
 
       page

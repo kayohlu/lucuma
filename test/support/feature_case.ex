@@ -26,8 +26,6 @@ defmodule HoldUp.FeatureCase do
     {:ok, session} =
       Wallaby.start_session(metadata: metadata, window_size: [width: 1200, height: 1400])
 
-    IO.inspect(session)
-
     {:ok, session: session}
   end
 end
