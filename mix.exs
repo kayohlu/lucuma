@@ -1,9 +1,9 @@
-defmodule HoldUp.MixProject do
+defmodule Lucuma.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :hold_up,
+      app: :lucuma,
       version: "0.1.0",
       elixir: "~> 1.9",
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -19,7 +19,7 @@ defmodule HoldUp.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {HoldUp.Application, []},
+      mod: {Lucuma.Application, []},
       extra_applications: [:logger, :runtime_tools, :ex_phone_number, :ex_twilio, :timex, :bamboo]
     ]
   end

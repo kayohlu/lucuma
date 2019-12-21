@@ -6,7 +6,7 @@ use Mix.Config
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with webpack to recompile .js and .css sources.
-config :hold_up, HoldUpWeb.Endpoint,
+config :lucuma, LucumaWeb.Endpoint,
   http: [port: 4000],
   debug_errors: true,
   code_reloader: true,
@@ -46,13 +46,13 @@ config :hold_up, HoldUpWeb.Endpoint,
 # different ports.
 
 # Watch static and templates for browser reloading.
-config :hold_up, HoldUpWeb.Endpoint,
+config :lucuma, LucumaWeb.Endpoint,
   live_reload: [
     patterns: [
       ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
       ~r{priv/gettext/.*(po)$},
-      ~r{lib/hold_up_web/views/.*(ex)$},
-      ~r{lib/hold_up_web/templates/.*(eex)$},
+      ~r{lib/lucuma_web/views/.*(ex)$},
+      ~r{lib/lucuma_web/templates/.*(eex)$},
       ~r{lib/my_app_web/live/.*(ex)$}
     ]
   ]
@@ -68,10 +68,10 @@ config :phoenix, :stacktrace_depth, 20
 config :phoenix, :plug_init_mode, :runtime
 
 # Configure your database
-config :hold_up, HoldUp.Repo,
+config :lucuma, Lucuma.Repo,
   username: "postgres",
   password: "postgres",
-  database: "hold_up_dev",
+  database: "lucuma_dev",
   hostname: "localhost",
   pool_size: 10
 
@@ -79,4 +79,4 @@ config :ex_twilio,
   account_sid: {:system, "TWILIO_ACCOUNT_SID"},
   auth_token: {:system, "TWILIO_AUTH_TOKEN"}
 
-config :hold_up, HoldUpWeb.Mailer, adapter: Bamboo.LocalAdapter
+config :lucuma, LucumaWeb.Mailer, adapter: Bamboo.LocalAdapter

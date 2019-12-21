@@ -1,4 +1,4 @@
-# HoldUp
+# Lucuma
 
 To start your Phoenix server:
 

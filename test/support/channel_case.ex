@@ -1,4 +1,4 @@
-defmodule HoldUpWeb.ChannelCase do
+defmodule LucumaWeb.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
@@ -21,15 +21,15 @@ defmodule HoldUpWeb.ChannelCase do
       use Phoenix.ChannelTest
 
       # The default endpoint for testing
-      @endpoint HoldUpWeb.Endpoint
+      @endpoint LucumaWeb.Endpoint
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(HoldUp.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Lucuma.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(HoldUp.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Lucuma.Repo, {:shared, self()})
     end
 
     :ok

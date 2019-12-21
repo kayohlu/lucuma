@@ -1,4 +1,4 @@
-defmodule HoldUp.DataCase do
+defmodule Lucuma.DataCase do
   @moduledoc """
   This module defines the setup for tests requiring
   access to the application's data layer.
@@ -16,20 +16,20 @@ defmodule HoldUp.DataCase do
 
   using do
     quote do
-      alias HoldUp.Repo
+      alias Lucuma.Repo
 
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
-      import HoldUp.DataCase
+      import Lucuma.DataCase
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(HoldUp.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Lucuma.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(HoldUp.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Lucuma.Repo, {:shared, self()})
     end
 
     :ok

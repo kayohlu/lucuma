@@ -13,6 +13,10 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 }
 
+.primary-color {
+  color: $primary;
+}
+
 .user {
   @extend %fa-icon;
   @extend .fas;
@@ -136,6 +140,10 @@ body {
 
 .input-group-text {
   border: 0px solid #ced4da;
+}
+
+.btn-primary {
+  color: #ffffff;
 }
 
 

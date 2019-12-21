@@ -7,15 +7,15 @@
 # General application configuration
 use Mix.Config
 
-config :hold_up,
-  ecto_repos: [HoldUp.Repo]
+config :lucuma,
+  ecto_repos: [Lucuma.Repo]
 
 # Configures the endpoint
-config :hold_up, HoldUpWeb.Endpoint,
+config :lucuma, LucumaWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "lLy5QMpqK1F/HGZMKhlUuQiYjw55Mj30C3J4v2C4Celns19UMTZjKi2xUyBYLVv8",
-  render_errors: [view: HoldUpWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: HoldUp.PubSub, adapter: Phoenix.PubSub.PG2],
+  render_errors: [view: LucumaWeb.ErrorView, accepts: ~w(html json)],
+  pubsub: [name: Lucuma.PubSub, adapter: Phoenix.PubSub.PG2],
   live_view: [
     signing_salt: "imxM3waFXGZE2VjX6SsfoTsv/6EbYmC3"
   ]
@@ -31,7 +31,7 @@ config :phoenix, :json_library, Jason
 config :stripity_stripe, api_key: System.get_env("STRIPE_SECRET_KEY")
 config :stripity_stripe, json_library: Jason
 
-config :hold_up, HoldUpWeb.Mailer,
+config :lucuma, LucumaWeb.Mailer,
   adapter: Bamboo.MailgunAdapter,
   api_key: {:system, "MAILGUN_PRIVATE_API_KEY"},
   domain: {:system, "MAILGUN_DOMAIN"}
