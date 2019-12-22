@@ -146,6 +146,13 @@ body {
   color: #ffffff;
 }
 
+.navbar-bg-color {
+  background-color: #2f4858;
+}
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.7);
+}
+
 
 @import "dropdown";
 @import "pricing";

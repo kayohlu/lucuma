@@ -24,6 +24,7 @@ defmodule LucumaWeb.Live.Waitlists.WaitlistView do
       average_wait_time: average_wait_time,
       changeset: changeset,
       show_modal: false,
+      trial_limit_reached: session.trial_limit_reached,
       current_company: session.current_company
     ]
 
@@ -65,6 +66,7 @@ defmodule LucumaWeb.Live.Waitlists.WaitlistView do
           changeset: Waitlists.change_stand_by(%StandBy{}),
           party_breakdown: Waitlists.party_size_breakdown(waitlist.id),
           average_wait_time: Waitlists.calculate_average_wait_time(waitlist.id),
+          trial_limit_reached: socket.assigns.trial_limit_reached,
           show_modal: false
         ]
 
@@ -94,6 +96,7 @@ defmodule LucumaWeb.Live.Waitlists.WaitlistView do
     assigns = [
       waitlist: waitlist,
       stand_bys: stand_bys,
+      trial_limit_reached: socket.assigns.trial_limit_reached,
       average_wait_time: Waitlists.calculate_average_wait_time(waitlist.id)
     ]
 
@@ -109,6 +112,7 @@ defmodule LucumaWeb.Live.Waitlists.WaitlistView do
     assigns = [
       waitlist: waitlist,
       stand_bys: stand_bys,
+      trial_limit_reached: socket.assigns.trial_limit_reached,
       average_wait_time: Waitlists.calculate_average_wait_time(waitlist.id)
     ]
 
@@ -124,6 +128,7 @@ defmodule LucumaWeb.Live.Waitlists.WaitlistView do
     assigns = [
       waitlist: waitlist,
       stand_bys: stand_bys,
+      trial_limit_reached: socket.assigns.trial_limit_reached,
       average_wait_time: Waitlists.calculate_average_wait_time(waitlist.id)
     ]
 

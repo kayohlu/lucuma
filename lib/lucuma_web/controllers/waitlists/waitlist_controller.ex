@@ -24,7 +24,8 @@ defmodule LucumaWeb.Waitlists.WaitlistController do
       session: %{
         current_user_id: conn.assigns.current_user.id,
         waitlist_id: id,
-        current_company: conn.assigns.current_company
+        current_company: conn.assigns.current_company,
+        trial_limit_reached: conn.assigns.trial_limit_reached
       }
     )
   end

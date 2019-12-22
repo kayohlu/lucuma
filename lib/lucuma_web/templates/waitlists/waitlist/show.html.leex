@@ -23,10 +23,17 @@
   <div class="card-body pb-0">
     <ul class="list-inline">
       <li class="list-inline-item">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addStandByModal" phx-click="show_modal">
-          <i class="fas fa-plus"></i>
-          Add Person
-        </button>
+        <%= if @trial_limit_reached do %>
+          <button type="button" class="btn btn-primary disabled">
+            <i class="fas fa-plus"></i>
+            Add Person
+          </button>
+        <% else %>
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addStandByModal" phx-click="show_modal">
+            <i class="fas fa-plus"></i>
+            Add Person
+          </button>
+        <% end %>
       </li>
     </ul>
     <ul class="list-group list-group-flush">

@@ -5,6 +5,7 @@ defmodule LucumaWeb.Router do
   import LucumaWeb.Plugs.Authentication
   import LucumaWeb.Plugs.CurrentCompany
   import LucumaWeb.Plugs.CurrentBusiness
+  import LucumaWeb.Plugs.LimitTrial
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -29,6 +30,7 @@ defmodule LucumaWeb.Router do
     plug :authenticated?
     plug :assign_current_company
     plug :assign_current_business
+    plug :limit_trial_accounts
 
     plug :put_layout, {LucumaWeb.LayoutView, :logged_in}
   end

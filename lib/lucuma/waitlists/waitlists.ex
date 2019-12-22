@@ -3,6 +3,8 @@ defmodule Lucuma.Waitlists do
   The Waitlists context.
   """
 
+  @trial_limit 100
+
   import Ecto.Query, warn: false
   alias Lucuma.Repo
 
@@ -13,6 +15,10 @@ defmodule Lucuma.Waitlists do
   alias Lucuma.Waitlists.ConfirmationSmsSetting
   alias Lucuma.Waitlists.AttendanceSmsSetting
   alias LucumaWeb.Router.Helpers
+
+  def trial_limit do
+    @trial_limit
+  end
 
   def get_business_waitlist(business_id) do
     Repo.one(from w in Waitlist, where: w.business_id == ^business_id)

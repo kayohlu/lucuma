@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #2f4858">
+<nav class="navbar navbar-expand-lg navbar-dark navbar-bg-color">
   <div class="container">
     <%= link to: Routes.dashboard_path(@conn, :show), class: "navbar-brand" do %>
       <span class="primary-color">LU</span>
@@ -10,8 +10,11 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav">
-        <li class="nav-item active">
-          <%= link gettext("Waitlist"), to: Routes.waitlists_waitlist_path(@conn, :index), class: "nav-link" %>
+        <li class="nav-item">
+          <%= link gettext("Dashboard"), to: Routes.dashboard_path(@conn, :show), class: "nav-link #{ if @conn.request_path == Routes.dashboard_path(@conn, :show), do: 'active', else: nil }" %>
+        </li>
+        <li class="nav-item">
+          <%= link gettext("Waitlist"), to: Routes.waitlists_waitlist_path(@conn, :index), class: "nav-link #{ if String.match?(@conn.request_path, ~r/waitlists/), do: 'active', else: nil }" %>
         </li>
       </ul>
       <ul class="navbar-nav ml-auto">

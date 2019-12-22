@@ -1,0 +1,5 @@
+<%= if @conn.assigns.trial_limit_reached do %>
+  <div class="alert alert-warning text-center border-0 mb-0" role="alert">
+    <%= gettext("You have reached your trial limit. To contine adding people to your waitlist please ") %><%= link(gettext("subscribe"), to: Routes.settings_billing_path(@conn, :show)) %>.
+  </div>
+<% end %>
