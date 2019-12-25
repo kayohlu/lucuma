@@ -24,6 +24,24 @@ defmodule Lucuma.Billing do
     payment_plan
   end
 
+  def subscription_active?(company) do
+    if company.stripe_subscription_id do
+      subscription = get_current_subscription(company.stripe_subscription_id)
+
+      if subscription do
+        if subscription.status == "active" do
+          true
+        else
+          false
+        end
+      else
+        false
+      end
+    else
+      false
+    end
+  end
+
   def get_current_subscription(nil) do
     nil
   end

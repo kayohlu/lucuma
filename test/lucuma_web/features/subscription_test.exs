@@ -167,11 +167,8 @@ defmodule LucumaWeb.Features.SubscriptionTest do
       # even though using find to block isn't blocking for long enough to check the text.
       :timer.sleep(1000)
 
-
       session
-      |> assert_text(
-        "Could not process your subscription at this time. Please try again."
-      )
+      |> assert_text("Could not process your subscription at this time. Please try again.")
     end
   end
 
