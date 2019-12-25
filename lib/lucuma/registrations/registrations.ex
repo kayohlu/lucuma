@@ -26,9 +26,13 @@ defmodule Lucuma.Registrations do
   """
   def create_registration_form(attrs \\ %{}) do
     changeset = RegistrationForm.changeset(%RegistrationForm{}, attrs)
+    IO.puts "+++++++++++++++++++++++++++++++"
+    IO.inspect changeset
 
     if changeset.valid? do
       registration_form = Ecto.Changeset.apply_changes(changeset)
+      IO.puts "----------------------------------------"
+      IO.inspect registration_form
 
       multi_result =
         Multi.new()
@@ -52,7 +56,8 @@ defmodule Lucuma.Registrations do
         end)
         |> Ecto.Multi.insert(:business, fn previous_steps ->
           business_attrs = %{
-            name: "Unnamed Business"
+            name: "Unnamed Business",
+            time_zone: registration_form.time_zone
           }
 
           changeset =

@@ -7,6 +7,7 @@
   <%= form_group(f, :email, using: :text_input) %>
   <%= form_group(f, :full_name) %>
   <%= form_group(f, :company_name) %>
+  <%= select_form_group(f, :time_zone, Tzdata.zone_list, input_opts: [ prompt: gettext("Please select a time zone") ]) %>
   <%= form_group(f, :password) %>
   <%= form_group(f, :password_confirmation) %>
 

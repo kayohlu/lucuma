@@ -100,6 +100,35 @@ defmodule LucumaWeb.FormHelpers do
     form_group(form, field, extra_opts)
   end
 
+  def select_form_group(form, field, options, opts \\ []) do
+    wrapper_opts =
+      Keyword.merge([class: "form-group"], opts[:wrapper_opts] || [], fn _k, v1, v2 ->
+        "#{v1} #{v2}"
+      end)
+
+    label_opts =
+      Keyword.merge([class: "control-label"], opts[:label_opts] || [], fn _k, v1, v2 ->
+        "#{v1} #{v2}"
+      end)
+
+    input_opts =
+      Keyword.merge([class: input_field_classes(form, field)], opts[:input_opts] || [], fn _k,
+                                                                                           v1,
+                                                                                           v2 ->
+        "#{v1} #{v2}"
+      end)
+
+    content_tag(:div, wrapper_opts) do
+      label = label(form, field, label_opts)
+      # apply is like the equivalent of send in ruby.
+      #input = apply(Phoenix.HTML.Form, type, [form, field, input_opts])
+      input = select(form, field, options, input_opts)
+      error = error_tag(form, field)
+
+      [label, input, error]
+    end
+  end
+
   def input_field_classes(form, field) do
     if errors_for_input?(form, field) do
       "form-control is-invalid"

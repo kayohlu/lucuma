@@ -15,6 +15,7 @@ defmodule Lucuma.Repo.Migrations.CreateUsers do
     create table(:businesses) do
       add :name, :string, null: false
       add :company_id, references(:companies, on_delete: :nothing), null: false
+      add :time_zone, :string, default: "Etc/UTC"
 
       timestamps()
     end

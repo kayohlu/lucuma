@@ -12,12 +12,13 @@ defmodule Lucuma.Registrations.RegistrationForm do
     field :company_name, :string
     field :password, :string
     field :password_confirmation, :string
+    field :time_zone, :string
   end
 
   def changeset(registration, attrs) do
     registration
-    |> cast(attrs, [:email, :full_name, :company_name, :password, :password_confirmation])
-    |> validate_required([:email, :full_name, :company_name, :password, :password_confirmation])
+    |> cast(attrs, [:email, :full_name, :company_name, :password, :password_confirmation, :time_zone])
+    |> validate_required([:email, :full_name, :company_name, :password, :password_confirmation, :time_zone])
     |> validate_format(:email, ~r/@/)
     |> validate_length(:password, min: 6, max: 32)
     |> validate_confirmation(:password)
