@@ -26,7 +26,7 @@ defmodule Lucuma.WaitlistsTests.TodayTest do
         inserted_at: yesterday_mid_day
       )
 
-      assert Today.waitlisted(waitlist.id) == 1
+      assert Today.waitlisted(waitlist.id, business) == 1
     end
   end
 
@@ -70,7 +70,7 @@ defmodule Lucuma.WaitlistsTests.TodayTest do
 
       insert(:stand_by, waitlist_id: waitlist.id, inserted_at: yesterday_mid_day)
 
-      assert Today.waiting(waitlist.id) == 1
+      assert Today.waiting(waitlist.id, business) == 1
     end
   end
 
@@ -117,7 +117,7 @@ defmodule Lucuma.WaitlistsTests.TodayTest do
       )
 
       # the 2 refers to 2 minutes
-      assert Today.average_wait_time(waitlist.id) == 2
+      assert Today.average_wait_time(waitlist.id, business) == 2
     end
   end
 
@@ -182,7 +182,8 @@ defmodule Lucuma.WaitlistsTests.TodayTest do
         [Date.utc_today() |> Date.day_of_week(), 12, 3]
       ]
 
-      assert Today.average_served_per_hour_for_todays_day(waitlist.id) == expected_results
+      assert Today.average_served_per_hour_for_todays_day(waitlist.id, business) ==
+               expected_results
     end
   end
 end

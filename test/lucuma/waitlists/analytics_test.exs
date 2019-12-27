@@ -12,7 +12,7 @@ defmodule Lucuma.WaitlistsTests.AnalyticsTest do
       business = insert(:business, company: insert(:company))
       waitlist = insert(:waitlist, business: business)
 
-      assert Analytics.total_waitlisted(waitlist.id) == 0
+      assert Analytics.total_waitlisted(waitlist.id, business) == 0
     end
   end
 
@@ -25,7 +25,7 @@ defmodule Lucuma.WaitlistsTests.AnalyticsTest do
       insert(:stand_by, waitlist_id: waitlist.id, contact_phone_number: "+353851761516")
       insert(:stand_by, waitlist_id: waitlist.id, contact_phone_number: "+353851761511")
 
-      assert Analytics.unique_customer_count(waitlist.id) == 2
+      assert Analytics.unique_customer_count(waitlist.id, business) == 2
     end
   end
 
@@ -37,7 +37,7 @@ defmodule Lucuma.WaitlistsTests.AnalyticsTest do
       insert(:stand_by, waitlist_id: waitlist.id, attended_at: NaiveDateTime.utc_now())
       insert(:stand_by, waitlist_id: waitlist.id)
 
-      assert Analytics.served_percentage(waitlist.id) == 50.0
+      assert Analytics.served_percentage(waitlist.id, business) == 50.0
     end
   end
 
@@ -49,7 +49,7 @@ defmodule Lucuma.WaitlistsTests.AnalyticsTest do
       insert(:stand_by, waitlist_id: waitlist.id, no_show_at: NaiveDateTime.utc_now())
       insert(:stand_by, waitlist_id: waitlist.id)
 
-      assert Analytics.no_show_percentage(waitlist.id) == 50.0
+      assert Analytics.no_show_percentage(waitlist.id, business) == 50.0
     end
   end
 
@@ -61,7 +61,7 @@ defmodule Lucuma.WaitlistsTests.AnalyticsTest do
       insert(:stand_by, waitlist_id: waitlist.id, cancelled_at: NaiveDateTime.utc_now())
       insert(:stand_by, waitlist_id: waitlist.id)
 
-      assert Analytics.cancellation_percentage(waitlist.id) == 50.0
+      assert Analytics.cancellation_percentage(waitlist.id, business) == 50.0
     end
   end
 
@@ -87,7 +87,7 @@ defmodule Lucuma.WaitlistsTests.AnalyticsTest do
         [tuesday_05_march_19 |> DateTime.to_naive(), 1]
       ]
 
-      assert Analytics.waitlisted_per_date(waitlist.id) == expected_results
+      assert Analytics.waitlisted_per_date(waitlist.id, business) == expected_results
     end
   end
 
@@ -118,7 +118,7 @@ defmodule Lucuma.WaitlistsTests.AnalyticsTest do
         [monday_04_march_19 |> DateTime.to_naive(), 1]
       ]
 
-      assert Analytics.served_per_date(waitlist.id) == expected_results
+      assert Analytics.served_per_date(waitlist.id, business) == expected_results
     end
   end
 
@@ -147,7 +147,7 @@ defmodule Lucuma.WaitlistsTests.AnalyticsTest do
         [monday_04_march_19 |> DateTime.to_naive(), 1]
       ]
 
-      assert Analytics.no_show_per_date(waitlist.id) == expected_results
+      assert Analytics.no_show_per_date(waitlist.id, business) == expected_results
     end
   end
 
@@ -176,7 +176,7 @@ defmodule Lucuma.WaitlistsTests.AnalyticsTest do
         [monday_04_march_19 |> DateTime.to_naive(), 1]
       ]
 
-      assert Analytics.cancellation_per_date(waitlist.id) == expected_results
+      assert Analytics.cancellation_per_date(waitlist.id, business) == expected_results
     end
   end
 
@@ -231,7 +231,7 @@ defmodule Lucuma.WaitlistsTests.AnalyticsTest do
         [7, 3]
       ]
 
-      assert Analytics.average_served_per_day(waitlist.id) == expected_results
+      assert Analytics.average_served_per_day(waitlist.id, business) == expected_results
     end
   end
 
@@ -286,7 +286,7 @@ defmodule Lucuma.WaitlistsTests.AnalyticsTest do
         [12, 3]
       ]
 
-      assert Analytics.average_served_per_hour(waitlist.id) == expected_results
+      assert Analytics.average_served_per_hour(waitlist.id, business) == expected_results
     end
   end
 
@@ -341,7 +341,7 @@ defmodule Lucuma.WaitlistsTests.AnalyticsTest do
         [7, 12, 3]
       ]
 
-      assert Analytics.average_served_per_hour_per_day(waitlist.id) == expected_results
+      assert Analytics.average_served_per_hour_per_day(waitlist.id, business) == expected_results
     end
   end
 
@@ -398,7 +398,7 @@ defmodule Lucuma.WaitlistsTests.AnalyticsTest do
         [tuesday_05_march_19 |> DateTime.to_naive(), 2]
       ]
 
-      assert Analytics.average_wait_time_per_date(waitlist.id) == expected_results
+      assert Analytics.average_wait_time_per_date(waitlist.id, business) == expected_results
     end
   end
 end

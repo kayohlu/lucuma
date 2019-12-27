@@ -30,7 +30,8 @@ defmodule Lucuma.Factory do
 
   def business_factory(attrs) do
     %Lucuma.Accounts.Business{
-      name: sequence(:business_name, fn n -> "Business #{n}" end)
+      name: sequence(:business_name, fn n -> "Business #{n}" end),
+      time_zone: "Etc/UTC"
     }
     |> merge_attributes(attrs)
   end

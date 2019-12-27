@@ -6,8 +6,13 @@ defmodule Lucuma.Waitlists.Analytics.Today do
   alias Lucuma.Repo
   alias Lucuma.Waitlists.StandBy
 
-  def waitlisted(waitlist_id) do
-    {:ok, start_of_today} = NaiveDateTime.new(Date.utc_today(), ~T[00:00:00])
+  def waitlisted(waitlist_id, business) do
+    {:ok, now_in_business_time_zone} = DateTime.now(business.time_zone)
+
+    {:ok, start_of_today} =
+      now_in_business_time_zone
+      |> Timex.beginning_of_day()
+      |> DateTime.shift_zone("Etc/UTC")
 
     Repo.one(
       from s in StandBy,
@@ -16,8 +21,13 @@ defmodule Lucuma.Waitlists.Analytics.Today do
     )
   end
 
-  def waiting(waitlist_id) do
-    {:ok, start_of_today} = NaiveDateTime.new(Date.utc_today(), ~T[00:00:00])
+  def waiting(waitlist_id, business) do
+    {:ok, now_in_business_time_zone} = DateTime.now(business.time_zone)
+
+    {:ok, start_of_today} =
+      now_in_business_time_zone
+      |> Timex.beginning_of_day()
+      |> DateTime.shift_zone("Etc/UTC")
 
     Repo.one(
       from s in StandBy,
@@ -32,8 +42,13 @@ defmodule Lucuma.Waitlists.Analytics.Today do
     )
   end
 
-  def average_wait_time(waitlist_id) do
-    {:ok, start_of_today} = NaiveDateTime.new(Date.utc_today(), ~T[00:00:00])
+  def average_wait_time(waitlist_id, business) do
+    {:ok, now_in_business_time_zone} = DateTime.now(business.time_zone)
+
+    {:ok, start_of_today} =
+      now_in_business_time_zone
+      |> Timex.beginning_of_day()
+      |> DateTime.shift_zone("Etc/UTC")
 
     db_result =
       Repo.one(
@@ -50,13 +65,21 @@ defmodule Lucuma.Waitlists.Analytics.Today do
     end
   end
 
-  @moduledoc """
+  @doc """
   Returns the average amount of people served grouped by hour.
   The average amount of people served per hour every Monday, Tuesday, etc..
   """
-  def average_served_per_hour_for_todays_day(waitlist_id) do
-    {:ok, start_of_today} = NaiveDateTime.new(Date.utc_today(), ~T[00:00:00])
-    todays_day = Date.utc_today() |> Date.day_of_week()
+  def average_served_per_hour_for_todays_day(waitlist_id, business) do
+    {:ok, now_in_business_time_zone} = DateTime.now(business.time_zone)
+
+    {:ok, now_in_utc} =
+      now_in_business_time_zone
+      |> DateTime.shift_zone("Etc/UTC")
+
+    todays_day =
+      now_in_utc
+      |> DateTime.to_date()
+      |> Date.day_of_week()
 
     grouped_by_day_hour_date_query =
       from s in StandBy,

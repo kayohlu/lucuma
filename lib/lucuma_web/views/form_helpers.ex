@@ -121,7 +121,7 @@ defmodule LucumaWeb.FormHelpers do
     content_tag(:div, wrapper_opts) do
       label = label(form, field, label_opts)
       # apply is like the equivalent of send in ruby.
-      #input = apply(Phoenix.HTML.Form, type, [form, field, input_opts])
+      # input = apply(Phoenix.HTML.Form, type, [form, field, input_opts])
       input = select(form, field, options, input_opts)
       error = error_tag(form, field)
 

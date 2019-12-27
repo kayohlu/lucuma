@@ -3,6 +3,7 @@ defmodule LucumaWeb.DashboardController do
 
   def show(conn, _params) do
     waitlist = Lucuma.Waitlists.get_business_waitlist(conn.assigns.current_business.id)
+    business = conn.assigns.current_business
 
     tasks =
       for function <- [
@@ -11,7 +12,7 @@ defmodule LucumaWeb.DashboardController do
             :average_wait_time,
             :average_served_per_hour_for_todays_day
           ] do
-        Task.async(Lucuma.Waitlists.Analytics.Today, function, [waitlist.id])
+        Task.async(Lucuma.Waitlists.Analytics.Today, function, [waitlist.id, business])
       end
 
     [
