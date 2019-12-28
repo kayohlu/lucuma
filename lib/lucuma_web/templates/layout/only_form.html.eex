@@ -7,7 +7,7 @@
   <title>Lucuma</title>
   <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
 </head>
-<body class="h-100" style="background-color: #f4f2f0;">
+<body class="h-100 body-bg-color">
   <div class="d-flex flex-column justify-content-center align-items-center h-100">
     <%= render @view_module, @view_template, assigns %>
   </div>

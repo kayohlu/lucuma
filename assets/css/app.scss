@@ -1,3 +1,4 @@
+// https://coolors.co/00a6fb-0582ca-ffffff-0b7189-006494
 @import 'bootstrap_overrides';
 @import '~bootstrap/scss/bootstrap';
 @import '~intl-tel-input/build/css/intlTelInput.css';
@@ -15,6 +16,10 @@ body {
 
 .primary-color {
   color: $primary;
+}
+
+.body-bg-color {
+  background-color: $body-bg;
 }
 
 .user {
@@ -147,7 +152,7 @@ body {
 }
 
 .navbar-bg-color {
-  background-color: #2f4858;
+  background-color: #0B7189;
 }
 .navbar-dark .navbar-nav .nav-link {
     color: rgba(255, 255, 255, 0.7);
