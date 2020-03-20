@@ -93,6 +93,6 @@ defmodule Lucuma.Notifications.NotificationProducer do
         sms_notifications
       end)
 
-    results
+    results || []
   end
 end
