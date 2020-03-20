@@ -6,6 +6,10 @@ defmodule Lucuma.Application do
   use Application
 
   def start(_type, _args) do
+    if Mix.env() == :prod do
+      Lucuma.Release.migrate
+    end
+
     # List all child processes to be supervised
     children = [
       # Start the Ecto repository

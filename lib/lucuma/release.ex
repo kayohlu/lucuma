@@ -1,4 +1,4 @@
-defmodule MyApp.Release do
+defmodule Lucuma.Release do
   @app :lucuma
 
   def migrate do
