@@ -31,6 +31,7 @@ defmodule LucumaWeb.Router do
     plug :assign_current_company
     plug :assign_current_business
     plug :limit_trial_accounts
+    plug :show_trial_limit_warning
 
     plug :put_layout, {LucumaWeb.LayoutView, :logged_in}
   end

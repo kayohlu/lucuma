@@ -140,4 +140,8 @@ defmodule Lucuma.Notifications.NotificationConsumer do
 
     {monitor_reference, event}
   end
+
+  def terminate(reason, state) do
+    Logger.info("#{__MODULE__} terminating. Reason: #{inspect(reason)}")
+  end
 end

@@ -1,22 +1,20 @@
-// $body-color: #545454;
 $body-color: #2f4858; // Same color as nav background
-// $body-bg: #ffffff;
-$body-bg: #f4f2f0;
+// $body-bg: #f4f2f08a;
 
 $danger: #fd5149;
-$primary: #75ABBC;
+$primary: #49a0a0;
 $warning: #EDAE49;
 // $secondary: #2c3e50;
 
-$card-border-color: #e5e9f2;
+// $card-border-color: #e5e9f2;
 
-$container-max-widths: () !default;
-$container-max-widths: map-merge(
-  (
-    sm: 740px,
-    md: 920px,
-    lg: 1160px,
-    xl: 1340px
-  ),
-  $container-max-widths
-);
+// $container-max-widths: () !default;
+// $container-max-widths: map-merge(
+//   (
+//     sm: 740px,
+//     md: 920px,
+//     lg: 1160px,
+//     xl: 1340px
+//   ),
+//   $container-max-widths
+// );

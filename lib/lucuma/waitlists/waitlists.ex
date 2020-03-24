@@ -11,13 +11,18 @@ defmodule Lucuma.Waitlists do
   alias Lucuma.Billing
   alias Lucuma.Waitlists.Waitlist
   alias Lucuma.Waitlists.StandBy
-  alias Lucuma.Notifications
   alias Lucuma.Waitlists.ConfirmationSmsSetting
   alias Lucuma.Waitlists.AttendanceSmsSetting
+  alias Lucuma.Waitlists.Analytics
+  alias Lucuma.Notifications
   alias LucumaWeb.Router.Helpers
 
   def trial_limit do
     @trial_limit
+  end
+
+  def trial_remainder(waitlist, business) do
+    trial_limit - Analytics.total_waitlisted(waitlist.id, business)
   end
 
   def get_business_waitlist(business_id) do
