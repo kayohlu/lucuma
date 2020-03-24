@@ -7,7 +7,7 @@ defmodule Lucuma.Application do
 
   def start(_type, _args) do
     if Mix.env() == :prod do
-      Lucuma.Release.migrate
+      Lucuma.Release.migrate()
     end
 
     # List all child processes to be supervised
@@ -20,7 +20,10 @@ defmodule Lucuma.Application do
       # {Lucuma.Worker, arg},
       {Lucuma.Notifications.NotificationProducer, [0]},
       {Lucuma.Notifications.NotificationConsumer, []},
-      {Task.Supervisor, name: Lucuma.NotifierSupervisor}
+      {
+        DynamicSupervisor,
+        strategy: :one_for_one, name: Lucuma.NotifierDynamicSupervisor
+      }
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

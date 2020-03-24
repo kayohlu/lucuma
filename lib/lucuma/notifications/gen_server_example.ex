@@ -7,13 +7,13 @@ defmodule Notifications.GenServerExample do
   # start_link is just a name common method name for spawning
   # a process.
   def start_link do
-    # spawn_link allows us to spawn a new process linked to the current process.
+    # start_link allows us to spawn a new process linked to the current process.
     # This means that if an error occurs in the new process it will propagate to
     # the current process where it can be handled.
-    # When the new process fails with will send the current process an exit signal.
+    # When the new process fails it will send the current process an exit signal.
     #
     # __MODULE__ is a macro that evaluates to this module's name.
-    # :loop is the function that process will run
+    # :ok is the argument passed to the init callback which is called once the proces is up and running
     # [] is the list of arguments to the loop function. It consists of an empty map.
     GenServer.start_link(__MODULE__, :ok, [])
   end
@@ -78,7 +78,6 @@ defmodule Notifications.GenServerExample do
 end
 
 defmodule Notifications.NamedGenServerExample do
-  # Use Genserver
   use GenServer
 
   # The name macro lets you create a "module variable" which is accessable

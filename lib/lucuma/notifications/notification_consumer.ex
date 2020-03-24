@@ -49,17 +49,19 @@ defmodule Lucuma.Notifications.NotificationConsumer do
   # Having min_demand: 0, max_demand: 1 seems to demand one thing at a time from the producer.
   """
   def init(state) do
+    Process.flag(:trap_exit, true)
+
     {:consumer, state,
      subscribe_to: [{Lucuma.Notifications.NotificationProducer, min_demand: 50, max_demand: 100}]}
   end
 
   def handle_events(events, from, state) do
-    Logger.info("Handling #{length(events)} events from producer")
+    Logger.info("#{__MODULE__} Handling #{length(events)} events from producer")
 
     new_state =
       Enum.into(events, state, fn event ->
-        task = process_event(event)
-        {task.ref, event}
+        result = process_event(event)
+        {ref, event} = result
       end)
 
     {:noreply, [], new_state}
@@ -71,19 +73,32 @@ defmodule Lucuma.Notifications.NotificationConsumer do
   If we do not demonitor the DOWN message will be sent.
   """
   def handle_info({task_ref, result}, state) do
+    Logger.info(
+      "#{__MODULE__} Notifier process completed successfully #{inspect({task_ref, result})}"
+    )
+
     # Process.demonitor(task_ref, [:flush])
-    IO.inspect({task_ref, result})
     {:noreply, [], Map.delete(state, task_ref)}
   end
 
   @doc """
-  This handle_info callback is defined because even though handle_info({ref, result}, state) is invoked another message is
-  sent to this process and it's handled by this function.
+  This handle_info callback is defined because even though handle_info({ref, result}, state) above is invoked
+  another message is sent to this process and it's handled by this function.
   If we use `Process.demonitor(ref, [:flush])` in `handle_info({ref, result}, state)` this callback won't be invoked.
   This is a successful message..
   """
   def handle_info({:DOWN, task_ref, :process, from, :normal}, state) do
-    IO.inspect(state)
+    Logger.info("#{__MODULE__} Notifier process #{inspect(from)} :DOWN for :normal reason")
+    {:noreply, [], state}
+  end
+
+  @doc """
+  Since this process monitors the notifieer processes, when they receive a shutdown
+  exit signal they send the message below to this process.
+  We handle it here.
+  """
+  def handle_info({:DOWN, task_ref, :process, from, :shutdown}, state) do
+    Logger.info("#{__MODULE__} Notifier process #{inspect(from)} received a shut down signal")
     {:noreply, [], state}
   end
 
@@ -94,24 +109,33 @@ defmodule Lucuma.Notifications.NotificationConsumer do
   We change the status to "for_delivery" so sending can be retried.
   """
   def handle_info({:DOWN, task_ref, :process, from, reason}, state) do
-    IO.puts("Task failed for some reason..")
-    IO.inspect(task_ref)
-    IO.inspect(reason)
+    Logger.info("#{__MODULE__} Notifier process #{inspect(from)} failed because: #{inspect(reason)}")
 
-    Notifications.update_sms_notification(Map.get(state, task_ref), %{status: "for_delivery"})
+    # Notifications.update_sms_notification(Map.get(state, task_ref), %{status: "for_delivery"})
+
+    Map.get(state, task_ref)
+    |> Lucuma.Notifications.Notifier.mark_notification_for_delivery()
 
     {:noreply, [], Map.delete(state, task_ref)}
   end
 
   @doc """
-  Creates a supervised task that is monitored - not linked - by this process.
   """
   defp process_event(event) do
-    Task.Supervisor.async_nolink(
-      Lucuma.NotifierSupervisor,
-      Lucuma.Notifications.Notifier,
-      :send_notification,
-      [event]
+    {:ok, child_pid} =
+      DynamicSupervisor.start_child(
+        Lucuma.NotifierDynamicSupervisor,
+        {Lucuma.Notifications.NotifierTask, event}
+      )
+
+    monitor_reference = Process.monitor(child_pid)
+
+    Logger.info(
+      "#{__MODULE__} Notifier process now monitored by #{__MODULE__} #{inspect(self())} for event ID: #{
+        event.id
+      }"
     )
+
+    {monitor_reference, event}
   end
 end

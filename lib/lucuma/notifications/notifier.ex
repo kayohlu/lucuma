@@ -1,7 +1,15 @@
 defmodule Lucuma.Notifications.Notifier do
+  require Logger
+  alias Lucuma.Repo
   alias LucumaWeb.Router.Helpers
   alias Lucuma.Notifications
   alias Lucuma.Notifications.SmsNotification
+
+  def mark_notification_for_delivery(%SmsNotification{} = sms_notification) do
+    sms_notification
+    |> SmsNotification.changeset(%{status: "for_delivery"})
+    |> Repo.update!()
+  end
 
   def send_notification(%SmsNotification{} = sms_notification) do
     send_notification(Mix.env(), sms_notification)

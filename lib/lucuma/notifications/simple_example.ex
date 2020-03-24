@@ -5,7 +5,7 @@ defmodule Notifications.SimpleExample do
     # spawn_link allows us to spawn a new process linked to the current process.
     # This means that if an error occurs in the new process it will propagate to
     # the current process where it can be handled.
-    # When the new process fails with will send the current process an exit signal.
+    # When the new process fails it will send the current process an exit signal.
     #
     # __MODULE__ is a macro that evaluates to this module's name.
     # :loop is the function that process will run
@@ -13,7 +13,7 @@ defmodule Notifications.SimpleExample do
     spawn_link(__MODULE__, :loop, [%{}])
   end
 
-  # state is the arguments passed in the start_link function above.
+  # state is the arguments passed in the start_link/spawn_link function above.
   # In this case state is %{} because there is only one argument and one element in the list above.
   def loop(state) do
     # receive allows this process to receive messages from others.

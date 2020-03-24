@@ -1,6 +1,6 @@
 defmodule Lucuma.Notifications.NotificationProducer do
   use GenStage
-
+  require Logger
   import Ecto.Query
 
   alias Lucuma.Notifications.Notifier
@@ -36,8 +36,23 @@ defmodule Lucuma.Notifications.NotificationProducer do
   The argument to init is the initial state which is passed by start_link above.
   The second element to the returned tuple is the initial state. In this case the
   state value passed in the function argument.
+
+  Processes do not trap exits by default, even GenServers
+  If a process is trapping exits, the exit signal is transformed
+  into a message {:EXIT, from, reason} and delivered to the
+  process's message queue.
+
+  Since this is a child process. If it's not trapping exits, the initial :shutdown
+  signal will terminate the process immediately.
+  If a child process is trapping exits, it has the given amount of time to
+  terminate.
+  If it doesn't terminate within the specified time, the child process is
+  unconditionally terminated by the supervisor via Process.exit(child, :kill).
+  The default time to wait is 5000 ms.
   """
   def init(initial_state) do
+    Process.flag(:trap_exit, true)
+
     {:producer, initial_state}
   end
 
@@ -46,14 +61,14 @@ defmodule Lucuma.Notifications.NotificationProducer do
   a consumer/dispatcher.
   """
   def handle_demand(demand, state) do
-    IO.puts("Producer state: #{state}")
-    IO.puts("Producer demand: #{demand}")
+    Logger.info("#{__MODULE__} Producer state: #{state}")
+    Logger.info("#{__MODULE__} Producer demand: #{demand}")
 
     {:noreply, events, demand}
   end
 
   def handle_cast({:send_sms_async}, state) do
-    IO.puts("Handling cast message send_sms_async")
+    Logger.info("Handling cast message send_sms_async")
 
     {:noreply, events, state}
   end
@@ -83,7 +98,8 @@ defmodule Lucuma.Notifications.NotificationProducer do
         {_count, sms_notifications} =
           Repo.update_all(
             from(sms in SmsNotification,
-              where: sms.id in ^for_delivery_ids
+              where: sms.id in ^for_delivery_ids,
+              select: sms
             ),
             [set: [status: "queued_for_delivery"]],
             # returns all fields
@@ -94,5 +110,9 @@ defmodule Lucuma.Notifications.NotificationProducer do
       end)
 
     results || []
+  end
+
+  def terminate(reason, state) do
+    Logger.info("#{__MODULE__} terminating. Reason: #{inspect(reason)}")
   end
 end
