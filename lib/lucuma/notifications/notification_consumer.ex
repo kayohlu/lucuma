@@ -109,7 +109,9 @@ defmodule Lucuma.Notifications.NotificationConsumer do
   We change the status to "for_delivery" so sending can be retried.
   """
   def handle_info({:DOWN, task_ref, :process, from, reason}, state) do
-    Logger.info("#{__MODULE__} Notifier process #{inspect(from)} failed because: #{inspect(reason)}")
+    Logger.info(
+      "#{__MODULE__} Notifier process #{inspect(from)} failed because: #{inspect(reason)}"
+    )
 
     # Notifications.update_sms_notification(Map.get(state, task_ref), %{status: "for_delivery"})
 
