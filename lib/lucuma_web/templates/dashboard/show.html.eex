@@ -1,6 +1,6 @@
 <div class="card">
   <div class="card-header">
-    Today
+    <%= gettext("Today's highlights") %>
   </div>
   <div class="card-body">
     <div class="row">
@@ -23,7 +23,7 @@
 
 <div class="card mt-4">
   <div class="card-header">
-    <%= gettext("Busiest hours for today (average amount of people served for today's day)") %>
+    <%= gettext("Busiest hours expected today (average amount of people served for per hour)") %>
   </div>
   <div class="card-body">
       <div class="col">

@@ -52,45 +52,44 @@ body {
   font-weight: 500 !important;
 }
 
-// .card {
-//   box-shadow: 0 4px 5px hsla(0, 0%, 0%, 0.07);
-//   border: none;
+.card {
+  box-shadow: 0 4px 5px hsla(0, 0%, 0%, 0.07);
+  border: none;
 
-//   .card-header {
-//     font-weight: 500;
-//   }
+  .card-header {
+    font-weight: 500;
+  }
 
-//   .card-footer {
-//     background-color: #f8f9fa;
-//   }
-// }
+  .card-footer {
+    background-color: #f8f9fa;
+  }
+}
 
 .sub-menu {
-  background-color: none;
-  color: $body-color;
-  // font-size: 1.1rem;
-  padding-bottom: 0;
-  // padding-top: 1.5rem;
+  margin-top: 56px;
+  background-color: white;
+  color: #6c757d;
+
+  // position: relative;
+  z-index: 2;
+  overflow-y: hidden;
 
   .nav {
-    .nav-item {
-      // width: 177px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    white-space: nowrap;
+    // overflow-scrolling: touch;
 
       .nav-link {
-        color: #586069;
-        padding: 0.5rem 1.5rem;
-        // text-align: center;
+        color: #6c757d;
 
         &.active {
-          // border-bottom: 2px solid $primary;
-          // border-bottom-left-radius: 2px;
-          // border-bottom-right-radius: 2px;
-          background-color: $body-bg;
+          // background-color: $body-bg;
           border-radius: 3px 3px 0 0;
           color: $body-color;
+          border-bottom: 1px solid $body-color
         }
       }
-    }
   }
 }
 
@@ -145,8 +144,8 @@ body {
 }
 
 .form-control {
-  border: 1px solid #f8f9fa;
-  background-color: #f8f9fa;
+  border: 1px solid #eff2f5;
+  background-color: #eff2f5;
 }
 
 .input-group-text {

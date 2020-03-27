@@ -14,23 +14,31 @@
   <body>
     <main role="main">
       <%= render "navigation.html", conn: @conn %>
+      <%# When using a live view we cannot rely on view_module because it is Phoenix.LiveView.Controller. %>
+      <%# So we have to use @live_view_module to get the actual view we have defined. The LucumaWeb.Live.Waitlists.WaitlistView in our case %>
+      <%# This wont render two navs because if we use live view we cannot use the normal way%>
+      <%= render_existing @view_module, "sub_navigation.html", assigns %>
+      <%= if (Map.get(assigns, :live_view_module)) != nil do %>
+        <%= render_existing @live_view_module, "sub_navigation.html", assigns %>
+      <% end %>
       <%= render "flash.html", conn: @conn %>
       <%= render "alerts.html", conn: @conn %>
       <%= if is_nil(Map.get(assigns, :inner_layout)) do %>
-        <div class="container  pb-4">
+        <div class="container pb-4 mt-4">
           <br/>
           <%= render @view_module, @view_template, assigns %>
         </div>
       <% else %>
-        <div class="container pb-4">
-          <div class="row">
-            <%= Map.get(assigns, :inner_layout) %>
-          </div>
-        </div>
+          <%= Map.get(assigns, :inner_layout) %>
       <% end %>
     </main>
 
-    <footer class="text-muted text-center p-3"></footer>
+    <footer class="text-muted text-center p-3">
+      <%= inspect(@view_module) %>
+      <%= if (Map.get(assigns, :live_view_module)) do %>
+        <%= inspect(@live_view_module) %>
+      <% end %>
+    </footer>
     <script src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
     <script src="https://js.stripe.com/v3/"></script>
   </body>

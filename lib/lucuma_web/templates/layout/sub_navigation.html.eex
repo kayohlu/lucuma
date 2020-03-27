@@ -1,0 +1,9 @@
+<div class="sub-menu">
+  <nav class="nav nav-underline">
+    <%= for link <- @sub_nav_links do %>
+      <%= link to: link.path, class: "nav-link #{activate_link(@conn, link.path)}" do %>
+        <%= link.text %>
+      <% end %>
+    <% end %>
+  </nav>
+</div>
