@@ -1,7 +1,7 @@
 <%= form_for @changeset, @action, [as: :registration], fn f -> %>
   <%= if @changeset.action do %>
     <div class="alert alert-danger text-center">
-      <span>Oops, something went wrong!</span>
+      <span><%= gettext("Oops, something went wrong!") %></span>
     </div>
   <% end %>
   <%= form_group(f, :email, using: :text_input) %>

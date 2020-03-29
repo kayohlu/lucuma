@@ -1,16 +1,18 @@
+<div class="row mb-4">
+  <div class="col d-flex align-items-center">
+    <h5 class="mb-0"><%= gettext("Billing Overview") %></h5>
+  </div>
+</div>
 <%= if @subscription do %>
   <div class="card">
-  <div class="card-header">
-    Billing Overview
-  </div>
   <div class="card-body">
     <div class="row">
-      <div class="col">
-        <h5 class="card-title text-center">Current bill total</h5>
+      <div class="col-sm-12 col-md-6 p-2">
+        <h5 class="card-title text-center"><%= gettext("Current bill total") %></h5>
         <h5 class="card-subtitle mb-2 mt-4 text-muted text-center"><%= Number.Currency.number_to_currency(@upcoming_invoice.amount_due / 100) %></h5>
       </div>
-      <div class="col">
-        <h5 class="card-title text-center">Next payment due</h5>
+      <div class="col-sm-12 col-md-6 p-2">
+        <h5 class="card-title text-center"><%= gettext("Next payment due") %></h5>
         <h5 class="card-subtitle mb-2 mt-4 text-muted text-center"><%= format_due_date(@upcoming_invoice.next_payment_attempt) %></h5>
       </div>
     </div>
@@ -21,9 +23,6 @@
 </div>
 <% else %>
 <div class="card">
-  <div class="card-header">
-    Billing Overview
-  </div>
   <div class="card-body">
     <div class="alert alert-info text-center mt-4 mb-4" role="alert">
     <%= gettext("You are currently using the free trial. You can add up to 100 customers to your waitlist.") %>

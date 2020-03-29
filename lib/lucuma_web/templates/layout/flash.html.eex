@@ -8,7 +8,7 @@
   <div class="ui negative message">
     <i class="close icon"></i>
     <div class="header">
-      Error
+      <%= gettext("Error") %>
     </div>
     <span class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></span>
   </div>

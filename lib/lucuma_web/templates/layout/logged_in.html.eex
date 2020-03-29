@@ -14,6 +14,8 @@
   <body>
     <main role="main">
       <%= render "navigation.html", conn: @conn %>
+      <%# Easy spacer because the nav is fixed. %>
+      <div style="height: 56px;"></div>
       <%# When using a live view we cannot rely on view_module because it is Phoenix.LiveView.Controller. %>
       <%# So we have to use @live_view_module to get the actual view we have defined. The LucumaWeb.Live.Waitlists.WaitlistView in our case %>
       <%# This wont render two navs because if we use live view we cannot use the normal way%>
@@ -24,8 +26,7 @@
       <%= render "flash.html", conn: @conn %>
       <%= render "alerts.html", conn: @conn %>
       <%= if is_nil(Map.get(assigns, :inner_layout)) do %>
-        <div class="container pb-4 mt-4">
-          <br/>
+        <div class="container pb-4 pt-4">
           <%= render @view_module, @view_template, assigns %>
         </div>
       <% else %>
@@ -34,10 +35,10 @@
     </main>
 
     <footer class="text-muted text-center p-3">
-      <%= inspect(@view_module) %>
-      <%= if (Map.get(assigns, :live_view_module)) do %>
-        <%= inspect(@live_view_module) %>
-      <% end %>
+      <%# <%= inspect(@view_module) %1> %>
+      <%# <%= if (Map.get(assigns, :live_view_module)) do %1> %>
+      <%#   <%= inspect(@live_view_module) %1> %>
+      <%# <% end %1> %>
     </footer>
     <script src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
     <script src="https://js.stripe.com/v3/"></script>

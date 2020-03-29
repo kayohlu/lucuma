@@ -1,78 +1,79 @@
 <%= if @has_stand_bys do %>
-<div class="card-deck">
+<div class="row mb-4">
+  <div class="col d-flex align-items-center">
+    <h5 class="mb-0"><%= gettext("Today") %></h5>
+  </div>
+</div>
+
+<div class="card-deck mb-4">
   <div class="card">
     <div class="card-body">
-      <h1 class="display-3"><%= @total_waitlisted %></h1>
-      <span class="text-muted"><%= gettext("Total Waitlisted") %></span>
+      <div class="party-size-summary-chart__wrapper">
+        <%= content_tag(:div, nil, [{:data, [party_size_breakdown: Jason.encode!(@party_breakdown)]}, class: "party-size-summary-chart__chart", id: "party-size-container"]) %>
+      </div>
     </div>
   </div>
   <div class="card">
     <div class="card-body">
-      <h1 class="display-3"><%= @unique_customer_count %></h1>
-      <span class="text-muted"><%= gettext("Unique Customers") %></span>
+      <div class="text-center align-self-center">
+        <h1 class="display-1 d-inline"><%= @average_wait_time %></h1>
+        <p class="text-muted"><%= gettext("Average Wait Time") %> <small class="text-muted">(<%= gettext("mins") %>)</small></p>
+      </div>
     </div>
   </div>
   <div class="card">
     <div class="card-body">
-      <h1 class="display-3"><%= @served_customer_count %></h1>
-      <span class="text-muted"><%= gettext("Total Served") %></span>
+      <div class="text-center align-self-center">
+        <h1 class="display-1 d-inline"><%= length(@stand_bys) %></h1>
+        <p class="text-muted"><%= gettext("People Waiting") %></p>
+      </div>
     </div>
   </div>
 </div>
 
-<div class="card mt-4" style="height: 420px">
-  <div class="card-header">
-    <%= gettext("Waitlist Overview") %>
+<div class="row mt-4 mb-4">
+  <div class="col d-flex align-items-center">
+    <h5 class="mb-0"><%= gettext("Historical") %></h5>
   </div>
-  <div class="row no-gutters">
-    <div class="col-md-4">
-<%= content_tag(:div, nil,
-          [
-            {:data,
-              [percentages_data: Jason.encode!([
-                %{
-                  name: gettext("Served"),
-                  y: round(@served_percentage)
-                },
-                %{
-                  name: gettext("No Show"),
-                  y: round(@no_show_percentage)
-                },
-                %{
-                  name: gettext("Cancellation"),
-                  y: round(@cancellation_percentage)
-                }
-              ]),
-              title: gettext("Served")
-              ]
-            },
-            id: "container"
-          ])
-        %>
-    </div>
-    <div class="col-md-8">
-      <div class="card-body">
-      <div class="col">
-        <%= content_tag(:div, nil,
-          [
-            {:data,
-              [served_data: Jason.encode!(%{name: gettext("Served"), data: inject_unix_timestamp(@served_per_date)})]
-            },
-            {:data,
-               [no_show_data: Jason.encode!(%{name: gettext("No Shows"), data: inject_unix_timestamp(@no_show_per_date)})]
-            },
-            {:data,
-               [cancellation_data: Jason.encode!(%{name: gettext("Cancellations"), data: inject_unix_timestamp(@cancellation_per_date)})]
-            },
-            {:data,
-               [waitlisted_data: Jason.encode!(%{name: gettext("Waitlisted"), data: inject_unix_timestamp(@waitlisted_per_date)})]
-            },
-            id: "waitlist-states-container"
-          ])
-        %>
-      </div>
+</div>
 
+<div class="card-deck">
+  <div class="card">
+    <div class="card-body">
+      <div class="text-center align-self-center">
+      <h1 class="display-3"><%= @total_waitlisted %></h1>
+      <span class="text-muted"><%= gettext("Total Waitlisted") %></span>
+    </div>
+    </div>
   </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="text-center align-self-center">
+      <h1 class="display-3"><%= @unique_customer_count %></h1>
+      <span class="text-muted"><%= gettext("Total Unique Customers") %></span>
+    </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="text-center align-self-center">
+      <h1 class="display-3"><%= @served_customer_count %></h1>
+      <span class="text-muted"><%= gettext("Total Served") %></span>
+    </div>
+    </div>
+  </div>
+</div>
+
+<div class="card mt-4">
+  <div class="card-header"><%= gettext("Waitlist Overview") %></div>
+  <div class="card-body">
+    <div class="row mb-4">
+      <div class="col-sm-12 col-md-4">
+        <%= content_tag(:div, nil, [ {:data, [percentages_data: Jason.encode!([ %{ name: gettext("Served"), y: round(@served_percentage) }, %{ name: gettext("No Show"), y: round(@no_show_percentage) }, %{ name: gettext("Cancellation"), y: round(@cancellation_percentage) } ]), title: gettext("Served") ] }, id: "container" ]) %>
+      </div>
+      <div class="col-sm-12 col-md-8">
+        <%= content_tag(:div, nil, [ {:data, [served_data: Jason.encode!(%{name: gettext("Served"), data: inject_unix_timestamp(@served_per_date)})] }, {:data, [no_show_data: Jason.encode!(%{name: gettext("No Shows"), data: inject_unix_timestamp(@no_show_per_date)})] }, {:data, [cancellation_data: Jason.encode!(%{name: gettext("Cancellations"), data: inject_unix_timestamp(@cancellation_per_date)})] }, {:data, [waitlisted_data: Jason.encode!(%{name: gettext("Waitlisted"), data: inject_unix_timestamp(@waitlisted_per_date)})] }, id: "waitlist-states-container" ]) %>
+      </div>
     </div>
   </div>
 </div>

@@ -1,8 +1,4 @@
 <nav class="navbar navbar-expand-lg fixed-top navbar-dark navbar-bg-color">
-  <%# <%= link to: Routes.dashboard_path(@conn, :show), class: "navbar-brand" do %1> %>
-  <%#   <span class="primary-color">LU</span> %>
-  <%# <% end %1> %>
-
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>

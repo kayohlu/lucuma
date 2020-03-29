@@ -1,36 +1,36 @@
 <section>
     <div class="pricing pricing-palden">
       <div class="pricing-item" style="border-top: 6px solid #929191">
-      <h3 class="pricing-title text-uppercase">Pay as you go</h3>
+      <h3 class="pricing-title text-uppercase"><%= gettext("Pay as you go") %></h3>
       <div class="pricing-deco d-flex flex-column">
         <div class="pricing-price d-flex justify-content-center">
           <div class="pricing-currency-payg">$</div>
           <span class="pricing-price-number">0.20</span>
-          <span class="pricing-period-payg text-muted">/ customer</span>
+          <span class="pricing-period-payg text-muted"><%= gettext("/ customer") %></span>
         </div>
       </div>
 
       <ul class="pricing-feature-list fa-ul">
-        <li class="pricing-feature"><span class="fa-li"><i class="fas fa-exclamation pr-2" style="color: #929191"></i></span>Customizable SMS alerts</li>
-        <li class="pricing-feature"><span class="fa-li"><i class="fas fa-chart-bar pr-2" style="color: #929191"></i></span>Analytics and Statistics</li>
+        <li class="pricing-feature"><span class="fa-li"><i class="fas fa-exclamation pr-2" style="color: #929191"></i></span><%= gettext("Customizable SMS alerts") %></li>
+        <li class="pricing-feature"><span class="fa-li"><i class="fas fa-chart-bar pr-2" style="color: #929191"></i></span><%= gettext("Analytics and Statistics") %></li>
       </ul>
       <%= @payment_plan_links.pay_as_you_go %>
     </div>
 
       <div class="pricing-item pricing__item--featured" style="border-top: 6px solid #24b47e">
         <div class="pricing-deco d-flex flex-column">
-          <h3 class="pricing-title text-uppercase">Standard</h3>
+          <h3 class="pricing-title text-uppercase"><%= gettext("Standard") %></h3>
           <div class="pricing-price d-flex justify-content-center">
             <div class="pricing-currency">$</div>
             <span class="pricing-price-number">30</span>
-            <span class="pricing-period text-muted">/ month</span>
+            <span class="pricing-period text-muted"><%= gettext("/ month") %></span>
           </div>
 
         </div>
         <ul class="pricing-feature-list fa-ul">
-          <li class="pricing-feature"><span class="fa-li"><i class="fas fa-user-clock pr-2" style="color: #24b47e"></i></span>First 5000 customers free</li>
-          <li class="pricing-feature"><span class="fa-li"><i class="fas fa-exclamation pr-2" style="color: #24b47e"></i></span>Customizable SMS alerts</li>
-          <li class="pricing-feature"><span class="fa-li"><i class="fas fa-chart-bar pr-2" style="color: #24b47e"></i></span>Analytics and Statistics</li>
+          <li class="pricing-feature"><span class="fa-li"><i class="fas fa-user-clock pr-2" style="color: #24b47e"></i></span><%= gettext("First 5000 customers free") %></li>
+          <li class="pricing-feature"><span class="fa-li"><i class="fas fa-exclamation pr-2" style="color: #24b47e"></i></span><%= gettext("Customizable SMS alerts") %></li>
+          <li class="pricing-feature"><span class="fa-li"><i class="fas fa-chart-bar pr-2" style="color: #24b47e"></i></span><%= gettext("Analytics and Statistics") %></li>
         </ul>
         <%= @payment_plan_links.standard %>
       </div>
@@ -38,18 +38,18 @@
 
       <div class="pricing-item" style="border-top: 6px solid #2472b4">
         <div class="pricing-deco d-flex flex-column">
-          <h3 class="pricing-title text-uppercase">Unlimited</h3>
+          <h3 class="pricing-title text-uppercase"><%= gettext("Unlimited") %></h3>
           <div class="pricing-price d-flex justify-content-center">
             <div class="pricing-currency">$</div>
             <span class="pricing-price-number">50</span>
-            <span class="pricing-period text-muted">/ month</span>
+            <span class="pricing-period text-muted"><%= gettext("/ month") %></span>
           </div>
 
         </div>
         <ul class="pricing-feature-list fa-ul">
-          <li class="pricing-feature"><span class="fa-li"><i class="fas fa-user-clock pr-2"  style="color: #2472b4"></i></span>Unlimited number of customers</li>
-          <li class="pricing-feature"><span class="fa-li"><i class="fas fa-exclamation pr-2" style="color: #2472b4"></i></span>Customizable SMS alerts</li>
-          <li class="pricing-feature"><span class="fa-li"><i class="fas fa-chart-bar pr-2" style="color: #2472b4"></i></span>Analytics and Statistics</li>
+          <li class="pricing-feature"><span class="fa-li"><i class="fas fa-user-clock pr-2"  style="color: #2472b4"></i></span><%= gettext("Unlimited number of customers") %></li>
+          <li class="pricing-feature"><span class="fa-li"><i class="fas fa-exclamation pr-2" style="color: #2472b4"></i></span><%= gettext("Customizable SMS alerts") %></li>
+          <li class="pricing-feature"><span class="fa-li"><i class="fas fa-chart-bar pr-2" style="color: #2472b4"></i></span><%= gettext("Analytics and Statistics") %></li>
         </ul>
         <%= @payment_plan_links.unlimited %>
       </div>

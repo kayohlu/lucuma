@@ -5,8 +5,6 @@
 <% end %>
 <%= if @conn.assigns.show_trial_limit_warning do %>
   <div class="alert alert-warning text-center border-0 mb-0" role="alert">
-    <%= gettext("You are using the trial version. You can add ") %>
-    <%= @conn.assigns.show_trial_limit_warning %>
-    <%= gettext("more people.") %>
+    <%= gettext("You are using the trial version. You can add ") %> <%= @conn.assigns.show_trial_limit_warning %> <%= gettext("more people.") %>
   </div>
 <% end %>

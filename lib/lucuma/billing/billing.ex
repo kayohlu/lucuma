@@ -84,7 +84,7 @@ defmodule Lucuma.Billing do
           Logger.info(inspect(stripe_response))
           stripe_response
         end)
-        |> Ecto.Multi.run(:check_initial_payment_succeeded, fn %{
+        |> Ecto.Multi.run(:check_initial_payment_succeeded, fn _repo, %{
                                                                  create_stripe_customer:
                                                                    stripe_customer,
                                                                  create_stripe_subscription:

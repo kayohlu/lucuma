@@ -54,7 +54,7 @@
         <%= form_group(f, :message_content, using: :textarea, input_opts: [rows: 6]) %>
         <small id="emailHelp" class="form-text text-muted"><%= gettext("Please make sure your tags are correctly entered. Every tag should be surrounded by double square braces. For example: ") %><code>[[NAME]]</code> <%= gettext("and") %> <code>[[CANCEL_LINK]]</code></small>
         <div class="mt-2">
-          <%= submit "Update SMS message", class: "btn btn-outline-secondary btn-block" %>
+          <%= submit gettext("Update SMS message"), class: "btn btn-outline-secondary btn-block" %>
         </div>
         <% end %>
       </div>

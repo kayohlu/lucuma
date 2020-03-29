@@ -7,7 +7,7 @@
         <% "plan_Eyp0J9dUxi2tWW" -> %>
           <li class="list-group-item">
           <h5 class="card-title mb-0 text-center">
-            PAY AS YOU GO
+            <%= gettext("Pay as you go") %>
           </h5>
           <small class="text-muted d-block text-center">$0.20 / customer</small>
           <small class="card-text text-muted d-block text-center">Billed monthly</small>
@@ -15,7 +15,7 @@
         <% "plan_Eyox8DhvcBMAaS" -> %>
           <li class="list-group-item">
           <h5 class="card-title mb-0 text-center">
-            STANDARD
+            <%= gettext("Standard") %>
           </h5>
           <small class="text-muted d-block text-center">$30 / month</small>
           <small class="card-text text-muted d-block text-center">Billed monthly</small>
@@ -23,7 +23,7 @@
         <% "plan_F7YntQ0ELRD33U" -> %>
           <li class="list-group-item">
           <h5 class="card-title mb-0 text-center">
-            UNLIMITED
+            <%= gettext("Unlimited") %>
           </h5>
           <small class="text-muted d-block text-center">$50 / month</small>
           <small class="card-text text-muted d-block text-center">Billed monthly</small>

@@ -42,5 +42,4 @@ defmodule LucumaWeb.Waitlists.WaitlistView do
       links
     end
   end
-
 end

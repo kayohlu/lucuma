@@ -17,21 +17,22 @@ defmodule LucumaWeb.Settings.ProfileView do
       }
     ]
 
-    links = if LucumaWeb.Permissions.permitted_to?(
-         assigns.conn,
-         LucumaWeb.Settings.BillingController,
-         :show
-       ) do
-      links ++
-        [
-          %{
-            path: Routes.settings_billing_path(assigns.conn, :show),
-            text: gettext("Billing")
-          }
-        ]
-    else
-      links
-    end
+    links =
+      if LucumaWeb.Permissions.permitted_to?(
+           assigns.conn,
+           LucumaWeb.Settings.BillingController,
+           :show
+         ) do
+        links ++
+          [
+            %{
+              path: Routes.settings_billing_path(assigns.conn, :show),
+              text: gettext("Billing")
+            }
+          ]
+      else
+        links
+      end
 
     if LucumaWeb.Permissions.permitted_to?(
          assigns.conn,

@@ -38,6 +38,7 @@ defmodule LucumaWeb.Waitlists.AnalyticsView do
       links
     end
   end
+
   def inject_unix_timestamp(data) do
     data
     |> Enum.map(fn [date_str, value] ->

@@ -1,12 +1,70 @@
 import $ from "jquery"
 import Highcharts from 'highcharts'
 require('highcharts/highcharts-more')(Highcharts);
+  if($('#party-size-container').length >0) {
+  Highcharts.chart('party-size-container', {
+      chart: {
+        type: 'column'
+      },
+      title: {
+        text: null
+      },
+      subtitle: {
+        text: null
+      },
+      xAxis: {
+        tickWidth: 0,
+        lineWidth: 0,
+        type: 'category',
+        labels: {
+          useHTML: true,
+          format: "<i class='fas fa-users'></i> {value}",
+        },
+        title: {
+          text: "Party Size Summary",
+          style: {
+            "font-size": "1rem",
+            color: "#6c757d"
+          }
+        }
+      },
+      yAxis: {
+        labels: {
+          enabled: true
+        },
+        gridLineWidth:0,
+        lineWidth: 1,
+        min: 0,
+        title: {
+          text: null
+        },
+
+      },
+      legend: {
+        enabled: false
+      },
+      tooltip: {
+        enabled: false,
+      },
+      series: [{
+        data: $('#party-size-container').data('party-size-breakdown'),
+        colorByPoint: true,
+        dataLabels: {
+          enabled: false,
+          rotation: 0,
+          color: '#FFFFFF',
+          align: 'center',
+            format: '{point.y}', // one decimal
+            y: 30, // 10 pixels down from the top
+          }
+        }]
+      });
+}
 
   if($('#waitlist-states-container').length >0) {
     Highcharts.chart('waitlist-states-container', {
       chart: {
         type: 'spline',
-        height: '50%'
       },
       title: {
         text: null
@@ -59,7 +117,6 @@ require('highcharts/highcharts-more')(Highcharts);
         plotBorderWidth: null,
         plotShadow: false,
         type: 'pie',
-        height: '100%'
       },
       title: {
         text: null
@@ -99,7 +156,6 @@ require('highcharts/highcharts-more')(Highcharts);
     Highcharts.chart('waitlist-average-wait-time-over-time-container', {
       chart: {
         type: 'spline',
-        height: '35%'
       },
       title: {
         text: null
@@ -152,7 +208,6 @@ require('highcharts/highcharts-more')(Highcharts);
     Highcharts.chart('waitlist-average-served-per-day-of-week-container', {
       chart: {
         type: 'column',
-        height: '35%'
       },
       title: {
         text: null
@@ -200,7 +255,6 @@ require('highcharts/highcharts-more')(Highcharts);
     Highcharts.chart('waitlist-average-served-per-hour-container', {
       chart: {
         type: 'column',
-        height: '35%'
       },
       title: {
         text: null
@@ -249,7 +303,6 @@ require('highcharts/highcharts-more')(Highcharts);
     Highcharts.chart("waitlist-average-served-per-hour-per-day-container", {
       chart: {
         type: 'column',
-        height: '35%'
       },
       title: {
         text: null
@@ -293,7 +346,6 @@ require('highcharts/highcharts-more')(Highcharts);
     Highcharts.chart("waitlist-average-served-per-hour-for-day-container", {
       chart: {
         type: 'column',
-        height: '35%'
       },
       title: {
         text: null
