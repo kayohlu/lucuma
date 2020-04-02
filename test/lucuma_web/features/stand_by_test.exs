@@ -142,8 +142,11 @@ defmodule LucumaWeb.Features.StandByTest do
       assert_has(page, link("No Show"))
       assert_has(page, link("Arrive"))
 
-      find(page, css(".nav-link.active", count: 1))
-      |> assert_text("Waitlist")
+      # 2 because of the main navbar and the sub nav bar
+      [nav_link, sub_nav_link] = find(page, css(".nav-link.active", count: 2))
+
+      assert_text(nav_link, "Waitlist")
+      assert_text(sub_nav_link, "Waitlist")
     end
   end
 end

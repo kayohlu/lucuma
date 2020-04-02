@@ -56,7 +56,9 @@ defmodule LucumaWeb.Features.WaitlistTest do
         |> find(link("Settings"), &assert(has_text?(&1, "Settings")))
         |> click(link("Settings"))
 
-      find(page, css(".nav-link.active", count: 1))
+      page
+      |> find(css(".sub-menu"))
+      |> find(css(".nav-link.active"))
       |> assert_text("Settings")
 
       element =
@@ -133,7 +135,9 @@ defmodule LucumaWeb.Features.WaitlistTest do
         |> find(link("Settings"), &assert(has_text?(&1, "Settings")))
         |> click(link("Settings"))
 
-      find(page, css(".nav-link.active", count: 1))
+      page
+      |> find(css(".sub-menu"))
+      |> find(css(".nav-link.active"))
       |> assert_text("Settings")
 
       # confirmation settings
@@ -192,7 +196,9 @@ defmodule LucumaWeb.Features.WaitlistTest do
         |> find(link("Settings"), &assert(has_text?(&1, "Settings")))
         |> click(link("Settings"))
 
-      find(page, css(".nav-link.active", count: 1))
+      page
+      |> find(css(".sub-menu"))
+      |> find(css(".nav-link.active"))
       |> assert_text("Settings")
 
       # confirmation settings

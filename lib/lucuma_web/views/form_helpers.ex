@@ -46,17 +46,24 @@ defmodule LucumaWeb.FormHelpers do
   def form_group_for_credit_card(form, field, opts \\ []) do
     type = opts[:using] || Phoenix.HTML.Form.input_type(form, field)
 
+    stripe_element_opts =
+      Keyword.merge([], opts[:stripe_element_opts] || [], fn _k, v1, v2 ->
+        "#{v1} #{v2}"
+      end)
+
     wrapper_opts =
       Keyword.merge([class: "form-group"], opts[:wrapper_opts] || [], fn _k, v1, v2 ->
         "#{v1} #{v2}"
       end)
 
     label_opts =
-      Keyword.merge([class: "control-label", for: "card-element"], opts[:label_opts] || [], fn _k,
-                                                                                               v1,
-                                                                                               v2 ->
-        "#{v1} #{v2}"
-      end)
+      Keyword.merge(
+        [class: "control-label", for: stripe_element_opts[:id]],
+        opts[:label_opts] || [],
+        fn _k, v1, v2 ->
+          "#{v1} #{v2}"
+        end
+      )
 
     input_opts =
       Keyword.merge([class: input_field_classes(form, field)], opts[:input_opts] || [], fn _k,
@@ -69,11 +76,13 @@ defmodule LucumaWeb.FormHelpers do
       label = label(form, field, label_opts)
       # apply is like the equivalent of send in ruby.
       card_element_div =
-        content_tag(:div, id: "card-element") do
+        content_tag(:div, stripe_element_opts) do
           [apply(Phoenix.HTML.Form, type, [form, field, input_opts])]
         end
 
-      stripe_error_tag = content_tag(:div, nil, id: "card-errors", class: "invalid-feedback")
+      stripe_error_tag =
+        content_tag(:div, nil, id: "#{stripe_element_opts[:id]}-errors", class: "invalid-feedback")
+
       error_tag = error_tag(form, field)
 
       [label, card_element_div, stripe_error_tag, error_tag]

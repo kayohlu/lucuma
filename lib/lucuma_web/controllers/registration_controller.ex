@@ -31,7 +31,7 @@ defmodule LucumaWeb.RegistrationController do
         |> put_session(:current_user_id, user.id)
         |> put_flash(
           :info,
-          "That's it. Your registration is complete. We've created an initial default waitlist for you. You can add up to 100 people to your waitlist."
+          "That's it. Your registration is complete. You can add up to 100 people to your waitlist."
         )
         |> redirect(to: registration_complete_redirect_path(conn, payment_plan_id(params)))
 

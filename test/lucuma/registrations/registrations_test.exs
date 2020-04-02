@@ -18,6 +18,7 @@ defmodule Lucuma.RegistrationsTest do
       full_name: "some full_name",
       company_name: "company",
       password: "some password",
+      time_zone: "Europe/Paris",
       password_confirmation: "some password"
     }
     @invalid_attrs %{

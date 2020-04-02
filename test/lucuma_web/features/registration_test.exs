@@ -12,10 +12,15 @@ defmodule LucumaWeb.Features.RegistrationTest do
       |> fill_in(text_field("Email"), with: "a@a.com")
       |> fill_in(text_field("Full name"), with: "user")
       |> fill_in(text_field("Company name"), with: "company")
+
+      session
+      |> find(select("registration_time_zone"), &click(&1, option("Europe/Paris")))
+
+      session
       |> fill_in(text_field("registration[password]"), with: "123123123")
       |> fill_in(text_field("registration[password_confirmation]"), with: "123123123")
       |> click(button("Sign Up"))
-      |> assert_text("Today")
+      |> assert_text("Today's highlights")
     end
   end
 
@@ -29,7 +34,7 @@ defmodule LucumaWeb.Features.RegistrationTest do
         |> click(button("Sign Up"))
 
       assert_text(page, "has invalid format")
-      assert_has(page, css(".invalid-feedback", count: 5))
+      assert_has(page, css(".invalid-feedback", count: 6))
     end
   end
 end

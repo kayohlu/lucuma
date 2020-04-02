@@ -82,7 +82,7 @@ defmodule LucumaWeb.Features.LimitTrialAccountsTest do
       |> Wallaby.Element.click()
 
       session
-      |> send_keys("4242424242424242 12 23 346 90210")
+      |> send_keys("4111111111111111122334690210")
       |> click(button("Subscribe"))
 
       page =
@@ -102,7 +102,7 @@ defmodule LucumaWeb.Features.LimitTrialAccountsTest do
       page
       |> refute_has(Query.text("You have reached your trial limit."))
 
-      assert Lucuma.Waitlists.Analytics.total_waitlisted(waitlist.id) == 101
+      assert Lucuma.Waitlists.Analytics.total_waitlisted(waitlist.id, business) == 101
     end
   end
 end

@@ -46,6 +46,7 @@ actualSocket.onMessage(function(message) {
  // console.info("message from socket")
  // console.log(message)
    var input = document.querySelector("#input-phone");
+
    var instance = intlTelInput(input, {
     initialCountry: "IE",
     nationalMode: false,
@@ -56,7 +57,7 @@ actualSocket.onMessage(function(message) {
         success(countryCode);
       });
     }
-  });
+   });
 })
 
 // console.log(actualSocket.isConnected())

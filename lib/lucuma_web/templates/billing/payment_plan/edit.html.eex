@@ -37,7 +37,9 @@
           <span><%= @error_message %></span>
         </div>
         <% end %>
-        <%= form_group_for_credit_card(f, :credit_or_debit_card) %>
+        <%= form_group_for_credit_card(f, :credit_or_debit_card_number, [stripe_element_opts: [id: "card-number"]]) %>
+        <%= form_group_for_credit_card(f, :expiry_date, [stripe_element_opts: [id: "card-expiry"]]) %>
+        <%= form_group_for_credit_card(f, :CVC, [stripe_element_opts: [id: "card-cvc"]]) %>
         <%= submit "Subscribe", class: "btn btn-primary btn-block mt-4", id: "sub_submit_btn" %>
         <% end %>
       </div>

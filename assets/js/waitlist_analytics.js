@@ -1,383 +1,383 @@
 import $ from "jquery"
 import Highcharts from 'highcharts'
 require('highcharts/highcharts-more')(Highcharts);
-  if($('#party-size-container').length >0) {
+if($('#party-size-container').length >0) {
   Highcharts.chart('party-size-container', {
-      chart: {
-        type: 'column'
+    chart: {
+      type: 'column'
+    },
+    title: {
+      text: null
+    },
+    subtitle: {
+      text: null
+    },
+    xAxis: {
+      tickWidth: 0,
+      lineWidth: 0,
+      type: 'category',
+      labels: {
+        useHTML: true,
+        format: "<i class='fas fa-users'></i> {value}",
       },
+      title: {
+        text: "Party Size Summary",
+        style: {
+          "font-size": "1rem",
+          color: "#6c757d"
+        }
+      }
+    },
+    yAxis: {
+      labels: {
+        enabled: true
+      },
+      gridLineWidth:0,
+      lineWidth: 1,
+      min: 0,
       title: {
         text: null
       },
-      subtitle: {
-        text: null
-      },
-      xAxis: {
-        tickWidth: 0,
-        lineWidth: 0,
-        type: 'category',
-        labels: {
-          useHTML: true,
-          format: "<i class='fas fa-users'></i> {value}",
-        },
-        title: {
-          text: "Party Size Summary",
-          style: {
-            "font-size": "1rem",
-            color: "#6c757d"
-          }
-        }
-      },
-      yAxis: {
-        labels: {
-          enabled: true
-        },
-        gridLineWidth:0,
-        lineWidth: 1,
-        min: 0,
-        title: {
-          text: null
-        },
 
-      },
-      legend: {
-        enabled: false
-      },
-      tooltip: {
+    },
+    legend: {
+      enabled: false
+    },
+    tooltip: {
+      enabled: false,
+    },
+    series: [{
+      data: $('#party-size-container').data('party-size-breakdown'),
+      colorByPoint: true,
+      dataLabels: {
         enabled: false,
-      },
-      series: [{
-        data: $('#party-size-container').data('party-size-breakdown'),
-        colorByPoint: true,
-        dataLabels: {
-          enabled: false,
-          rotation: 0,
-          color: '#FFFFFF',
-          align: 'center',
-            format: '{point.y}', // one decimal
-            y: 30, // 10 pixels down from the top
-          }
-        }]
-      });
+        rotation: 0,
+        color: '#FFFFFF',
+        align: 'center',
+        format: '{point.y}', // one decimal
+        y: 30, // 10 pixels down from the top
+      }
+    }]
+  });
 }
 
-  if($('#waitlist-states-container').length >0) {
-    Highcharts.chart('waitlist-states-container', {
-      chart: {
-        type: 'spline',
-      },
+if($('#waitlist-states-container').length >0) {
+  Highcharts.chart('waitlist-states-container', {
+    chart: {
+      type: 'spline',
+    },
+    title: {
+      text: null
+    },
+    subtitle: {
+      text: null
+    },
+    xAxis: {
+      type: 'datetime',
+      dateTimeLabelFormats: {
+        day: '%d %b %Y'    //ex- 01 Jan 2016
+      }
+    },
+    yAxis: {
       title: {
-        text: null
+        text: 'Customers'
       },
-      subtitle: {
-        text: null
-      },
-      xAxis: {
-        type: 'datetime',
-        dateTimeLabelFormats: {
-           day: '%d %b %Y'    //ex- 01 Jan 2016
-         }
-       },
-       yAxis: {
-        title: {
-          text: 'Customers'
-        },
-        labels: {
-          formatter: function () {
-            return this.value + '';
-          }
+      labels: {
+        formatter: function () {
+          return this.value + '';
         }
-      },
-      tooltip: {
-        crosshairs: true,
-        shared: true
-      },
-      plotOptions: {
-        spline: {
-          marker: {
-            radius: 1,
-            lineColor: 'black',
-            lineWidth: 1
-          }
+      }
+    },
+    tooltip: {
+      crosshairs: true,
+      shared: true
+    },
+    plotOptions: {
+      spline: {
+        marker: {
+          radius: 1,
+          lineColor: 'black',
+          lineWidth: 1
         }
-      },
-      series: [
+      }
+    },
+    series: [
       $('#waitlist-states-container').data('served-data'),
       $('#waitlist-states-container').data('no-show-data'),
       $('#waitlist-states-container').data('cancellation-data'),
       $('#waitlist-states-container').data('waitlisted-data')
-      ]
-    });
-  }
+    ]
+  });
+}
 
-  if($('#container').length >0) {
-    Highcharts.chart('container', {
-      chart: {
-        plotBackgroundColor: null,
-        plotBorderWidth: null,
-        plotShadow: false,
-        type: 'pie',
-      },
-      title: {
-        text: null
-      },
-      tooltip: {
-        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-      },
-      plotOptions: {
-        pie: {
-          allowPointSelect: true,
-          center: ['50%', '50%'],
-          cursor: 'pointer',
-          dataLabels: {
-            enabled: false
-          },
-          showInLegend: true
-        }
-      },
-      series: [{
-        innerSize: '70%',
-        colorByPoint: true,
-        data: $('#container').data('percentages-data'),
+if($('#container').length >0) {
+  Highcharts.chart('container', {
+    chart: {
+      plotBackgroundColor: null,
+      plotBorderWidth: null,
+      plotShadow: false,
+      type: 'pie',
+    },
+    title: {
+      text: null
+    },
+    tooltip: {
+      pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+      pie: {
+        allowPointSelect: true,
+        center: ['50%', '50%'],
+        cursor: 'pointer',
         dataLabels: {
-          enabled: true,
-          distance: -20,
-          formatter: function () {
-                    // display only if larger than 1
-                    return `${this.y}%`
-                  }
-                }
-              }]
-            });
-
-  }
-
-  if($('#waitlist-average-wait-time-over-time-container').length >0) {
-    Highcharts.chart('waitlist-average-wait-time-over-time-container', {
-      chart: {
-        type: 'spline',
-      },
-      title: {
-        text: null
-      },
-      subtitle: {
-        text: null
-      },
-      xAxis: {
-        type: 'datetime',
-        dateTimeLabelFormats: {
-           day: '%d %b %Y'    //ex- 01 Jan 2016
-         }
-        // dateTimeLabelFormats: { // don't display the dummy year
-        //   month: '%e. %b',
-        //   year: '%b'
-
-        // }
-      },
-      yAxis: {
-        title: {
-          text: 'Wait time (mins)'
+          enabled: false
         },
-        labels: {
-          formatter: function () {
-            return this.value + '';
-          }
+        showInLegend: true
+      }
+    },
+    series: [{
+      innerSize: '70%',
+      colorByPoint: true,
+      data: $('#container').data('percentages-data'),
+      dataLabels: {
+        enabled: true,
+        distance: -20,
+        formatter: function () {
+          // display only if larger than 1
+          return `${this.y}%`
         }
-      },
-      tooltip: {
-        crosshairs: true,
-        shared: true
-      },
-      plotOptions: {
-        spline: {
-          marker: {
-            radius: 1,
-            lineColor: 'black',
-            lineWidth: 1
-          }
-        }
-      },
-      series: [$('#waitlist-average-wait-time-over-time-container').data('average-wait-time-over-time-data')]
-    });
+      }
+    }]
+  });
 
-  }
+}
 
+if($('#waitlist-average-wait-time-over-time-container').length >0) {
+  Highcharts.chart('waitlist-average-wait-time-over-time-container', {
+    chart: {
+      type: 'spline',
+    },
+    title: {
+      text: null
+    },
+    subtitle: {
+      text: null
+    },
+    xAxis: {
+      type: 'datetime',
+      dateTimeLabelFormats: {
+        day: '%d %b %Y'    //ex- 01 Jan 2016
+      }
+      // dateTimeLabelFormats: { // don't display the dummy year
+      //   month: '%e. %b',
+      //   year: '%b'
 
-
-  if($('#waitlist-average-served-per-day-of-week-container').length >0) {
-    Highcharts.chart('waitlist-average-served-per-day-of-week-container', {
-      chart: {
-        type: 'column',
-      },
+      // }
+    },
+    yAxis: {
       title: {
-        text: null
+        text: 'Wait time (mins)'
       },
-      subtitle: {
-        text: null
-      },
-      legend: {
-        enabled: false
-      },
-      xAxis: {
-        type: 'category',
-      },
-      yAxis: {
-        title: {
-          text: 'Customers'
-        },
-        labels: {
-          formatter: function () {
-            return this.value + '';
-          }
+      labels: {
+        formatter: function () {
+          return this.value + '';
         }
-      },
-      tooltip: {
-        crosshairs: true,
-        shared: true
-      },
-      plotOptions: {
-        spline: {
-          marker: {
-            radius: 1,
-            lineColor: 'black',
-            lineWidth: 1
-          }
+      }
+    },
+    tooltip: {
+      crosshairs: true,
+      shared: true
+    },
+    plotOptions: {
+      spline: {
+        marker: {
+          radius: 1,
+          lineColor: 'black',
+          lineWidth: 1
         }
+      }
+    },
+    series: [$('#waitlist-average-wait-time-over-time-container').data('average-wait-time-over-time-data')]
+  });
+
+}
+
+
+
+if($('#waitlist-average-served-per-day-of-week-container').length >0) {
+  Highcharts.chart('waitlist-average-served-per-day-of-week-container', {
+    chart: {
+      type: 'column',
+    },
+    title: {
+      text: null
+    },
+    subtitle: {
+      text: null
+    },
+    legend: {
+      enabled: false
+    },
+    xAxis: {
+      type: 'category',
+    },
+    yAxis: {
+      title: {
+        text: 'Customers'
       },
-      series: [
+      labels: {
+        formatter: function () {
+          return this.value + '';
+        }
+      }
+    },
+    tooltip: {
+      crosshairs: true,
+      shared: true
+    },
+    plotOptions: {
+      spline: {
+        marker: {
+          radius: 1,
+          lineColor: 'black',
+          lineWidth: 1
+        }
+      }
+    },
+    series: [
       $('#waitlist-average-served-per-day-of-week-container').data('waitlist-average-served-per-day-of-week-data')]
-    });
-  }
+  });
+}
 
 
-  if($('#waitlist-average-served-per-hour-container').length >0) {
+if($('#waitlist-average-served-per-hour-container').length >0) {
 
-    Highcharts.chart('waitlist-average-served-per-hour-container', {
-      chart: {
-        type: 'column',
-      },
+  Highcharts.chart('waitlist-average-served-per-hour-container', {
+    chart: {
+      type: 'column',
+    },
+    title: {
+      text: null
+    },
+    subtitle: {
+      text: null
+    },
+    legend: {
+      enabled: false
+    },
+    xAxis: {
+      type: 'category',
+    },
+    yAxis: {
       title: {
-        text: null
+        text: 'Customers'
       },
-      subtitle: {
-        text: null
-      },
-      legend: {
-        enabled: false
-      },
-      xAxis: {
-        type: 'category',
-      },
-      yAxis: {
-        title: {
-          text: 'Customers'
-        },
-        labels: {
-          formatter: function () {
-            return this.value + '';
-          }
+      labels: {
+        formatter: function () {
+          return this.value + '';
         }
-      },
-      tooltip: {
-        crosshairs: true,
-        shared: true
-      },
-      plotOptions: {
-        spline: {
-          marker: {
-            radius: 1,
-            lineColor: 'black',
-            lineWidth: 1
-          }
+      }
+    },
+    tooltip: {
+      crosshairs: true,
+      shared: true
+    },
+    plotOptions: {
+      spline: {
+        marker: {
+          radius: 1,
+          lineColor: 'black',
+          lineWidth: 1
         }
-      },
-      series: [
+      }
+    },
+    series: [
       $('#waitlist-average-served-per-hour-container').data('waitlist-average-served-per-hour-data')]
-    });
+  });
 
-  }
+}
 
 
-  if($('#waitlist-average-served-per-hour-per-day-container').length >0) {
+if($('#waitlist-average-served-per-hour-per-day-container').length >0) {
 
-    Highcharts.chart("waitlist-average-served-per-hour-per-day-container", {
-      chart: {
-        type: 'column',
-      },
+  Highcharts.chart("waitlist-average-served-per-hour-per-day-container", {
+    chart: {
+      type: 'column',
+    },
+    title: {
+      text: null
+    },
+    subtitle: {
+      text: null
+    },
+    legend: {
+      enabled: true
+    },
+    xAxis: {
+      type: 'category',
+    },
+    yAxis: {
       title: {
-        text: null
-      },
-      subtitle: {
-        text: null
-      },
-      legend: {
-        enabled: true
-      },
-      xAxis: {
-        type: 'category',
-      },
-      yAxis: {
-        title: {
-          text: 'Customers'
+        text: 'Customers'
+      }
+    },
+    tooltip: {
+      crosshairs: true,
+      shared: true
+    },
+    plotOptions: {
+      spline: {
+        marker: {
+          radius: 1,
+          lineColor: 'black',
+          lineWidth: 1
         }
-      },
-      tooltip: {
-        crosshairs: true,
-        shared: true
-      },
-      plotOptions: {
-        spline: {
-          marker: {
-            radius: 1,
-            lineColor: 'black',
-            lineWidth: 1
-          }
-        }
-      },
-      series: $('#waitlist-average-served-per-hour-per-day-container').data('waitlist-average-served-per-hour-per-day-data')
-    });
+      }
+    },
+    series: $('#waitlist-average-served-per-hour-per-day-container').data('waitlist-average-served-per-hour-per-day-data')
+  });
 
-  }
+}
 
 
-  console.log($('#waitlist-average-served-per-hour-for-day-container').length);
+console.log($('#waitlist-average-served-per-hour-for-day-container').length);
 
-  if($('#waitlist-average-served-per-hour-for-day-container').length >0) {
-    Highcharts.chart("waitlist-average-served-per-hour-for-day-container", {
-      chart: {
-        type: 'column',
-      },
+if($('#waitlist-average-served-per-hour-for-day-container').length >0) {
+  Highcharts.chart("waitlist-average-served-per-hour-for-day-container", {
+    chart: {
+      type: 'column',
+    },
+    title: {
+      text: null
+    },
+    subtitle: {
+      text: null
+    },
+    legend: {
+      enabled: true
+    },
+    xAxis: {
+      type: 'category',
+    },
+    yAxis: {
       title: {
-        text: null
-      },
-      subtitle: {
-        text: null
-      },
-      legend: {
-        enabled: true
-      },
-      xAxis: {
-        type: 'category',
-      },
-      yAxis: {
-        title: {
-          text: 'Customers'
+        text: 'Customers'
+      }
+    },
+    tooltip: {
+      crosshairs: true,
+      shared: true
+    },
+    plotOptions: {
+      spline: {
+        marker: {
+          radius: 1,
+          lineColor: 'black',
+          lineWidth: 1
         }
-      },
-      tooltip: {
-        crosshairs: true,
-        shared: true
-      },
-      plotOptions: {
-        spline: {
-          marker: {
-            radius: 1,
-            lineColor: 'black',
-            lineWidth: 1
-          }
-        }
-      },
-      series: $('#waitlist-average-served-per-hour-for-day-container').data('waitlist-average-served-per-hour-for-day-data')
-    });
+      }
+    },
+    series: $('#waitlist-average-served-per-hour-for-day-container').data('waitlist-average-served-per-hour-for-day-data')
+  });
 
-  }
+}
