@@ -33,15 +33,15 @@ defmodule Lucuma.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.4.3"},
+      {:phoenix, "~> 1.4.16"},
       {:phoenix_pubsub, "~> 1.1.2"},
       {:phoenix_ecto, "~> 4.0"},
       {:ecto_sql, "~> 3.3.4"},
       {:postgrex, "~> 0.15.3"},
-      {:phoenix_html, "~> 2.13.2"},
+      {:phoenix_html, "~> 2.14"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:gettext, "~> 0.11"},
-      {:jason, "~> 1.0"},
+      {:jason, "~> 1.2.0"},
       {:plug_cowboy, "~> 2.0.2"},
       {:dialyxir, "~> 1.0.0-rc.4", only: [:dev], runtime: false},
       {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false},
@@ -54,10 +54,10 @@ defmodule Lucuma.MixProject do
       {:ex_machina, "~> 2.3"},
       {:wallaby,
        github: "elixir-wallaby/wallaby", branch: "master", runtime: false, only: [:test, :ci]},
-      {:phoenix_live_view, github: "phoenixframework/phoenix_live_view"},
+      {:phoenix_live_view, "~> 0.10.0"},
       {:stripity_stripe, "~> 2.4.0"},
       {:timex, "~> 3.5"},
-      {:bamboo, "~> 1.2"},
+      {:bamboo, "~> 1.2.0"},
       {:number, "~> 1.0.0"}
     ]
   end

@@ -48,9 +48,9 @@ defmodule LucumaWeb.Live.Waitlists.WaitlistView do
     end
   end
 
-  def mount(session, socket) do
-    waitlist = Waitlists.get_waitlist!(session.waitlist_id)
-    stand_bys = Waitlists.get_waitlist_stand_bys(session.waitlist_id)
+  def mount(params, session, socket) do
+    waitlist = Waitlists.get_waitlist!(session["waitlist_id"])
+    stand_bys = Waitlists.get_waitlist_stand_bys(session["waitlist_id"])
     attendance_sms_setting = Waitlists.attendance_sms_setting_for_waitlist(waitlist.id)
     changeset = Waitlists.change_stand_by(%StandBy{})
 
@@ -60,8 +60,8 @@ defmodule LucumaWeb.Live.Waitlists.WaitlistView do
       attendance_sms_setting: attendance_sms_setting,
       changeset: changeset,
       show_modal: false,
-      trial_limit_reached: session.trial_limit_reached,
-      current_company: session.current_company
+      trial_limit_reached: session["trial_limit_reached"],
+      current_company: session["current_company"]
     ]
 
     {:ok, assign(socket, assigns)}
@@ -74,11 +74,11 @@ defmodule LucumaWeb.Live.Waitlists.WaitlistView do
   #   {:noreply, assign(socket, changeset: changeset, show_modal: true)}
   # end
 
-  def handle_event("show_modal", "", socket) do
+  def handle_event("show_modal", params, socket) do
     {:noreply, assign(socket, show_modal: true)}
   end
 
-  def handle_event("clear_form", %{"stand_by" => stand_by_params}, socket) do
+  def handle_event("clear_form", params, socket) do
     changeset = Waitlists.change_stand_by(%StandBy{})
 
     {:noreply, assign(socket, changeset: changeset, show_modal: false)}
@@ -105,8 +105,6 @@ defmodule LucumaWeb.Live.Waitlists.WaitlistView do
           trial_limit_reached: socket.assigns.trial_limit_reached,
           show_modal: false
         ]
-
-        IO.inspect({:ok, assigns})
 
         socket = assign(socket, assigns)
 

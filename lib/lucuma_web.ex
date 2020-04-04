@@ -45,7 +45,6 @@ defmodule LucumaWeb do
       import LucumaWeb.NavigationHelpers
       import LucumaWeb.Gettext
       alias LucumaWeb.Router.Helpers, as: Routes
-      import Phoenix.LiveView, only: [live_render: 2, live_render: 3]
     end
   end
 
@@ -54,7 +53,6 @@ defmodule LucumaWeb do
       use Phoenix.Router
       import Plug.Conn
       import Phoenix.Controller
-      import Phoenix.LiveView.Router
     end
   end
 

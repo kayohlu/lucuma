@@ -26,7 +26,7 @@ defmodule LucumaWeb.SessionController do
 
   def delete(conn, _params) do
     conn
-    |> delete_session(:current_user_id)
+    |> clear_session
     |> redirect(to: Routes.page_path(conn, :index))
   end
 end

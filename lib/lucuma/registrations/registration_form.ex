@@ -13,6 +13,7 @@ defmodule Lucuma.Registrations.RegistrationForm do
     field :password, :string
     field :password_confirmation, :string
     field :time_zone, :string
+    field :registration_expiry_at, :utc_datetime
   end
 
   def changeset(registration, attrs) do
@@ -23,7 +24,8 @@ defmodule Lucuma.Registrations.RegistrationForm do
       :company_name,
       :password,
       :password_confirmation,
-      :time_zone
+      :time_zone,
+      :registration_expiry_at
     ])
     |> validate_required([
       :email,

@@ -1,0 +1,14 @@
+<%= form_for @conn, Routes.session_path(@conn, :create), [as: :session], fn f  -> %>
+  <%= form_group(f, :email, using: :text_input) %>
+  <%= form_group(f, :password) %>
+
+  <div class="d-flex align-items-center">
+    <%= checkbox(f, :remember_me) %>
+    <label class="form-check-label pl-2" for="session_remember_me">
+      <%= gettext("Remember me") %>
+    </label>
+    <%= link gettext("Forgot your password?"), to: "#", class: "d-flex ml-auto" %>
+  </div>
+
+  <%= submit "Sign In", class: "btn btn-primary btn-block mt-4" %>
+<% end %>

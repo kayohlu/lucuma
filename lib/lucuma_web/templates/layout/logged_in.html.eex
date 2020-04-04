@@ -4,9 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
+    <%= csrf_meta_tag() %>
     <title>Lucuma</title>
     <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>">
   </head>
@@ -20,8 +18,8 @@
       <%# So we have to use @live_view_module to get the actual view we have defined. The LucumaWeb.Live.Waitlists.WaitlistView in our case %>
       <%# This wont render two navs because if we use live view we cannot use the normal way%>
       <%= render_existing @view_module, "sub_navigation.html", assigns %>
-      <%= if (Map.get(assigns, :live_view_module)) != nil do %>
-        <%= render_existing @live_view_module, "sub_navigation.html", assigns %>
+      <%= if (Map.get(assigns, :live_module)) != nil do %>
+        <%= render_existing @live_module, "sub_navigation.html", assigns %>
       <% end %>
       <%= render "flash.html", conn: @conn %>
       <%= render "alerts.html", conn: @conn %>

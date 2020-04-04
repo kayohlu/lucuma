@@ -4,7 +4,7 @@ defmodule LucumaWeb.RegistrationController do
   alias Lucuma.Registrations
   alias Lucuma.Registrations.RegistrationForm
 
-  plug :put_layout, {LucumaWeb.LayoutView, :only_form} when action in [:new, :create]
+  plug :put_layout, {LucumaWeb.LayoutView, :only_form} when action in [:new, :create, :show]
 
   @type schema :: Ecto.Schema.t()
   @type conn :: Plug.Conn.t()
@@ -26,9 +26,9 @@ defmodule LucumaWeb.RegistrationController do
     %{"registration" => registration_params} = params
 
     case Registrations.create_registration_form(registration_params) do
-      {:ok, user} ->
+      {:ok, steps} ->
         conn
-        |> put_session(:current_user_id, user.id)
+        |> put_session(:current_user_id, steps.user.id)
         |> put_flash(
           :info,
           "That's it. Your registration is complete. You can add up to 100 people to your waitlist."
@@ -70,5 +70,12 @@ defmodule LucumaWeb.RegistrationController do
 
   def registration_complete_redirect_path(conn, payment_plan_id) do
     Routes.billing_payment_plan_path(conn, :edit, payment_plan_id)
+  end
+
+  def show(conn, params) do
+    Phoenix.LiveView.Controller.live_render(
+      conn,
+      LucumaWeb.Live.RegistrationView, session: params
+    )
   end
 end

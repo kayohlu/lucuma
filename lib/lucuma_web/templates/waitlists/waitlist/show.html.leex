@@ -3,17 +3,17 @@
     <div><h5 class="mb-0"><%= gettext("Customers") %></h5></div>
 
     <div>
-    <%= if @trial_limit_reached do %>
-    <button type="button" class="btn btn-primary disabled">
-    <i class="fas fa-plus"></i>
-    <%= gettext("Add Person") %>
-    </button>
-    <% else %>
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addStandByModal" phx-click="show_modal">
-    <i class="fas fa-plus"></i>
-    <%= gettext("Add Person") %>
-    </button>
-    <% end %>
+      <%= if @trial_limit_reached do %>
+        <button type="button" class="btn btn-primary disabled">
+          <i class="fas fa-plus"></i>
+          <%= gettext("Add Person") %>
+        </button>
+      <% else %>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addStandByModal" phx-click="show_modal">
+          <i class="fas fa-plus"></i>
+          <%= gettext("Add Person") %>
+        </button>
+      <% end %>
     </div>
   </div>
 </div>
@@ -22,36 +22,36 @@
   <div class="row rounded bg-white mt-2 pb-2">
 
     <div class="col-sm-12 col-md-6 pt-2">
-        <div>
-          <h5 class="mb-1"><%= stand_by.name %></h5>
-          <ul class="list-inline mb-0">
-            <li class="list-inline-item"><small class="text-muted"><i class='fas fa-users'></i> <%= stand_by.party_size %></small></li>
-            <li class="list-inline-item"><small class="text-muted"><i class="fas fa-mobile"></i> <%= stand_by.contact_phone_number %></small></li>
-            <li class="list-inline-item"><small class="text-muted"><i class="fas fa-stopwatch"></i> <%= time_waited(stand_by) %> mins</small></li>
-          </ul>
-        </div>
+      <div>
+        <h5 class="mb-1"><%= stand_by.name %></h5>
+        <ul class="list-inline mb-0">
+          <li class="list-inline-item"><small class="text-muted"><i class='fas fa-users'></i> <%= stand_by.party_size %></small></li>
+          <li class="list-inline-item"><small class="text-muted"><i class="fas fa-mobile"></i> <%= stand_by.contact_phone_number %></small></li>
+          <li class="list-inline-item"><small class="text-muted"><i class="fas fa-stopwatch"></i> <%= time_waited(stand_by) %> mins</small></li>
+        </ul>
+      </div>
     </div>
     <div class="pt-2 col-sm-12 col-md-6 d-flex flex-fill align-items-center justify-content-center justify-content-md-end">
-        <div>
-          <%= if @attendance_sms_setting.enabled do %>
-            <%= if is_nil(stand_by.notified_at) do %>
-              <%= link gettext("Notify"), to: '#', phx_click: "notify_stand_by", phx_value: stand_by.id, class: "ml-1 btn btn-warning" %>
-            <% else %>
-              <%= link "Notify Again", to: '#', phx_click: "notify_stand_by", phx_value: stand_by.id,  class: "ml-1 btn btn-warning" %>
-            <% end %>
-          <% end %>
-          <%= if is_nil(stand_by.attended_at) do %>
-            <%= link gettext("Arrived"), to: '#', phx_click: "mark_as_attended", phx_value: stand_by.id,  class: "ml-1 btn btn-success" %>
+      <div>
+        <%= if @attendance_sms_setting.enabled do %>
+          <%= if is_nil(stand_by.notified_at) do %>
+            <%= link gettext("Notify"), to: '#', phx_click: "notify_stand_by", phx_value: stand_by.id, class: "ml-1 btn btn-warning" %>
           <% else %>
-            <button type="button" class="ml-1 btn btn-success disabled">Arrived</button>
+            <%= link "Notify Again", to: '#', phx_click: "notify_stand_by", phx_value: stand_by.id,  class: "ml-1 btn btn-warning" %>
           <% end %>
-          <%= if is_nil(stand_by.no_show_at) do %>
-            <%= link gettext("No Show"), to: '#', phx_click: "mark_as_no_show", phx_value: stand_by.id,  class: "ml-1 btn btn-danger" %>
-          <% else %>
-            <button type="button" class="ml-1 btn btn-danger disabled">No Show</button>
-          <% end %>
+        <% end %>
+        <%= if is_nil(stand_by.attended_at) do %>
+          <%= link gettext("Arrived"), to: '#', phx_click: "mark_as_attended", phx_value: stand_by.id,  class: "ml-1 btn btn-success" %>
+        <% else %>
+          <button type="button" class="ml-1 btn btn-success disabled">Arrived</button>
+        <% end %>
+        <%= if is_nil(stand_by.no_show_at) do %>
+          <%= link gettext("No Show"), to: '#', phx_click: "mark_as_no_show", phx_value: stand_by.id,  class: "ml-1 btn btn-danger" %>
+        <% else %>
+          <button type="button" class="ml-1 btn btn-danger disabled">No Show</button>
+        <% end %>
 
-        </div>
+      </div>
     </div>
   </div>
 
@@ -107,5 +107,4 @@
     }
   </script>
 <% end %>
-
 

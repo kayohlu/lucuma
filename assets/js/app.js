@@ -14,17 +14,13 @@ import $ from "jquery"
 window.$ = $;
 import 'bootstrap'
 import Highcharts from "highcharts"
-import * as intlTelInput from 'intl-tel-input';
-import LiveSocket from "phoenix_live_view"
 
-let liveSocket = new LiveSocket("/live")
-let actualSocket = liveSocket.getSocket()
-// console.log(liveSocket)
 
 // Import local files
 //
 // Local files can be imported directly using relative paths, for example:
 // import socket from "./socket"
+import './lucuma_liveview'
 import './waitlist_analytics'
 import './stripe_payments'
 
@@ -41,28 +37,6 @@ Highcharts.setOptions({
     }
   }
 });
-
-actualSocket.onMessage(function(message) {
- // console.info("message from socket")
- // console.log(message)
-   var input = document.querySelector("#input-phone");
-
-   var instance = intlTelInput(input, {
-    initialCountry: "IE",
-    nationalMode: false,
-    geoIpLookup: function(success, failure) {
-      $.get("https://ipinfo.io", function() {}, "jsonp").always(function(resp) {
-        var countryCode = (resp && resp.country) ? resp.country : "";
-        console.log(countryCode);
-        success(countryCode);
-      });
-    }
-   });
-})
-
-// console.log(actualSocket.isConnected())
-liveSocket.connect()
-// console.log(actualSocket.isConnected())
 
 $(document).ready(function(){
   if (document.querySelector(".js_submitOnClick")) {

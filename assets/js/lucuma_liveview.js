@@ -1,0 +1,30 @@
+import {Socket} from "phoenix"
+import LiveSocket from "phoenix_live_view"
+import * as intlTelInput from 'intl-tel-input';
+
+let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
+let liveSocket = new LiveSocket("/live", Socket, {params: {_csrf_token: csrfToken}});
+window.liveSocket = liveSocket
+let actualSocket = liveSocket.getSocket()
+
+
+actualSocket.onMessage(function(message) {
+  var input = document.querySelector("#input-phone");
+
+  if (input !== null) {
+    console.log("phone input exists")
+    var instance = intlTelInput(input, {
+      initialCountry: "IE",
+      nationalMode: false,
+      geoIpLookup: function(success, failure) {
+        $.get("https://ipinfo.io", function() {}, "jsonp").always(function(resp) {
+          var countryCode = (resp && resp.country) ? resp.country : "";
+          console.log(countryCode);
+          success(countryCode);
+        });
+      }
+    });
+  }
+})
+
+liveSocket.connect()

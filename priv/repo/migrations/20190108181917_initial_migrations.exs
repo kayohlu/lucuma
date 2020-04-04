@@ -153,5 +153,17 @@ defmodule Lucuma.Repo.Migrations.CreateUsers do
     end
 
     create index(:payment_plans, [:company_id])
+
+    create table(:registrations) do
+      add :email, :string, null: false
+      add :full_name, :string, null: false
+      add :name, :string, null: false
+      add :time_zone, :string, default: "Etc/UTC"
+      add :registration_expiry_at, :utc_datetime
+      add :flow, :string, null: false
+      add :step, :string, null: false
+
+      timestamps()
+    end
   end
 end

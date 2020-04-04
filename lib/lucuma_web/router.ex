@@ -6,6 +6,7 @@ defmodule LucumaWeb.Router do
   import LucumaWeb.Plugs.CurrentCompany
   import LucumaWeb.Plugs.CurrentBusiness
   import LucumaWeb.Plugs.LimitTrial
+  import Phoenix.LiveView.Router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -24,7 +25,6 @@ defmodule LucumaWeb.Router do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_flash
-    plug Phoenix.LiveView.Flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :authenticated?
@@ -41,6 +41,7 @@ defmodule LucumaWeb.Router do
 
     get "/", PageController, :index
     resources "/registrations", RegistrationController, only: [:new, :create]
+    resources "/registration", RegistrationController, only: [:show], singleton: true
     resources "/sessions", SessionController, only: [:new, :create]
   end
 

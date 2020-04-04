@@ -5,7 +5,7 @@ defmodule LucumaWeb.Waitlists.WaitlistController do
   alias Lucuma.Waitlists.StandBy
   alias Phoenix.LiveView
 
-  plug :put_layout, :waitlist
+  plug :put_layout, {LucumaWeb.LayoutView, :waitlist}
 
   def index(conn, _params) do
     waitlist = Waitlists.get_business_waitlist(conn.assigns.current_business.id)
@@ -22,10 +22,10 @@ defmodule LucumaWeb.Waitlists.WaitlistController do
       conn,
       LucumaWeb.Live.Waitlists.WaitlistView,
       session: %{
-        current_user_id: conn.assigns.current_user.id,
-        waitlist_id: id,
-        current_company: conn.assigns.current_company,
-        trial_limit_reached: conn.assigns.trial_limit_reached
+        "current_user_id" => conn.assigns.current_user.id,
+        "waitlist_id" => id,
+        "current_company" => conn.assigns.current_company,
+        "trial_limit_reached" => conn.assigns.trial_limit_reached
       }
     )
   end

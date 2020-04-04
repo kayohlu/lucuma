@@ -8,9 +8,20 @@ defmodule Lucuma.Registrations do
 
   alias Lucuma.Repo
   alias Lucuma.Registrations.RegistrationForm
+  alias Lucuma.Registrations.Registration
   alias Lucuma.Accounts
   alias Lucuma.Waitlists
   alias Ecto.Multi
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking registration_form changes.
+
+  ## Examples
+
+      iex> change_registration_form(registration_form)
+      %Ecto.Changeset{source: %RegistrationForm{}}
+
+  """
 
   @doc """
   Creates a registration_form.
@@ -104,7 +115,7 @@ defmodule Lucuma.Registrations do
 
       case multi_result do
         {:ok, steps} ->
-          {:ok, steps.user}
+          {:ok, steps}
 
         {:error, failed_operation, failed_value, changes_so_far} ->
           Logger.info(inspect(failed_operation))
@@ -128,6 +139,23 @@ defmodule Lucuma.Registrations do
   """
   def change_registration_form(%RegistrationForm{} = registration_form) do
     RegistrationForm.changeset(registration_form, %{})
+  end
+
+  def validate_registration_form(attrs \\ %{}) do
+    changeset = RegistrationForm.changeset(%RegistrationForm{}, attrs)
+
+    case changeset.valid? do
+      true ->
+        {:ok, changeset}
+
+      false ->
+        {:error, changeset}
+    end
+  end
+
+  def complete_registration(account_attrs, billing_attrs) do
+    # create_registration_form(account_attrs)
+    # Billing.create_subscription(user, company,)
   end
 
   defp company_changeset(registration_form) do

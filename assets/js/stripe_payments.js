@@ -10,8 +10,11 @@ function stripeTokenHandler(token) {
   hiddenInput.setAttribute('value', token.id);
   form.appendChild(hiddenInput);
 
-  // Submit the form
-  form.submit();
+  if (document.querySelectorAll("[data-phx-view='Live.RegistrationView']").length > 0) {
+    $('#sub_submit_btn').click();
+  } else {
+    form.submit()
+  }
 }
 
 // Custom styling can be passed to options when creating an Element.
@@ -33,8 +36,7 @@ var style = {
   }
 };
 
-
-$(document).ready(function() {
+var stripify = function() {
   var payment_form = document.getElementById('payment-form')
   if (payment_form == null) { return false }
 
@@ -106,12 +108,17 @@ $(document).ready(function() {
     }
   });
 
-  // Handle form submission.
   var form = document.getElementById('payment-form');
-  form.addEventListener('submit', function(event) {
-    event.preventDefault();
+  var submitBtn = document.getElementById('subscribe-button');
 
-    // document.getElementById("sub_submit_btn").setAttribute("disabled", "disabled");
+  var handlePaymentForm = function(e){
+    e.preventDefault();
+
+    if (submitBtn) {
+      submitBtn.setAttribute('disabled', 'disabled');
+      submitBtn.setAttribute('text', 'Subscribing...');
+    }
+
     Array.prototype.forEach.call(
       form.querySelectorAll(
         "input[type='text'], input[type='email'], input[type='tel']"
@@ -136,9 +143,31 @@ $(document).ready(function() {
           }
         );
       } else {
+        console.log("stripe token reveived.")
         // Send the token to your server.
         stripeTokenHandler(result.token);
       }
     });
-  });
+  }
+
+
+  // Handle form submission.
+  if (document.querySelectorAll("[data-phx-view='Live.RegistrationView']").length > 0) {
+    submitBtn.addEventListener('click', handlePaymentForm);
+  } else {
+    form.addEventListener('submit', handlePaymentForm);
+  }
+}
+
+$(document).ready(function(e) {
+  if (document.querySelectorAll("[data-phx-view='Live.RegistrationView']").length < 1) {
+    stripify();
+  }
 });
+
+$(document).on("phx:update", function(e) {
+  if (document.getElementsByClassName('ElementsApp').length < 1) {
+    stripify();
+  }
+});
+
