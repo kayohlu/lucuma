@@ -156,6 +156,10 @@ defmodule LucumaWeb.Features.StaffTest do
         click(page, link("Delete"))
       end)
 
+    page
+    |> take_screenshot
+    |> find(Wallaby.Query.text("Staff", count: 2))
+
     refute_has(page, css(".list-group-item", count: 1))
     refute_has(page, link("Delete", count: 1))
 

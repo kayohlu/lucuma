@@ -29,7 +29,7 @@ defmodule Lucuma.RegistrationsTest do
     }
 
     test "create_registration_form/1 registers a user correctly and returns the user when the form is valid" do
-      assert {:ok, %User{} = user} = Registrations.create_registration_form(@valid_attrs)
+      assert {:ok, %{ user: %User{} = user}} = Registrations.create_registration_form(@valid_attrs)
 
       assert Repo.one(from c in Company, where: c.id == ^user.company_id, select: count(c.id)) ==
                1

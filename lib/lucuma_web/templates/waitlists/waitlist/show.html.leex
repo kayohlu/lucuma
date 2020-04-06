@@ -36,18 +36,18 @@
         <div>
           <%= if @attendance_sms_setting.enabled do %>
             <%= if is_nil(stand_by.notified_at) do %>
-              <%= link gettext("Notify"), to: '#', phx_click: "notify_stand_by", phx_value: stand_by.id, class: "ml-1 btn btn-warning" %>
+              <%= link gettext("Notify"), to: '#', phx_click: "notify_stand_by", phx_value_stand_by_id: stand_by.id, class: "ml-1 btn btn-warning" %>
             <% else %>
-              <%= link "Notify Again", to: '#', phx_click: "notify_stand_by", phx_value: stand_by.id,  class: "ml-1 btn btn-warning" %>
+              <%= link "Notify Again", to: '#', phx_click: "notify_stand_by", phx_value_stand_by_id: stand_by.id,  class: "ml-1 btn btn-warning" %>
             <% end %>
           <% end %>
           <%= if is_nil(stand_by.attended_at) do %>
-            <%= link gettext("Arrived"), to: '#', phx_click: "mark_as_attended", phx_value: stand_by.id,  class: "ml-1 btn btn-success" %>
+            <%= link gettext("Arrived"), to: '#', phx_click: "mark_as_attended", phx_value_stand_by_id: stand_by.id,  class: "ml-1 btn btn-success" %>
           <% else %>
             <button type="button" class="ml-1 btn btn-success disabled">Arrived</button>
           <% end %>
           <%= if is_nil(stand_by.no_show_at) do %>
-            <%= link gettext("No Show"), to: '#', phx_click: "mark_as_no_show", phx_value: stand_by.id,  class: "ml-1 btn btn-danger" %>
+            <%= link gettext("No Show"), to: '#', phx_click: "mark_as_no_show", phx_value_stand_by_id: stand_by.id,  class: "ml-1 btn btn-danger" %>
           <% else %>
             <button type="button" class="ml-1 btn btn-danger disabled">No Show</button>
           <% end %>

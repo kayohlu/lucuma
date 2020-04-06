@@ -135,7 +135,7 @@ defmodule LucumaWeb.Features.StandByTest do
         |> fill_in(text_field("Party size"), with: "2")
         |> fill_in(text_field("Estimated wait time"), with: "12")
         |> fill_in(text_field("Notes"), with: "a note")
-        |> click(css(".btn.btn-primary", text: "Add", count: 2, at: 1))
+        |> click(css(".btn.btn-primary", text: "Add"))
 
       assert_text(page, "+353851761516")
       assert_has(page, link("Notify"))

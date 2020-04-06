@@ -121,7 +121,7 @@ defmodule LucumaWeb.Live.Waitlists.WaitlistView do
     end
   end
 
-  def handle_event("notify_stand_by", stand_by_id, socket) do
+  def handle_event("notify_stand_by", %{"stand-by-id" => stand_by_id} = params, socket) do
     Waitlists.notify_stand_by(stand_by_id)
 
     waitlist = Waitlists.get_waitlist!(socket.assigns.waitlist.id)
@@ -137,7 +137,7 @@ defmodule LucumaWeb.Live.Waitlists.WaitlistView do
     {:noreply, assign(socket, assigns)}
   end
 
-  def handle_event("mark_as_attended", stand_by_id, socket) do
+  def handle_event("mark_as_attended", %{"stand-by-id" => stand_by_id} = params, socket) do
     Waitlists.mark_as_attended(stand_by_id)
 
     waitlist = Waitlists.get_waitlist!(socket.assigns.waitlist.id)
@@ -153,7 +153,7 @@ defmodule LucumaWeb.Live.Waitlists.WaitlistView do
     {:noreply, assign(socket, assigns)}
   end
 
-  def handle_event("mark_as_no_show", stand_by_id, socket) do
+  def handle_event("mark_as_no_show", %{"stand-by-id" => stand_by_id} = params, socket) do
     Waitlists.mark_as_no_show(stand_by_id)
 
     waitlist = Waitlists.get_waitlist!(socket.assigns.waitlist.id)
