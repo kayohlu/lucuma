@@ -59,7 +59,7 @@ defmodule LucumaWeb.Live.Waitlists.WaitlistView do
       stand_bys: stand_bys,
       attendance_sms_setting: attendance_sms_setting,
       changeset: changeset,
-      show_modal: false,
+      show_form: false,
       trial_limit_reached: session["trial_limit_reached"],
       current_company: session["current_company"]
     ]
@@ -71,17 +71,17 @@ defmodule LucumaWeb.Live.Waitlists.WaitlistView do
   #   changeset = Waitlists.change_stand_by(%StandBy{}, Map.put(stand_by_params, "waitlist_id", socket.assigns.waitlist.id))
   #               |> Map.put(:action, :insert)
 
-  #   {:noreply, assign(socket, changeset: changeset, show_modal: true)}
+  #   {:noreply, assign(socket, changeset: changeset, show_form: true)}
   # end
 
-  def handle_event("show_modal", params, socket) do
-    {:noreply, assign(socket, show_modal: true)}
+  def handle_event("show_form", params, socket) do
+    {:noreply, assign(socket, show_form: true)}
   end
 
   def handle_event("clear_form", params, socket) do
     changeset = Waitlists.change_stand_by(%StandBy{})
 
-    {:noreply, assign(socket, changeset: changeset, show_modal: false)}
+    {:noreply, assign(socket, changeset: changeset, show_form: false)}
   end
 
   def handle_event("save", %{"stand_by" => stand_by_params}, socket) do
@@ -103,7 +103,7 @@ defmodule LucumaWeb.Live.Waitlists.WaitlistView do
           party_breakdown: Waitlists.party_size_breakdown(waitlist.id),
           average_wait_time: Waitlists.calculate_average_wait_time(waitlist.id),
           trial_limit_reached: socket.assigns.trial_limit_reached,
-          show_modal: false
+          show_form: false
         ]
 
         socket = assign(socket, assigns)
@@ -113,7 +113,7 @@ defmodule LucumaWeb.Live.Waitlists.WaitlistView do
       {:error, %Ecto.Changeset{} = changeset} ->
         assigns = [
           changeset: changeset,
-          show_modal: true
+          show_form: true
         ]
 
         socket = assign(socket, assigns)

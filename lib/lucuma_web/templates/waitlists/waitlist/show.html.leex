@@ -1,110 +1,98 @@
-<div class="row mb-4">
-  <div class="col d-flex align-items-center justify-content-between">
-    <div><h5 class="mb-0"><%= gettext("Customers") %></h5></div>
+<%= if @show_form == false do %>
+  <div class="row mb-4">
+    <div class="col d-flex align-items-center justify-content-between">
+      <div><h5 class="mb-0"><%= gettext("Customers") %></h5></div>
 
-    <div>
-      <%= if @trial_limit_reached do %>
-        <button type="button" class="btn btn-primary disabled">
-          <i class="fas fa-plus"></i>
-          <%= gettext("Add Person") %>
-        </button>
-      <% else %>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addStandByModal" phx-click="show_modal">
-          <i class="fas fa-plus"></i>
-          <%= gettext("Add Person") %>
-        </button>
-      <% end %>
-    </div>
-  </div>
-</div>
-
-<%= for stand_by <- @stand_bys do %>
-  <div class="row rounded bg-white mt-2 pb-2">
-
-    <div class="col-sm-12 col-md-6 pt-2">
       <div>
-        <h5 class="mb-1"><%= stand_by.name %></h5>
-        <ul class="list-inline mb-0">
-          <li class="list-inline-item"><small class="text-muted"><i class='fas fa-users'></i> <%= stand_by.party_size %></small></li>
-          <li class="list-inline-item"><small class="text-muted"><i class="fas fa-mobile"></i> <%= stand_by.contact_phone_number %></small></li>
-          <li class="list-inline-item"><small class="text-muted"><i class="fas fa-stopwatch"></i> <%= time_waited(stand_by) %> mins</small></li>
-        </ul>
-      </div>
-    </div>
-    <div class="pt-2 col-sm-12 col-md-6 d-flex flex-fill align-items-center justify-content-center justify-content-md-end">
-      <div>
-        <%= if @attendance_sms_setting.enabled do %>
-          <%= if is_nil(stand_by.notified_at) do %>
-            <%= link gettext("Notify"), to: '#', phx_click: "notify_stand_by", phx_value: stand_by.id, class: "ml-1 btn btn-warning" %>
-          <% else %>
-            <%= link "Notify Again", to: '#', phx_click: "notify_stand_by", phx_value: stand_by.id,  class: "ml-1 btn btn-warning" %>
-          <% end %>
-        <% end %>
-        <%= if is_nil(stand_by.attended_at) do %>
-          <%= link gettext("Arrived"), to: '#', phx_click: "mark_as_attended", phx_value: stand_by.id,  class: "ml-1 btn btn-success" %>
-        <% else %>
-          <button type="button" class="ml-1 btn btn-success disabled">Arrived</button>
-        <% end %>
-        <%= if is_nil(stand_by.no_show_at) do %>
-          <%= link gettext("No Show"), to: '#', phx_click: "mark_as_no_show", phx_value: stand_by.id,  class: "ml-1 btn btn-danger" %>
-        <% else %>
-          <button type="button" class="ml-1 btn btn-danger disabled">No Show</button>
-        <% end %>
-
-      </div>
-    </div>
-  </div>
-
-<% end %>
-
-
-<div class='modal fade modal-fullscreen <%= if @show_modal, do: "show", else: nil %>' id="addStandByModal" tabindex="-1" role="dialog" aria-labelledby="addStandByModalLabel" aria-hidden="true" style="display: <%= if @show_modal, do: "block", else: "none" %>; <%= if @show_modal, do: "", else: nil %>">
-  <%= form_for @changeset, "#", [phx_submit: :save, class: "h-100"], fn f -> %>
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header border-bottom-0">
-          <h5 class="modal-title"><%= gettext("New Stand By") %> <%=  @show_modal %></h5>
-          <button type="button" class="close font-weight-light" data-dismiss="modal" phx-click="clear_form" aria-label="<%= gettext("Close") %>">
-            <span aria-hidden="true"><i class="fas fa-times"></i></span>
+        <%= if @trial_limit_reached do %>
+          <button type="button" class="btn btn-primary disabled">
+            <i class="fas fa-plus"></i>
+            <%= gettext("Add Person") %>
           </button>
-        </div>
-        <div class="modal-body">
-          <%= form_group(f, :name) %>
-          <%= phone_form_group(f, :contact_phone_number) %>
-          <%= form_group(f, :party_size) %>
+        <% else %>
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addStandByModal" phx-click="show_form">
+            <i class="fas fa-plus"></i>
+            <%= gettext("Add Person") %>
+          </button>
+        <% end %>
+      </div>
+    </div>
+  </div>
 
-          <%= input_group(f, :estimated_wait_time) do %>
-            <%= number_input(f, :estimated_wait_time, class: input_field_classes(f, :estimated_wait_time)) %>
-            <div class="input-group-append">
-              <span class="input-group-text" ><%= gettext("minutes") %></span>
-            </div>
-            <%= error_tag(f, :estimated_wait_time) %>
+  <%= for stand_by <- @stand_bys do %>
+    <div class="row rounded bg-white mt-2 pb-2">
+
+      <div class="col-sm-12 col-md-6 pt-2">
+        <div>
+          <h5 class="mb-1"><%= stand_by.name %></h5>
+          <ul class="list-inline mb-0">
+            <li class="list-inline-item"><small class="text-muted"><i class='fas fa-users'></i> <%= stand_by.party_size %></small></li>
+            <li class="list-inline-item"><small class="text-muted"><i class="fas fa-mobile"></i> <%= stand_by.contact_phone_number %></small></li>
+            <li class="list-inline-item"><small class="text-muted"><i class="fas fa-stopwatch"></i> <%= time_waited(stand_by) %> mins</small></li>
+          </ul>
+        </div>
+      </div>
+      <div class="pt-2 col-sm-12 col-md-6 d-flex flex-fill align-items-center justify-content-center justify-content-md-end">
+        <div>
+          <%= if @attendance_sms_setting.enabled do %>
+            <%= if is_nil(stand_by.notified_at) do %>
+              <%= link gettext("Notify"), to: '#', phx_click: "notify_stand_by", phx_value: stand_by.id, class: "ml-1 btn btn-warning" %>
+            <% else %>
+              <%= link "Notify Again", to: '#', phx_click: "notify_stand_by", phx_value: stand_by.id,  class: "ml-1 btn btn-warning" %>
+            <% end %>
+          <% end %>
+          <%= if is_nil(stand_by.attended_at) do %>
+            <%= link gettext("Arrived"), to: '#', phx_click: "mark_as_attended", phx_value: stand_by.id,  class: "ml-1 btn btn-success" %>
+          <% else %>
+            <button type="button" class="ml-1 btn btn-success disabled">Arrived</button>
+          <% end %>
+          <%= if is_nil(stand_by.no_show_at) do %>
+            <%= link gettext("No Show"), to: '#', phx_click: "mark_as_no_show", phx_value: stand_by.id,  class: "ml-1 btn btn-danger" %>
+          <% else %>
+            <button type="button" class="ml-1 btn btn-danger disabled">No Show</button>
           <% end %>
 
-          <%= form_group(f, :notes, using: :textarea) %>
-        </div>
-        <div class="modal-footer bg-light border-top-0">
-          <button type="button" class="btn btn-link text-muted font-weight-500" data-dismiss="modal" phx-click="clear_form"><%= gettext("Cancel") %></button>
-          <%= submit gettext("Add"), class: "btn btn-primary" %>
         </div>
       </div>
     </div>
+
   <% end %>
-</div>
 
-<%= if @show_modal == false do %>
+<% else %>
+  <div class="row mb-4">
+    <div class="col d-flex align-items-center justify-content-between">
+      <div><h5 class="mb-0"><%= gettext("New customer") %></h5></div>
+      <div>
+        <button type="button" class="btn btn-outline-secondary" phx-click="clear_form">
+          <%= gettext("Cancel") %>
+        </button>
+      </div>
+    </div>
+  </div>
 
-  <script>
-    console.log("document.readyState")
-    if(["complete", "loaded","interactive"].indexOf(document.readyState) >= 0){
-      console.log(document.readyState)
-      console.log("trying ot hide modal")
-      window.$('#addStandByModal').modal('hide');
-    } else {
-      document.addEventListener("DOMContentLoaded", () => {
-        window.$('#addStandByModal').modal('hide');
-      })
-    }
-  </script>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-body">
+          <%= form_for @changeset, "#", [phx_submit: :save, class: ""], fn f -> %>
+            <%= form_group(f, :name) %>
+            <%= phone_form_group(f, :contact_phone_number) %>
+            <%= form_group(f, :party_size) %>
+
+            <%= input_group(f, :estimated_wait_time) do %>
+              <%= number_input(f, :estimated_wait_time, class: input_field_classes(f, :estimated_wait_time)) %>
+              <div class="input-group-append">
+                <span class="input-group-text" ><%= gettext("minutes") %></span>
+              </div>
+              <%= error_tag(f, :estimated_wait_time) %>
+            <% end %>
+
+            <%= form_group(f, :notes, using: :textarea) %>
+            <%= submit gettext("Add"), class: "btn btn-primary btn-block" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
 <% end %>
-
