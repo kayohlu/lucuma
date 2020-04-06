@@ -11,6 +11,9 @@ use Mix.Config
 # before starting your production server.
 config :lucuma, LucumaWeb.Endpoint,
   http: [port: {:system, "PORT"}],
+  check_origin: [
+    "//lucuma.herokuapp.com"
+  ],
   url: [scheme: "https", host: "lucuma.herokuapp.com", port: 443],
   force_ssl: [rewrite_on: [:x_forwarded_proto]],
   cache_static_manifest: "priv/static/cache_manifest.json"
