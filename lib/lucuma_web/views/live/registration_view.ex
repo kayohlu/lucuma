@@ -46,8 +46,6 @@ defmodule LucumaWeb.Live.RegistrationView do
   end
 
   def handle_event("create_subscription", params, socket) do
-    IO.inspect params
-
     %{account_details: %{user: user, company: company}} = socket.assigns
 
     %{

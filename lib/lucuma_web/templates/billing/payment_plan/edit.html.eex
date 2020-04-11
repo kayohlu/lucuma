@@ -45,7 +45,7 @@
       </div>
     </div>
     <div class="card-footer text-muted text-center">
-      <span>You can <%= link gettext("skip"), to: Routes.billing_subscription_skip_path(@conn, :create, payment_form_referer: @payment_form_referer), method: :create, class: "text-underline" %> this step and look around but you wont be able to add customers to your waitlist.</span>
+      <span>You can <%= link gettext("skip"), to: Routes.billing_subscription_skip_path(@conn, :create, payment_form_referer: @payment_form_referer), method: :create, class: "text-underline" %> this step but you can only add at most 100 customers to your waitlist.</span>
     </div>
   </div>
 </div>

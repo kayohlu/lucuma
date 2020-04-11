@@ -154,7 +154,7 @@
   </div>
 </div>
 <%= else %>
-  <div class="card">
+  <div class="card mt-4">
   <div class="card-body">
       <div class="col text-center">
         <span><%= gettext("There are no analytics available. You need to start adding people to your waitlist.") %></span>
