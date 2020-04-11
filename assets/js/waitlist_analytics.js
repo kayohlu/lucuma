@@ -76,6 +76,13 @@ if($('#waitlist-states-container').length >0) {
       type: 'datetime',
       dateTimeLabelFormats: {
         day: '%d %b %Y'    //ex- 01 Jan 2016
+      },
+      labels: {
+        formatter: function () {
+          let date = new Date(this.value * 1000);
+          let options = {weekday: 'short', month: 'short', day: 'numeric', year: '2-digit'};
+          return date.toLocaleString('en-IE', options)
+        }
       }
     },
     yAxis: {
@@ -89,11 +96,15 @@ if($('#waitlist-states-container').length >0) {
       }
     },
     tooltip: {
-      crosshairs: true,
-      shared: true
+        headerFormat: '<b>{series.name}</b><br>',
+      pointFormatter: function() {
+        let date = new Date(this.x * 1000);
+        let options = {weekday: 'short', month: 'short', day: 'numeric', year: '2-digit'};
+        return `${this.y} customers on ${date.toLocaleString('en-IE', options)}`
+      }
     },
     plotOptions: {
-      spline: {
+      series: {
         marker: {
           radius: 1,
           lineColor: 'black',
@@ -167,12 +178,14 @@ if($('#waitlist-average-wait-time-over-time-container').length >0) {
       type: 'datetime',
       dateTimeLabelFormats: {
         day: '%d %b %Y'    //ex- 01 Jan 2016
+      },
+      labels: {
+        formatter: function () {
+          let date = new Date(this.value * 1000);
+          let options = {weekday: 'short', month: 'short', day: 'numeric', year: '2-digit'};
+          return date.toLocaleString('en-IE', options)
+        }
       }
-      // dateTimeLabelFormats: { // don't display the dummy year
-      //   month: '%e. %b',
-      //   year: '%b'
-
-      // }
     },
     yAxis: {
       title: {

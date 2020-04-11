@@ -41,8 +41,8 @@ defmodule LucumaWeb.Waitlists.AnalyticsView do
 
   def inject_unix_timestamp(data) do
     data
-    |> Enum.map(fn [date_str, value] ->
-      {:ok, datetime_utc} = DateTime.from_naive(date_str, "Etc/UTC")
+    |> Enum.map(fn [datetime, value] ->
+      {:ok, datetime_utc} = DateTime.from_naive(datetime, "Etc/UTC")
       [datetime_utc |> DateTime.to_unix(), value]
     end)
   end

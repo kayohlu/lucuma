@@ -75,7 +75,8 @@ defmodule LucumaWeb.RegistrationController do
   def show(conn, params) do
     Phoenix.LiveView.Controller.live_render(
       conn,
-      LucumaWeb.Live.RegistrationView, session: params
+      LucumaWeb.Live.RegistrationView,
+      session: params
     )
   end
 end

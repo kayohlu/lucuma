@@ -104,6 +104,7 @@ defmodule Lucuma.Waitlists.Analytics do
       from s in StandBy,
         where: s.waitlist_id == ^waitlist_id,
         group_by: fragment("date"),
+        order_by: fragment("date asc"),
         select: [
           fragment(
             "(? at time zone 'UTC' at time zone ?)::date::timestamp as date",
@@ -122,6 +123,7 @@ defmodule Lucuma.Waitlists.Analytics do
           s.waitlist_id == ^waitlist_id and
             not is_nil(s.attended_at),
         group_by: fragment("date"),
+        order_by: fragment("date asc"),
         select: [
           fragment(
             "(? at time zone 'UTC' at time zone ?)::date::timestamp as date",
@@ -140,6 +142,7 @@ defmodule Lucuma.Waitlists.Analytics do
           s.waitlist_id == ^waitlist_id and
             not is_nil(s.no_show_at),
         group_by: fragment("date"),
+        order_by: fragment("date asc"),
         select: [
           fragment(
             "(? at time zone 'UTC' at time zone ?)::date::timestamp as date",
@@ -158,6 +161,7 @@ defmodule Lucuma.Waitlists.Analytics do
           s.waitlist_id == ^waitlist_id and
             not is_nil(s.cancelled_at),
         group_by: fragment("date"),
+        order_by: fragment("date asc"),
         select: [
           fragment(
             "(? at time zone 'UTC' at time zone ?)::date::timestamp as date",

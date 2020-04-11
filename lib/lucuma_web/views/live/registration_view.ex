@@ -29,11 +29,12 @@ defmodule LucumaWeb.Live.RegistrationView do
     assigns =
       case Registrations.create_registration_form(attrs) do
         {:ok, results} ->
-          account_details_by_id = Enum.into(results, %{}, fn {k,v} -> {k,v.id} end)
+          account_details_by_id = Enum.into(results, %{}, fn {k, v} -> {k, v.id} end)
+
           [
             account_details: results,
             subscription_changeset: Billing.change_subscription_form(%SubscriptionForm{}),
-            current_step: "subscription",
+            current_step: "subscription"
           ]
 
         {:error, account_details_changeset} ->

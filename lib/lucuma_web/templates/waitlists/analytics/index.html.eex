@@ -100,7 +100,7 @@
 
 <div class="card mt-4">
   <div class="card-header">
-    <%= gettext("Average amount of customers served for per day of the week.") %>
+    <%= gettext("Average amount of customers served per day of the week.") %>
   </div>
   <div class="card-body">
       <div class="col">
@@ -120,7 +120,7 @@
 
 <div class="card mt-4">
   <div class="card-header">
-    <%= gettext("Average amount of customers served for per hour.") %>
+    <%= gettext("Average amount of customers served per hour.") %>
   </div>
   <div class="card-body">
       <div class="col">
@@ -138,7 +138,7 @@
 
 <div class="card mt-4">
   <div class="card-header">
-    <%= gettext("Average amount of customers served for per hour per day.") %>
+    <%= gettext("Average amount of customers served per hour per day.") %>
   </div>
   <div class="card-body">
       <div class="col">
