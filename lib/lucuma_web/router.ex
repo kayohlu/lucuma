@@ -14,7 +14,7 @@ defmodule LucumaWeb.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    # plug :redirect_if_logged_in
+    plug :redirect_if_logged_in
   end
 
   pipeline :api do
