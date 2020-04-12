@@ -11,23 +11,30 @@
 </div>
 
 <div class="card">
-  <div>
-    <ul class="list-group list-group-flush">
-      <%= for staff_member <- @staff do %>
-        <div class="list-group-item">
-          <div class="d-flex w-100 justify-content-between">
-            <div class="d-flex align-items-center">
-              <div><%= staff_member.full_name %></div>
-            </div>
-              <div>
-              <small class="text-muted"><%= staff_member.email %></small>
-              </div>
-            <div class="d-flex flex-fill align-items-center justify-content-end">
+  <div class="card-body">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Email</th>
+          <th scope="col">Inivtation Token</th>
+          <th scope="col">Inivtation Accepted</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= for staff_member <- @staff do %>
+          <tr>
+            <th scope="row"><%= staff_member.full_name %></th>
+            <td><%= staff_member.email %></td>
+            <td><%= staff_member.invitation_token %></td>
+            <td><%= staff_member.invitation_accepted_at %></td>
+            <td>
               <%= link "Delete", to: Routes.settings_staff_path(@conn, :delete, staff_member.id, method: :destroy), class: "btn btn-outline-danger", method: :delete, data: [confirm: gettext("Are you sure?")] %>
-            </div>
-          </div>
-        </div>
-      <% end %>
-    </ul>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
   </div>
 </div>
