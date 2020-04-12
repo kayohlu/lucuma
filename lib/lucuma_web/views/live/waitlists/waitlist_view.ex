@@ -1,6 +1,7 @@
 defmodule LucumaWeb.Live.Waitlists.WaitlistView do
   use Phoenix.LiveView
   import LucumaWeb.Gettext
+  require Logger
 
   alias Lucuma.Waitlists
   alias Lucuma.Waitlists.StandBy
@@ -49,10 +50,14 @@ defmodule LucumaWeb.Live.Waitlists.WaitlistView do
   end
 
   def mount(params, session, socket) do
-    waitlist = Waitlists.get_waitlist!(session["waitlist_id"])
-    stand_bys = Waitlists.get_waitlist_stand_bys(session["waitlist_id"])
+    waitlist_id = session["waitlist_id"]
+    waitlist = Waitlists.get_waitlist!(waitlist_id)
+    stand_bys = Waitlists.get_waitlist_stand_bys(waitlist_id)
     attendance_sms_setting = Waitlists.attendance_sms_setting_for_waitlist(waitlist.id)
     changeset = Waitlists.change_stand_by(%StandBy{})
+
+
+    Phoenix.PubSub.subscribe(LucumaWeb.PubSub, self(), topic(waitlist_id))
 
     assigns = [
       waitlist: waitlist,
@@ -108,6 +113,8 @@ defmodule LucumaWeb.Live.Waitlists.WaitlistView do
 
         socket = assign(socket, assigns)
 
+        Phoenix.PubSub.broadcast_from(LucumaWeb.PubSub, self(), topic(waitlist.id), %{event: "save"})
+
         {:noreply, socket}
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -134,6 +141,7 @@ defmodule LucumaWeb.Live.Waitlists.WaitlistView do
       average_wait_time: Waitlists.calculate_average_wait_time(waitlist.id)
     ]
 
+    Phoenix.PubSub.broadcast_from(LucumaWeb.PubSub, self(), topic(waitlist.id), %{event: "notify_stand_by"})
     {:noreply, assign(socket, assigns)}
   end
 
@@ -150,6 +158,7 @@ defmodule LucumaWeb.Live.Waitlists.WaitlistView do
       average_wait_time: Waitlists.calculate_average_wait_time(waitlist.id)
     ]
 
+    Phoenix.PubSub.broadcast_from(LucumaWeb.PubSub, self(), topic(waitlist.id), %{event: "mark_as_attended"})
     {:noreply, assign(socket, assigns)}
   end
 
@@ -166,6 +175,40 @@ defmodule LucumaWeb.Live.Waitlists.WaitlistView do
       average_wait_time: Waitlists.calculate_average_wait_time(waitlist.id)
     ]
 
+    Phoenix.PubSub.broadcast_from(LucumaWeb.PubSub, self(), topic(waitlist.id), %{event: "mark_as_no_show"})
     {:noreply, assign(socket, assigns)}
+  end
+
+  def terminate(reason, socket) do
+    Phoenix.PubSub.unsubscribe(LucumaWeb.PubSub, self(), topic(socket.assigns.waitlist.id))
+    Logger.info("#{inspect(__MODULE__)} shutting down with reason #{inspect(reason)}")
+  end
+
+  @doc """
+  As of writing this the PubSub functionality in this module is only here to
+  notify clients that something has changed in the waitlist.
+  The changes we expect are:
+    1. Some StandyBy has changed.
+
+  AS a result we want to reflect these changes in the clients.
+  """
+  def handle_info(message, socket) do
+    Logger.info("Receiving message from PubSub")
+
+
+    waitlist = Waitlists.get_waitlist!(socket.assigns.waitlist.id)
+    stand_bys = Waitlists.get_waitlist_stand_bys(socket.assigns.waitlist.id)
+
+    assigns = [
+      stand_bys: stand_bys,
+      trial_limit_reached: socket.assigns.trial_limit_reached,
+      average_wait_time: Waitlists.calculate_average_wait_time(waitlist.id)
+    ]
+
+    {:noreply, assign(socket, assigns)}
+  end
+
+  defp topic(waitlist_id) do
+    "waitlist_#{waitlist_id}"
   end
 end

@@ -20,6 +20,11 @@ config :lucuma, LucumaWeb.Endpoint,
     signing_salt: "imxM3waFXGZE2VjX6SsfoTsv/6EbYmC3"
   ]
 
+config :lucuma, LucumaWeb.Endpoint,
+  pubsub: [adapter: Phoenix.PubSub.PG2,
+    pool_size: 1,
+    name: LucumaWeb.PubSub]
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
