@@ -1,18 +1,26 @@
-$body-color: #2f4858; // Same color as nav background
+$blue:    lighten(#007bff, 8.5%) ;
+$indigo:    lighten(#6610f2, 8.5%) ;
+$purple:    lighten(#6f42c1, 8.5%) ;
+$pink:    lighten(#e83e8c, 8.5%) ;
+$red:    lighten(#dc3545, 8.5%) ;
+$orange:    lighten(#fd7e14, 8.5%) ;
+$yellow:    lighten(#ffc107, 8.5%) ;
+$green:    lighten(#28a745, 8.5%) ; // with the bright blue
+$green:    #8fb098 ;
+$teal:    lighten(#20c997, 8.5%) ;
+$cyan:    lighten(#17a2b8, 8.5%) ;
+
+// Settings for the `<body>` element.
+$body-color:  rgb(66, 76, 92);
+$body-color:  #2b313c;
+// $body-bg: rgb(247, 247, 249);
 $body-bg: #f0f0f4;
 
-$primary: #3f8fb5;
-// $secondary: #2c3e50;
+$primary: rgb(252, 120, 88);
+$secondary: rgb(4, 144, 173); // with the bright blue
+$secondary: #8fb098;
 
-$card-border-color: #e5e9f2;
+$link-color:   $secondary !default;
 
-// $container-max-widths: () !default;
-// $container-max-widths: map-merge(
-//   (
-//     sm: 740px,
-//     md: 920px,
-//     lg: 1160px,
-//     xl: 1340px
-//   ),
-//   $container-max-widths
-// );
+// $card-border-color: #e5e9f2;
+$headings-color:      $secondary !default;
