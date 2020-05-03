@@ -1,6 +1,20 @@
 defmodule LucumaWeb.Settings.StaffView do
   use LucumaWeb, :view
 
+  def invite_status(staff_member) do
+    if staff_member.invitation_token do
+      if staff_member.invitation_accepted_at do
+        ~E(
+          <span class="lbadge lbadge-sm lbadge-success">Accepted</span>
+        )
+      else
+        ~E(
+          <span class="lbadge lbadge-sm lbadge-info">Invited</span>
+        )
+      end
+    end
+  end
+
   def render("sub_navigation.html", assigns) do
     render(
       LucumaWeb.LayoutView,

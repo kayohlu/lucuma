@@ -10,31 +10,33 @@
   </div>
 </div>
 
-<div class="card">
-  <div class="card-body">
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">Name</th>
-          <th scope="col">Email</th>
-          <th scope="col">Inivtation Token</th>
-          <th scope="col">Inivtation Accepted</th>
-          <th scope="col">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <%= for staff_member <- @staff do %>
+<div class="row mb-4">
+  <div class="col">
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
           <tr>
-            <th scope="row"><%= staff_member.full_name %></th>
-            <td><%= staff_member.email %></td>
-            <td><%= staff_member.invitation_token %></td>
-            <td><%= staff_member.invitation_accepted_at %></td>
-            <td>
-              <%= link "Delete", to: Routes.settings_staff_path(@conn, :delete, staff_member.id, method: :destroy), class: "btn btn-outline-danger", method: :delete, data: [confirm: gettext("Are you sure?")] %>
-            </td>
+            <th scope="col"><%= gettext("Name") %></th>
+            <th scope="col"><%= gettext("Email") %></th>
+            <th scope="col" class=""><%= gettext("Invite status") %></th>
+            <th scope="col" class="text-center"><%= gettext("Actions") %></th>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <%= for staff_member <- @staff do %>
+            <tr>
+              <td valign="middle"><%= staff_member.full_name %></th>
+              <td valign="middle"><%= staff_member.email %></td>
+              <td valign="middle"><%= invite_status(staff_member) %></td>
+              <td class="text-center">
+                <%= link to: Routes.settings_staff_path(@conn, :delete, staff_member.id, method: :destroy), class: "text-body-color text-muted", method: :delete, data: [confirm: gettext("Are you sure?")] do %>
+                  <i class="fas fa-trash"></i>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>

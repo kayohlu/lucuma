@@ -16,7 +16,7 @@
   <div class="card">
     <div class="card-body">
       <div class="text-center align-self-center">
-        <h1 class="display-1 d-inline"><%= @average_wait_time %></h1>
+        <h1 class="display-1 d-inline text-body-color"><%= @average_wait_time %></h1>
         <p class="text-muted"><%= gettext("Average Wait Time") %> <small class="text-muted">(<%= gettext("mins") %>)</small></p>
       </div>
     </div>
@@ -24,7 +24,7 @@
   <div class="card">
     <div class="card-body">
       <div class="text-center align-self-center">
-        <h1 class="display-1 d-inline"><%= length(@stand_bys) %></h1>
+        <h1 class="display-1 d-inline text-body-color"><%= length(@stand_bys) %></h1>
         <p class="text-muted"><%= gettext("People Waiting") %></p>
       </div>
     </div>
@@ -41,7 +41,7 @@
   <div class="card">
     <div class="card-body">
       <div class="text-center align-self-center">
-      <h1 class="display-3"><%= @total_waitlisted %></h1>
+      <h1 class="display-3 text-body-color"><%= @total_waitlisted %></h1>
       <span class="text-muted"><%= gettext("Total Waitlisted") %></span>
     </div>
     </div>
@@ -49,7 +49,7 @@
   <div class="card">
     <div class="card-body">
       <div class="text-center align-self-center">
-      <h1 class="display-3"><%= @unique_customer_count %></h1>
+      <h1 class="display-3 text-body-color"><%= @unique_customer_count %></h1>
       <span class="text-muted"><%= gettext("Total Unique Customers") %></span>
     </div>
     </div>
@@ -57,7 +57,7 @@
   <div class="card">
     <div class="card-body">
       <div class="text-center align-self-center">
-      <h1 class="display-3"><%= @served_customer_count %></h1>
+      <h1 class="display-3 text-body-color"><%= @served_customer_count %></h1>
       <span class="text-muted"><%= gettext("Total Served") %></span>
     </div>
     </div>

@@ -40,7 +40,7 @@ defmodule LucumaWeb.DashboardView do
         |> Enum.filter(fn [day, hour_float, value] -> hour_float == set_hour end)
         |> Enum.map(fn [day, hour_float, value] -> [day_map[day], value] end)
 
-      %{name: "#{set_hour}:00 - #{set_hour + 1}:00", data: new_data}
+      %{name: "#{trunc(set_hour)}:00 - #{trunc(set_hour) + 1}:00", data: new_data}
     end)
   end
 end

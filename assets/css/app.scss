@@ -65,7 +65,9 @@ body {
   }
 
   .card-footer {
-    background-color: #f8f9fa;
+    // background-color: #f8f9fa;
+    background-color: white;
+    border-radius: 0 0 calc(0.9rem - 1px) calc(0.9rem - 1px);
   }
 }
 
@@ -189,6 +191,25 @@ body {
   border-radius: 0;
 }
 
+.table {
+  border-radius: 0.9rem;
+  background-color: white;
+  border: 0;
+
+  thead th {
+    border-bottom: none;
+  }
+  th, td {
+    border-top: none;
+    vertical-align: middle;
+  }
+
+  tbody {
+  tr {
+    border-top: 2px solid $body-bg;
+  }
+  }
+}
 
 .btn-primary:not(:disabled):not(.disabled):active,
 .btn-primary:not(:disabled):not(.disabled).active
@@ -197,7 +218,8 @@ body {
     border-color: $primary; }
 
 
-// @import "bootstrap-fs-modal";
 @import "dropdown";
 @import "pricing";
 @import "stripe_payment_form";
+@import "lucuma-badges";
+

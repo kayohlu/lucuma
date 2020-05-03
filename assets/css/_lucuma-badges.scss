@@ -1,0 +1,21 @@
+.lbadge {
+  display: inline-block;
+  font-weight: $btn-font-weight;
+  color: $body-color;
+  text-align: center;
+  vertical-align: middle;
+  user-select: none;
+  background-color: transparent;
+  border: $btn-border-width solid transparent;
+  @include button-size($btn-padding-y, $btn-padding-x, $btn-font-size, $btn-line-height, $btn-border-radius);
+  background-color: $body-bg;
+  border-color: $body-bg;
+  width: 6rem;
+}
+
+@each $color, $value in $theme-colors {
+  .lbadge-#{$color} {
+    color: $value;
+    font-weight: 600;
+  }
+}
