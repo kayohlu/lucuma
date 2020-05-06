@@ -1,3 +1,5 @@
+// https://coolors.co/f06449-e8e9eb-0b3c49-313638-f09d51
+
 $blue:    lighten(#007bff, 7.5%) ;
 $indigo:    lighten(#6610f2, 7.5%) ;
 $purple:    lighten(#6f42c1, 7.5%) ;
@@ -5,14 +7,14 @@ $pink:    lighten(#e83e8c, 7.5%) ;
 $red:    lighten(#dc3545, 7.5%) ;
 $orange:    lighten(#fd7e14, 7.5%) ;
 $yellow:    lighten(#ffc107, 7.5%) ;
-$green:    lighten(#28a745, 7.5%) ; // with the bright blue
 $green:    #52a264 ;
 $teal:    lighten(#20c997, 7.5%) ;
 $cyan:    lighten(#17a2b8, 7.5%) ;
+$brown: #F09D51;
 
 // Settings for the `<body>` element.
-$body-color:  rgb(66, 76, 92);
-$body-color:  #2b313c;
+// $body-color:  rgb(66, 76, 92);
+$body-color:  #313638;
 $body-bg: rgb(244, 244, 248);
 
 $primary: rgb(252, 120, 88);
@@ -21,8 +23,12 @@ $secondary: #8fb098;
 $secondary: rgb(17, 120, 139);
 $secondary: #5895a0;
 $secondary: #588fa0;
+$secondary: #6da1b1;
+$secondary: #88A2AA;
 
 $link-color:   $secondary !default;
 
+$navbar-bg-color: #0B3C49;
+
 // $card-border-color: #e5e9f2;
-$headings-color:      $secondary !default;
+// $headings-color:      $secondary !default;

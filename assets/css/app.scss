@@ -12,6 +12,9 @@ $fa-font-path:  '~@fortawesome/fontawesome-free/webfonts';
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .primary-color {
@@ -112,7 +115,6 @@ body {
           // background-color: $body-bg;
           border-radius: 3px 3px 0 0;
           color: $body-color;
-          border-bottom: 1px solid $body-color
         }
       }
   }
@@ -162,7 +164,6 @@ body {
   }
 
   a {
-    // color: #2c3e50;
     font-weight: 500;
   }
 }
@@ -176,12 +177,17 @@ body {
   border: 0px solid #ced4da;
 }
 
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+}
+
 .btn-primary {
   color: #ffffff;
 }
 
 .navbar-bg-color {
-  background-color: $secondary;
+  background-color: $navbar-bg-color;
 }
 .navbar-dark .navbar-nav .nav-link {
     color: rgba(255, 255, 255, 0.7);
