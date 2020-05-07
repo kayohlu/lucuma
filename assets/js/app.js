@@ -30,14 +30,6 @@ $(function () {
   })
 })
 
-Highcharts.setOptions({
-  chart: {
-    style: {
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";'
-    }
-  }
-});
-
 $(document).ready(function(){
   if (document.querySelector(".js_submitOnClick")) {
     $('[data-toggle="buttons"] .btn').on('click', function () {

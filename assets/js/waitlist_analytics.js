@@ -1,6 +1,23 @@
 import $ from "jquery"
 import Highcharts from 'highcharts'
 require('highcharts/highcharts-more')(Highcharts);
+
+Highcharts.setOptions({
+  chart: {
+    style: {
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";'
+    }
+  },
+  colors: [
+    '#4D9DE0',
+    '#e9c46a',
+    '#2a9d8f',
+    '#f09d51',
+    '#313638',
+  ]
+});
+
+
 if($('#party-size-container').length >0) {
   Highcharts.chart('party-size-container', {
     chart: {
