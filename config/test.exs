@@ -9,7 +9,7 @@ config :lucuma, LucumaWeb.Endpoint,
 config :lucuma, sql_sandbox: true
 
 # Print only warnings and errors during test
-config :logger, level: :debug
+config :logger, level: :error
 
 # Configure your database
 config :lucuma, Lucuma.Repo,

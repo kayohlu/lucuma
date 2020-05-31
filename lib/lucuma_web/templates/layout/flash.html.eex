@@ -1,15 +1,11 @@
 <%= if get_flash(@conn, :info) do %>
-<div class="alert alert-success text-center border-0 mb-0" role="alert">
-  <%= get_flash(@conn, :info) %>
-</div>
+  <div class="alert alert-success text-center border-0 mb-0" role="alert">
+    <%= get_flash(@conn, :info) %>
+  </div>
 <% end %>
 
 <%= if get_flash(@conn, :error) do %>
-  <div class="ui negative message">
-    <i class="close icon"></i>
-    <div class="header">
-      <%= gettext("Error") %>
-    </div>
-    <span class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></span>
+  <div class="alert alert-danger text-center border-0 mb-0" role="alert">
+    <%= get_flash(@conn, :error) %>
   </div>
 <% end %>

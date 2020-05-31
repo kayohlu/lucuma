@@ -22,7 +22,7 @@ defmodule LucumaWeb.Waitlists.AnalyticsController do
         stand_bys: Waitlists.get_waitlist_stand_bys(waitlist.id),
         average_wait_time: Waitlists.calculate_average_wait_time(waitlist.id),
         party_breakdown: Waitlists.party_size_breakdown(waitlist.id),
-        total_waitlisted: Analytics.total_waitlisted(waitlist.id, business),
+        total_waitlisted: Analytics.total_waitlisted(waitlist),
         unique_customer_count: Analytics.unique_customer_count(waitlist.id, business),
         served_customer_count: Analytics.served_customer_count(waitlist.id, business),
         served_percentage: Analytics.served_percentage(waitlist.id, business),

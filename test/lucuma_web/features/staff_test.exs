@@ -49,9 +49,8 @@ defmodule LucumaWeb.Features.StaffTest do
     |> has?(link("Add Staff Member"))
 
     assert_text(page, "Staff")
-    assert_has(page, css(".list-group-item", count: 1))
-    assert_has(page, link("Delete", count: 1))
     assert_text(page, staff_user.full_name)
+    refute_has(page, Query.text(another_user_in_another_business.full_name))
   end
 
   test "the staff page allows you to add a staff member", %{session: session} do
@@ -107,8 +106,6 @@ defmodule LucumaWeb.Features.StaffTest do
     |> has?(link("Add Staff Member"))
 
     assert_text(page, "Staff")
-    assert_has(page, css(".list-group-item", count: 1))
-    assert_has(page, link("Delete", count: 1))
     assert_text(page, staff_user.full_name)
   end
 
@@ -147,21 +144,19 @@ defmodule LucumaWeb.Features.StaffTest do
     |> has?(link("Add Staff Member"))
 
     assert_text(page, "Staff")
-    assert_has(page, css(".list-group-item", count: 1))
-    assert_has(page, link("Delete", count: 1))
     assert_text(page, staff_user.full_name)
 
     alert_message =
       accept_alert(page, fn page ->
-        click(page, link("Delete"))
+        click(page, css(".fas.fa-trash"))
       end)
 
     page
     |> take_screenshot
     |> find(Wallaby.Query.text("Staff", count: 2))
 
-    refute_has(page, css(".list-group-item", count: 1))
-    refute_has(page, link("Delete", count: 1))
+    assert_text(page, "Staff")
+    refute_has(page, Query.text(staff_user.full_name))
 
     query =
       from user in Lucuma.Accounts.User,

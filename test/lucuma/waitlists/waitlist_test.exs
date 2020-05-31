@@ -29,13 +29,6 @@ defmodule Lucuma.WaitlistsTests.WaitlistTest do
       assert {:error, %Ecto.Changeset{}} = Waitlists.create_waitlist(%{name: nil})
     end
 
-    test "get_business_waitlist/1 returns the waitlist associated with the given business_id" do
-      business = insert(:business, company: insert(:company))
-      waitlist = insert(:waitlist, business: business)
-
-      assert waitlist.id == Waitlists.get_business_waitlist(business.id).id
-    end
-
     test "party_size_breakdown/1 returns a map of party size to count" do
       business = insert(:business, company: insert(:company))
       waitlist = insert(:waitlist, business: business)

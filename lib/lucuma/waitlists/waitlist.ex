@@ -19,5 +19,6 @@ defmodule Lucuma.Waitlists.Waitlist do
     waitlist
     |> cast(attrs, [:name, :business_id, :notification_sms_body])
     |> validate_required([:name, :business_id])
+    |> unique_constraint(:name, name: :waitlists_name_business_id_index)
   end
 end

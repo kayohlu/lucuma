@@ -2,14 +2,17 @@ defmodule LucumaWeb.Waitlists.WaitlistController do
   use LucumaWeb, :controller
 
   alias Lucuma.Waitlists
+  alias Lucuma.Waitlists.Waitlist
   alias Lucuma.Waitlists.StandBy
   alias Phoenix.LiveView
 
   plug :put_layout, {LucumaWeb.LayoutView, :waitlist}
 
   def index(conn, _params) do
-    waitlist = Waitlists.get_business_waitlist(conn.assigns.current_business.id)
-    redirect(conn, to: Routes.waitlists_waitlist_path(conn, :show, waitlist.id))
+    waitlists = Waitlists.business_waitlists(conn.assigns.current_business.id)
+
+    render(conn, "index.html", waitlists: waitlists)
+    # redirect(conn, to: Routes.waitlists_waitlist_path(conn, :show, waitlist.id))
   end
 
   def show(conn, %{"id" => id}) do
@@ -28,5 +31,50 @@ defmodule LucumaWeb.Waitlists.WaitlistController do
         "trial_limit_reached" => conn.assigns.trial_limit_reached
       }
     )
+  end
+
+  def new(conn, _params) do
+    changeset = Waitlists.change_waitlist(%Waitlist{})
+    render(conn, "new.html", changeset: changeset)
+  end
+
+  def create(conn, %{ "waitlist" => waitlist_params } = params) do
+    case Waitlists.create_waitlist(Map.put(waitlist_params, "business_id", conn.assigns.current_business.id )) do
+      {:ok, waitlist } ->
+        redirect(conn, to: Routes.waitlists_waitlist_path(conn, :show, waitlist.id))
+      {:error, changeset} ->
+        render(conn, "new.html", changeset: changeset)
+    end
+  end
+
+  def delete(conn, %{ "id" => waitlist_id } = params) do
+    waitlist = Waitlists.get_waitlist!(waitlist_id)
+
+    case Waitlists.delete_waitlist(waitlist) do
+      {:ok, waitlist } ->
+        conn
+        |> put_flash(
+          :info,
+          "#{waitlist.name} has been successfully deleted. This cannot be undone."
+        )
+        |> redirect(to: Routes.waitlists_waitlist_path(conn, :index))
+      {:error, changeset} ->
+        conn
+        |> put_flash(
+          :error,
+          "#{waitlist.name} could not be deleted. Please contact support."
+        )
+        |> redirect(to: Routes.waitlists_setting_path(conn, :index, waitlist.id))
+    end
+  end
+
+  def waitlist(conn, %{ "waitlist" => waitlist_params } = params) do
+    waitlist = Waitlists.get_waitlist!(params["id"])
+    case Waitlists.create_waitlist(Map.put(waitlist_params, "business_id", conn.assigns.current_business.id )) do
+      {:ok, waitlist } ->
+        redirect(conn, to: Routes.waitlists_waitlist_path(conn, :show, waitlist.id))
+      {:error, changeset} ->
+        render(conn, "new.html", changeset: changeset)
+    end
   end
 end

@@ -26,7 +26,104 @@ defmodule LucumaWeb.Features.WaitlistTest do
       assert_text(page, "Today")
 
       page
-      |> click(link("Waitlist"))
+      |> click(link("Waitlisting"))
+    end
+  end
+
+  describe "adding a waitlist" do
+    test "it does not allow non company_admins to add new waitlists", %{session: session} do
+      company = insert(:company)
+      business = insert(:business, company: company)
+      user = insert(:user, company: company, roles: ["staff"])
+      user_business = insert(:user_business, user_id: user.id, business_id: business.id)
+      waitlist = insert(:waitlist, business: business)
+      insert(:confirmation_sms_setting, waitlist: waitlist)
+      insert(:attendance_sms_setting, waitlist: waitlist)
+
+      page =
+        session
+        |> visit("/")
+        |> click(link("Sign In"))
+        |> fill_in(text_field("Email"), with: user.email)
+        |> fill_in(text_field("Password"), with: "123123123")
+        |> find(button("Sign In"), &assert(has_text?(&1, "Sign In")))
+        |> click(button("Sign In"))
+
+      assert_text(page, "Today")
+
+      page
+      |> click(link("Waitlisting"))
+
+      page
+      |> refute_has(link("Add Waitlist"))
+    end
+
+    test "it allows company_admins to add new waitlists", %{session: session} do
+      company = insert(:company)
+      business = insert(:business, company: company)
+      user = insert(:user, company: company)
+      user_business = insert(:user_business, user_id: user.id, business_id: business.id)
+      waitlist = insert(:waitlist, business: business)
+      insert(:confirmation_sms_setting, waitlist: waitlist)
+      insert(:attendance_sms_setting, waitlist: waitlist)
+
+      page =
+        session
+        |> visit("/")
+        |> click(link("Sign In"))
+        |> fill_in(text_field("Email"), with: user.email)
+        |> fill_in(text_field("Password"), with: "123123123")
+        |> find(button("Sign In"), &assert(has_text?(&1, "Sign In")))
+        |> click(button("Sign In"))
+
+      assert_text(page, "Today")
+
+      page
+      |> click(link("Waitlisting"))
+
+      page
+      |> assert_has(link("Add Waitlist"))
+
+      page
+      |> click(link("Add Waitlist"))
+      |> fill_in(text_field("Name"), with: "new waitlist")
+      |> click(button("Create"))
+      |> take_screenshot
+      |> assert_text("new waitlist customers")
+    end
+  end
+
+  describe "deleteing a waitlist" do
+    test "it allows company_admins to delete waitlists", %{session: session} do
+      company = insert(:company)
+      business = insert(:business, company: company)
+      user = insert(:user, company: company)
+      user_business = insert(:user_business, user_id: user.id, business_id: business.id)
+      waitlist = insert(:waitlist, business: business)
+      insert(:confirmation_sms_setting, waitlist: waitlist)
+      insert(:attendance_sms_setting, waitlist: waitlist)
+
+      page =
+        session
+        |> visit("/")
+        |> click(link("Sign In"))
+        |> fill_in(text_field("Email"), with: user.email)
+        |> fill_in(text_field("Password"), with: "123123123")
+        |> find(button("Sign In"), &assert(has_text?(&1, "Sign In")))
+        |> click(button("Sign In"))
+
+      assert_text(page, "Today")
+
+      page
+      |> click(link("Waitlisting"))
+      |> click(link(waitlist.name))
+      |> click(link("Settings"))
+
+      page
+      |> assert_has(link("Delete"))
+
+      page
+      |> click(link("Delete"))
     end
   end
 
@@ -52,7 +149,8 @@ defmodule LucumaWeb.Features.WaitlistTest do
 
       page =
         page
-        |> click(link("Waitlist"))
+        |> click(link("Waitlisting"))
+        |> click(link(waitlist.name))
         |> find(link("Settings"), &assert(has_text?(&1, "Settings")))
         |> click(link("Settings"))
 
@@ -131,7 +229,8 @@ defmodule LucumaWeb.Features.WaitlistTest do
 
       page =
         page
-        |> click(link("Waitlist"))
+        |> click(link("Waitlisting"))
+        |> click(link(waitlist.name))
         |> find(link("Settings"), &assert(has_text?(&1, "Settings")))
         |> click(link("Settings"))
 
@@ -192,7 +291,8 @@ defmodule LucumaWeb.Features.WaitlistTest do
 
       page =
         page
-        |> click(link("Waitlist"))
+        |> click(link("Waitlisting"))
+        |> click(link(waitlist.name))
         |> find(link("Settings"), &assert(has_text?(&1, "Settings")))
         |> click(link("Settings"))
 
@@ -249,7 +349,8 @@ defmodule LucumaWeb.Features.WaitlistTest do
 
       page =
         page
-        |> click(link("Waitlist"))
+        |> click(link("Waitlisting"))
+        |> click(link(waitlist.name))
 
       page
       |> assert_text("Settings")
@@ -283,7 +384,8 @@ defmodule LucumaWeb.Features.WaitlistTest do
 
     page =
       page
-      |> click(link("Waitlist"))
+      |> click(link("Waitlisting"))
+      |> click(link(waitlist.name))
       |> refute_has(link("Settings"))
   end
 end

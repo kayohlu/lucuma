@@ -1,40 +1,62 @@
-<div class="card">
-  <div class="card-header">
-    <%= gettext("Today's highlights") %>
-  </div>
-  <div class="card-body">
-    <div class="row">
-      <div class="col text-center align-self-center">
-        <h1 class="display-1 d-inline"><%= @waitlisted %></h1>
-        <p class="text-muted"><%= gettext("Waitlisted") %></p>
-      </div>
-      <div class="col text-center align-self-center">
-        <h1 class="display-1 d-inline"><%= @waiting %></h1>
-        <p class="text-muted"><%= gettext("Waiting") %></p>
-      </div>
-      <div class="col text-center align-self-center">
-        <h1 class="display-1 d-inline"><%= @average_wait_time %></h1><small class="text-muted">mins</small>
-        <p class="text-muted"><%= gettext("Average wait time") %></p>
-      </div>
-    </div>
+<div class="row mb-4">
+  <div class="col d-flex align-items-center">
+    <h5 class="mb-0"><%= gettext("Today's highlights") %></h5>
   </div>
 </div>
 
-
-<div class="card mt-4">
+<div class="card">
   <div class="card-header">
-    <%= gettext("Busiest hours expected today (average amount of people served for per hour)") %>
   </div>
   <div class="card-body">
-      <div class="col">
-        <%= content_tag(:div, nil,
-          [
-            {:data,
-               [waitlist_average_served_per_hour_for_day_data: Jason.encode!(convert_to_highcharts_named_series(@average_served_per_hour_for_todays_day))]
-            },
-            id: "waitlist-average-served-per-hour-for-day-container"
-          ])
-        %>
+    <nav>
+      <div class="nav nav-tabs nav-justified" id="nav-tab" role="tablist">
+        <%= for {waitlist, _} <- @stats do %>
+          <a class="nav-item nav-link <%= if waitlist.id == hd(@stats |> Map.keys).id, do: "active", else: nil %>" id="waitlist-<%= waitlist.id %>-tab" data-toggle="tab" href="#waitlist-<%= waitlist.id %>" role="tab" aria-controls="waitlist-<%= waitlist.id %>" aria-selected="true"><%= waitlist.name %></a>
+        <% end %>
       </div>
+    </nav>
+
+    <div class="tab-content" id="nav-tabContent">
+      <%= for {waitlist, %{ waitlisted: waitlisted, waiting: waiting, average_wait_time: average_wait_time, average_served_per_hour_for_todays_day: average_served_per_hour_for_todays_day }} <- @stats do %>
+        <div class="tab-pane fade <%= if waitlist.id == hd(@stats |> Map.keys).id, do: "show active", else: nil %>" id="waitlist-<%= waitlist.id %>" role="tabpanel" aria-labelledby="waitlist-<%= waitlist.id %>-tab">
+          <div class="row mt-4">
+            <div class="col text-center align-self-center">
+              <h1 class="display-1 d-inline"><%= waitlisted %></h1>
+              <p class="text-muted"><%= gettext("Waitlisted") %></p>
+            </div>
+            <div class="col text-center align-self-center">
+              <h1 class="display-1 d-inline"><%= waiting %></h1>
+              <p class="text-muted"><%= gettext("Waiting") %></p>
+            </div>
+            <div class="col text-center align-self-center">
+              <h1 class="display-1 d-inline"><%= average_wait_time %></h1><small class="text-muted">mins</small>
+              <p class="text-muted"><%= gettext("Average wait time") %></p>
+            </div>
+          </div>
+          <div class="row mt-5">
+            <div class="col">
+              <div class="card-header mb-3 pl-0">
+                <%= gettext("Busiest hours expected today (average amount of people served for per hour)") %>
+              </div>
+              <%= if average_served_per_hour_for_todays_day == [] do %>
+                <div style="height: 400px;" class="d-flex align-items-center justify-content-center">
+                  <%= gettext("Not data yet..") %>
+                </div>
+              <% else %>
+                <%= content_tag(:div, nil,
+                    [
+                    {:data,
+                    [waitlist_average_served_per_hour_for_day_data: Jason.encode!(convert_to_highcharts_named_series(average_served_per_hour_for_todays_day))]
+                    },
+                    id: "waitlist-average-served-per-hour-for-day-container"
+                    ])
+                %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
   </div>
 </div>

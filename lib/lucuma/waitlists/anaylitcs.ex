@@ -6,9 +6,21 @@ defmodule Lucuma.Waitlists.Analytics do
 
   alias Lucuma.Repo
   alias Lucuma.Waitlists.StandBy
+  alias Lucuma.Waitlists.Waitlist
+  alias Lucuma.Accounts.Business
 
-  def total_waitlisted(waitlist_id, business) do
-    Repo.one(from s in StandBy, where: s.waitlist_id == ^waitlist_id, select: count(s.id))
+  def total_waitlisted(%Waitlist{} = waitlist) do
+    Repo.one(from s in StandBy, where: s.waitlist_id == ^waitlist.id, select: count(s.id))
+  end
+
+  def total_waitlisted(%Business{} = business) do
+    waitlist_query = Repo.all(from w in Waitlist, where: w.business_id == ^business.id, select: w.id)
+    Repo.one(
+      from s in StandBy,
+      where:
+      s.waitlist_id in ^waitlist_query,
+      select: count(s.id)
+    )
   end
 
   def unique_customer_count(waitlist_id, business) do

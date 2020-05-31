@@ -7,14 +7,13 @@ defmodule LucumaWeb.Plugs.LimitTrial do
   alias Lucuma.Billing
 
   def limit_trial_accounts(conn, _params) do
-    waitlist = Waitlists.get_business_waitlist(conn.assigns.current_business.id)
     business = conn.assigns.current_business
 
     if Billing.subscription_active?(conn.assigns.current_company) do
       conn
       |> assign(:trial_limit_reached, false)
     else
-      if Analytics.total_waitlisted(waitlist.id, business) >= Waitlists.trial_limit() do
+      if Analytics.total_waitlisted(business) >= Waitlists.trial_limit() do
         conn
         |> assign(:trial_limit_reached, true)
       else
@@ -25,7 +24,6 @@ defmodule LucumaWeb.Plugs.LimitTrial do
   end
 
   def show_trial_limit_warning(conn, _params) do
-    waitlist = Waitlists.get_business_waitlist(conn.assigns.current_business.id)
     business = conn.assigns.current_business
 
     if Billing.subscription_active?(conn.assigns.current_company) do
@@ -33,7 +31,7 @@ defmodule LucumaWeb.Plugs.LimitTrial do
       |> assign(:show_trial_limit_warning, nil)
     else
       conn
-      |> assign(:show_trial_limit_warning, Waitlists.trial_remainder(waitlist, business))
+      |> assign(:show_trial_limit_warning, Waitlists.trial_remainder(business))
     end
   end
 end

@@ -9,7 +9,7 @@
         <%= link gettext("Dashboard"), to: Routes.dashboard_path(@conn, :show), class: "nav-link #{ if @conn.request_path == Routes.dashboard_path(@conn, :show), do: 'active', else: nil }" %>
       </li>
       <li class="nav-item">
-        <%= link gettext("Waitlist"), to: Routes.waitlists_waitlist_path(@conn, :index), class: "nav-link #{ if String.match?(@conn.request_path, ~r/waitlists/), do: 'active', else: nil }" %>
+        <%= link gettext("Waitlisting"), to: Routes.waitlists_waitlist_path(@conn, :index), class: "nav-link #{ if String.match?(@conn.request_path, ~r/waitlists/), do: 'active', else: nil }" %>
       </li>
     </ul>
     <ul class="navbar-nav ml-auto">

@@ -93,7 +93,7 @@ defmodule Lucuma.Notifications.NotificationConsumer do
   end
 
   @doc """
-  Since this process monitors the notifieer processes, when they receive a shutdown
+  Since this process monitors the notifier processes, when they receive a shutdown
   exit signal they send the message below to this process.
   We handle it here.
   """
@@ -122,6 +122,12 @@ defmodule Lucuma.Notifications.NotificationConsumer do
   end
 
   @doc """
+  In this function i use the dynamic supervisor to add the notifier taskses
+  to the apps supervision tree because when a shutdown signal is sent i want the
+  tasks to gracefully shut down.
+
+  This process here monitors the notifier tasks to so they can me marked as completed
+  or not, and handled appropriately.
   """
   defp process_event(event) do
     {:ok, child_pid} =

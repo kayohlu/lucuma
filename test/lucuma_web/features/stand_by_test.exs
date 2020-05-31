@@ -5,7 +5,7 @@ defmodule LucumaWeb.Features.StandByTest do
   import Wallaby.Query
 
   describe "notifying a stand by" do
-    test "redirects to the only wailist in the business", %{session: session} do
+    test "redirects to the waitlist in the business", %{session: session} do
       company = insert(:company)
       business = insert(:business, company: company)
       user = insert(:user, company: company)
@@ -23,7 +23,8 @@ defmodule LucumaWeb.Features.StandByTest do
         |> fill_in(text_field("Password"), with: "123123123")
         |> find(button("Sign In"), &assert(has_text?(&1, "Sign In")))
         |> click(button("Sign In"))
-        |> click(link("Waitlist"))
+        |> click(link("Waitlisting"))
+        |> click(link(waitlist.name))
 
       assert_has(page, link("Notify"))
       assert_has(page, link("No Show"))
@@ -37,7 +38,7 @@ defmodule LucumaWeb.Features.StandByTest do
   end
 
   describe "marking a stand by as arrived" do
-    test "redirects to the only wailist in the business", %{session: session} do
+    test "redirects to the waitlist in the business", %{session: session} do
       company = insert(:company)
       business = insert(:business, company: company)
       user = insert(:user, company: company)
@@ -55,7 +56,8 @@ defmodule LucumaWeb.Features.StandByTest do
         |> fill_in(text_field("Password"), with: "123123123")
         |> find(button("Sign In"), &assert(has_text?(&1, "Sign In")))
         |> click(button("Sign In"))
-        |> click(link("Waitlist"))
+        |> click(link("Waitlisting"))
+        |> click(link(waitlist.name))
 
       assert_has(page, link("Notify"))
       assert_has(page, link("No Show"))
@@ -71,7 +73,7 @@ defmodule LucumaWeb.Features.StandByTest do
   end
 
   describe "marking a stand by as no show" do
-    test "redirects to the only wailist in the business", %{session: session} do
+    test "redirects to the waitlist in the business", %{session: session} do
       company = insert(:company)
       business = insert(:business, company: company)
       user = insert(:user, company: company)
@@ -89,7 +91,8 @@ defmodule LucumaWeb.Features.StandByTest do
         |> fill_in(text_field("Password"), with: "123123123")
         |> find(button("Sign In"), &assert(has_text?(&1, "Sign In")))
         |> click(button("Sign In"))
-        |> click(link("Waitlist"))
+        |> click(link("Waitlisting"))
+        |> click(link(waitlist.name))
 
       assert_has(page, link("Notify"))
       assert_has(page, link("No Show"))
@@ -127,7 +130,8 @@ defmodule LucumaWeb.Features.StandByTest do
 
       page =
         page
-        |> click(link("Waitlist"))
+        |> click(link("Waitlisting"))
+        |> click(link(waitlist.name))
         |> find(button("Add Person"), &assert(has_text?(&1, "Add Person")))
         |> click(button("Add Person"))
         |> fill_in(text_field("Name"), with: "name")

@@ -12,7 +12,7 @@ defmodule Lucuma.WaitlistsTests.AnalyticsTest do
       business = insert(:business, company: insert(:company))
       waitlist = insert(:waitlist, business: business)
 
-      assert Analytics.total_waitlisted(waitlist.id, business) == 0
+      assert Analytics.total_waitlisted(waitlist) == 0
     end
   end
 

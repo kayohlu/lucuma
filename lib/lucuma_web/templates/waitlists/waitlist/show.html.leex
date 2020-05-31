@@ -1,7 +1,7 @@
 <%= if @show_form == false do %>
   <div class="row mb-4">
     <div class="col d-flex align-items-center justify-content-between">
-      <div><h5 class="mb-0"><%= gettext("Customers") %></h5></div>
+      <div><h5 class="mb-0"><%= @waitlist.name %> <%= gettext("customers") %></h5></div>
 
       <div>
         <%= if @trial_limit_reached do %>
@@ -19,80 +19,87 @@
     </div>
   </div>
 
-  <%= for stand_by <- @stand_bys do %>
-    <div class="row rounded bg-white pb-2 default-box-shadow mb-4">
 
-      <div class="col-sm-12 col-md-6 pt-2">
-        <div>
-          <h5 class="mb-1 text-body-color"><%= stand_by.name %></h5>
-          <ul class="list-inline mb-0">
-            <li class="list-inline-item"><small class="text-muted"><i class='fas fa-users'></i> <%= stand_by.party_size %></small></li>
-            <li class="list-inline-item"><small class="text-muted"><i class="fas fa-mobile"></i> <%= stand_by.contact_phone_number %></small></li>
-            <li class="list-inline-item"><small class="text-muted"><i class="fas fa-stopwatch"></i> <%= time_waited(stand_by) %> mins</small></li>
-          </ul>
+  <%= for stand_by <- @stand_bys do %>
+    <div class="row mb-4">
+      <div class="col-sm-12">
+        <div class="p-2 rounded bg-white">
+          <div class="row ">
+            <div class="col-sm-12 col-md-6 pt-2">
+              <div>
+                <h5 class="mb-1 text-body-color"><%= stand_by.name %></h5>
+                <ul class="list-inline mb-0">
+                  <li class="list-inline-item"><small class="text-muted"><i class='fas fa-users'></i> <%= stand_by.party_size %></small></li>
+                  <li class="list-inline-item"><small class="text-muted"><i class="fas fa-mobile"></i> <%= stand_by.contact_phone_number %></small></li>
+                  <li class="list-inline-item"><small class="text-muted"><i class="fas fa-stopwatch"></i> <%= time_waited(stand_by) %> mins</small></li>
+                </ul>
+              </div>
+            </div>
+            <div class="pt-2 col-sm-12 col-md-6 d-flex flex-fill align-items-center justify-content-center justify-content-md-end">
+              <div>
+                <%= if @attendance_sms_setting.enabled do %>
+                  <%= if is_nil(stand_by.notified_at) do %>
+                    <%= link gettext("Notify"), to: '#', phx_click: "notify_stand_by", phx_value_stand_by_id: stand_by.id, class: "ml-1 btn btn-warning" %>
+                  <% else %>
+                    <%= link "Notify Again", to: '#', phx_click: "notify_stand_by", phx_value_stand_by_id: stand_by.id,  class: "ml-1 btn btn-warning" %>
+                  <% end %>
+                <% end %>
+                <%= if is_nil(stand_by.attended_at) do %>
+                  <%= link gettext("Arrived"), to: '#', phx_click: "mark_as_attended", phx_value_stand_by_id: stand_by.id,  class: "ml-1 btn btn-success" %>
+                <% else %>
+                  <button type="button" class="ml-1 btn btn-success disabled"><%= gettext("Arrived") %></button>
+                <% end %>
+                <%= if is_nil(stand_by.no_show_at) do %>
+                  <%= link gettext("No Show"), to: '#', phx_click: "mark_as_no_show", phx_value_stand_by_id: stand_by.id,  class: "ml-1 btn btn-danger" %>
+                <% else %>
+                  <button type="button" class="ml-1 btn btn-danger disabled"><%= gettext("No Show") %></button>
+                <% end %>
+
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="pt-2 col-sm-12 col-md-6 d-flex flex-fill align-items-center justify-content-center justify-content-md-end">
-        <div>
-          <%= if @attendance_sms_setting.enabled do %>
-            <%= if is_nil(stand_by.notified_at) do %>
-              <%= link gettext("Notify"), to: '#', phx_click: "notify_stand_by", phx_value_stand_by_id: stand_by.id, class: "ml-1 btn btn-warning" %>
-            <% else %>
-              <%= link "Notify Again", to: '#', phx_click: "notify_stand_by", phx_value_stand_by_id: stand_by.id,  class: "ml-1 btn btn-warning" %>
-            <% end %>
-          <% end %>
-          <%= if is_nil(stand_by.attended_at) do %>
-            <%= link gettext("Arrived"), to: '#', phx_click: "mark_as_attended", phx_value_stand_by_id: stand_by.id,  class: "ml-1 btn btn-success" %>
-          <% else %>
-            <button type="button" class="ml-1 btn btn-success disabled">Arrived</button>
-          <% end %>
-          <%= if is_nil(stand_by.no_show_at) do %>
-            <%= link gettext("No Show"), to: '#', phx_click: "mark_as_no_show", phx_value_stand_by_id: stand_by.id,  class: "ml-1 btn btn-danger" %>
-          <% else %>
-            <button type="button" class="ml-1 btn btn-danger disabled">No Show</button>
-          <% end %>
+      </div>
 
+
+    <% end %>
+
+  <% else %>
+    <div class="row mb-4">
+      <div class="col-xs-12 col-md-6 offset-md-3 d-flex align-items-center justify-content-between">
+        <div><h5 class="mb-0"><%= gettext("New customer") %></h5></div>
+        <div>
+          <button type="button" class="btn btn-secondary" phx-click="clear_form">
+            <%= gettext("Cancel") %>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12 col-md-6 offset-md-3">
+        <div class="card">
+          <div class="card-body">
+            <%= form_for @changeset, "#", [phx_submit: :save, class: ""], fn f -> %>
+              <%= form_group(f, :name) %>
+              <%= phone_form_group(f, :contact_phone_number) %>
+              <%= form_group(f, :party_size) %>
+
+              <%= input_group(f, :estimated_wait_time) do %>
+                <%= number_input(f, :estimated_wait_time, class: input_field_classes(f, :estimated_wait_time)) %>
+                <div class="input-group-append">
+                  <span class="input-group-text" ><%= gettext("minutes") %></span>
+                </div>
+                <%= error_tag(f, :estimated_wait_time) %>
+              <% end %>
+
+              <%= form_group(f, :notes, using: :textarea) %>
+              <%= submit gettext("Add"), class: "btn btn-primary btn-block" %>
+            <% end %>
+          </div>
         </div>
       </div>
     </div>
 
   <% end %>
-
-<% else %>
-  <div class="row mb-4">
-    <div class="col d-flex align-items-center justify-content-between">
-      <div><h5 class="mb-0"><%= gettext("New customer") %></h5></div>
-      <div>
-        <button type="button" class="btn btn-outline-secondary" phx-click="clear_form">
-          <%= gettext("Cancel") %>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="card">
-        <div class="card-body">
-          <%= form_for @changeset, "#", [phx_submit: :save, class: ""], fn f -> %>
-            <%= form_group(f, :name) %>
-            <%= phone_form_group(f, :contact_phone_number) %>
-            <%= form_group(f, :party_size) %>
-
-            <%= input_group(f, :estimated_wait_time) do %>
-              <%= number_input(f, :estimated_wait_time, class: input_field_classes(f, :estimated_wait_time)) %>
-              <div class="input-group-append">
-                <span class="input-group-text" ><%= gettext("minutes") %></span>
-              </div>
-              <%= error_tag(f, :estimated_wait_time) %>
-            <% end %>
-
-            <%= form_group(f, :notes, using: :textarea) %>
-            <%= submit gettext("Add"), class: "btn btn-primary btn-block" %>
-          <% end %>
-        </div>
-      </div>
-    </div>
-  </div>
-
-<% end %>

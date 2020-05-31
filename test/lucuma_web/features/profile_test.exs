@@ -35,7 +35,7 @@ defmodule LucumaWeb.Features.ProfileTest do
       |> find(css(".nav-link.active", count: 1))
       |> assert_text("Profile")
 
-      assert_text(page, "Your Profile")
+      assert_text(page, "Profile")
 
       page
       |> fill_in(text_field("Email"), with: "b@b.com")
@@ -82,7 +82,7 @@ defmodule LucumaWeb.Features.ProfileTest do
       |> find(css(".nav-link.active", count: 1))
       |> assert_text("Profile")
 
-      assert_text(page, "Your Profile")
+      assert_text(page, "Profile")
 
       page
       |> fill_in(text_field("user[password]"), with: "321321321")

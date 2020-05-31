@@ -14,6 +14,7 @@ defmodule Lucuma.Waitlists do
   alias Lucuma.Waitlists.ConfirmationSmsSetting
   alias Lucuma.Waitlists.AttendanceSmsSetting
   alias Lucuma.Waitlists.Analytics
+  alias Lucuma.Accounts.Business
   alias Lucuma.Notifications
   alias LucumaWeb.Router.Helpers
 
@@ -21,13 +22,30 @@ defmodule Lucuma.Waitlists do
     @trial_limit
   end
 
-  def trial_remainder(waitlist, business) do
-    trial_limit - Analytics.total_waitlisted(waitlist.id, business)
+  def trial_remainder(%Business{} = business) do
+    [trial_limit - Analytics.total_waitlisted(business), 0] |> Enum.max
   end
 
-  def get_business_waitlist(business_id) do
-    Repo.one(from w in Waitlist, where: w.business_id == ^business_id)
+  def business_waitlists(business_id) do
+    Repo.all(from w in Waitlist, where: w.business_id == ^business_id, order_by: w.name)
   end
+
+  @doc """
+  Deletes a Waitlist.
+
+  ## Examples
+
+      iex> delete_waitlist(waitlist)
+      {:ok, %Waitlist{}}
+
+      iex> delete_waitlist(waitlist)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_waitlist(%Waitlist{} = waitlist) do
+    Repo.delete(waitlist)
+  end
+
 
   def get_waitlist!(id) do
     # This method does two queries because of the preload.
@@ -164,6 +182,12 @@ defmodule Lucuma.Waitlists do
       })
   end
 
+  def update_waitlist(%Waitlist{} = waitlist, attrs) do
+    waitlist
+    |> Waitlist.changeset(attrs)
+    |> Repo.update()
+  end
+
   def update_confirmation_sms_setting(%ConfirmationSmsSetting{} = sms_setting, attrs) do
     sms_setting
     |> ConfirmationSmsSetting.changeset(attrs)
@@ -276,6 +300,10 @@ defmodule Lucuma.Waitlists do
   """
   def change_stand_by(%StandBy{} = stand_by, attrs \\ %{}) do
     StandBy.changeset(stand_by, attrs)
+  end
+
+  def change_waitlist(%Waitlist{} = waitlist, attrs \\ %{}) do
+    Waitlist.changeset(waitlist, attrs)
   end
 
   def party_size_breakdown(waitlist_id) do

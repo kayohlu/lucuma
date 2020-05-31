@@ -68,7 +68,7 @@ defmodule LucumaWeb.Router do
   scope "/waitlists", LucumaWeb.Waitlists, as: :waitlists do
     pipe_through :protected
 
-    resources "/", WaitlistController, only: [:index, :show] do
+    resources "/", WaitlistController do
       resources "/stand_bys", StandByController, only: [:new, :create]
       resources "/settings", SettingController, only: [:index, :update]
       resources "/analytics", AnalyticsController, only: [:index]

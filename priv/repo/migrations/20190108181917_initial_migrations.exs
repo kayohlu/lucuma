@@ -89,10 +89,11 @@ defmodule Lucuma.Repo.Migrations.CreateUsers do
     end
 
     create index(:waitlists, [:business_id])
+    create unique_index(:waitlists, [:name, :business_id])
 
     create table(:stand_bys) do
       add :business_id, references(:businesses, on_delete: :nothing)
-      add :waitlist_id, references(:waitlists, on_delete: :nothing), null: false
+      add :waitlist_id, references(:waitlists, on_delete: :delete_all), null: false
       add :name, :string
       add :contact_phone_number, :string
       add :party_size, :integer
@@ -113,7 +114,7 @@ defmodule Lucuma.Repo.Migrations.CreateUsers do
     create table(:confirmation_sms_settings) do
       add :enabled, :boolean
       add :message_content, :string
-      add :waitlist_id, references(:waitlists, on_delete: :nothing), null: false
+      add :waitlist_id, references(:waitlists, on_delete: :delete_all), null: false
 
       timestamps()
     end
@@ -123,7 +124,7 @@ defmodule Lucuma.Repo.Migrations.CreateUsers do
     create table(:attendance_sms_settings) do
       add :enabled, :boolean
       add :message_content, :string
-      add :waitlist_id, references(:waitlists, on_delete: :nothing), null: false
+      add :waitlist_id, references(:waitlists, on_delete: :delete_all), null: false
 
       timestamps()
     end

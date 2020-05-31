@@ -5,7 +5,7 @@ defmodule LucumaWeb.Waitlists.WaitlistView do
     round(NaiveDateTime.diff(NaiveDateTime.utc_now(), stand_by.inserted_at) / 60)
   end
 
-  def render("sub_navigation.html", assigns) do
+  def render("sub_navigation.html", %{waitlist: _waitlist} = assigns) do
     render(
       LucumaWeb.LayoutView,
       "sub_navigation.html",

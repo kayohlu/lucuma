@@ -35,7 +35,7 @@ defmodule LucumaWeb.Features.SettingsTest do
       |> find(css(".nav-link.active", count: 1))
       |> assert_text("Profile")
 
-      assert_text(page, "Your Profile")
+      assert_text(page, "Profile")
     end
 
     test "the billing link is not shown for staff users", %{session: session} do

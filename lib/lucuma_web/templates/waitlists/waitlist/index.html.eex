@@ -1,0 +1,32 @@
+<div class="row mb-4">
+  <div class="col d-flex align-items-center justify-content-between">
+    <div><h5 class="mb-0"><%= gettext("Waitlists") %></h5></div>
+    <div>
+      <%= if @trial_limit_reached do %>
+        <button type="button" class="btn btn-primary disabled">
+          <i class="fas fa-plus"></i>
+          <%= gettext("Add Waitlist") %>
+        </button>
+      <% else %>
+        <%= if LucumaWeb.Permissions.permitted_to?(@conn, LucumaWeb.Waitlists.WaitlistController, :new) do %>
+          <%= link to: Routes.waitlists_waitlist_path(@conn, :new), class: "btn btn-primary" do %>
+            <i class="fas fa-plus"></i>
+            <%= gettext("Add Waitlist") %>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<%= for waitlist <- @waitlists do %>
+  <div class="row mb-4">
+    <div class="col-sm-12">
+      <%= link to: Routes.waitlists_waitlist_path(@conn, :show, waitlist), class: "stretched-link" do %>
+        <div class="p-3 rounded bg-white">
+          <%= waitlist.name %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

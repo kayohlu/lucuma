@@ -108,7 +108,11 @@ defmodule LucumaWeb.Permissions do
             waitlist_id = conn.params["id"]
             waitlist = Lucuma.Waitlists.get_waitlist!(waitlist_id)
             conn.assigns.current_business.id == waitlist.business_id
-          end
+          end,
+          new: true,
+          create: true,
+          update: true,
+          delete: true
         },
         LucumaWeb.Waitlists.StandByController => [:new, :create],
         LucumaWeb.Waitlists.SettingController => %{

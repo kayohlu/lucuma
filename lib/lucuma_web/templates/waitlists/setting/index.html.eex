@@ -69,3 +69,57 @@
     </div>
   </div>
 </div>
+
+<div class="row mb-4">
+  <div class="col d-flex align-items-center">
+    <h5 class="mb-0"><%= gettext("Waitlist Name") %></h5>
+  </div>
+</div>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <div class="row mb-6">
+      <div class="col-md-4 d-flex justify-content-between h-25">
+        <div class="d-flex flex-column w-75">
+          <span class="text-muted"><%= gettext("Change the name of your waitlist.") %></span>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <%= form_for @waitlist_changeset, Routes.waitlists_waitlist_setting_path(@conn, :update, @waitlist.id, @waitlist.id), fn f -> %>
+          <%= if @waitlist_changeset.action do %>
+            <div class="alert alert-danger">
+              <span><%= gettext("Oops, something went wrong!") %></span>
+            </div>
+          <% end %>
+
+          <%= form_group f, :name %>
+
+          <div>
+            <%= submit gettext("Update"), class: "btn btn-secondary btn-block" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mb-4">
+  <div class="col d-flex align-items-center">
+    <h5 class="mb-0"><%= gettext("Delete waitlist") %></h5>
+  </div>
+</div>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <div class="row mb-6">
+      <div class="col-md-4 d-flex justify-content-between h-25">
+        <div class="d-flex flex-column w-75">
+          <span class="text-muted"><%= gettext("This will delete the waitlist and all customers added to the waitlist.") %></span>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <%= link("Delete", method: :delete, to: Routes.waitlists_waitlist_path(@conn, :delete, @waitlist.id), data: [confirm: gettext("Are you sure you want to delete?")], class: "btn btn-danger") %>
+      </div>
+    </div>
+  </div>
+</div>
