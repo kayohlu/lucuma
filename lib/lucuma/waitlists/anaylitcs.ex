@@ -14,12 +14,13 @@ defmodule Lucuma.Waitlists.Analytics do
   end
 
   def total_waitlisted(%Business{} = business) do
-    waitlist_query = Repo.all(from w in Waitlist, where: w.business_id == ^business.id, select: w.id)
+    waitlist_query =
+      Repo.all(from w in Waitlist, where: w.business_id == ^business.id, select: w.id)
+
     Repo.one(
       from s in StandBy,
-      where:
-      s.waitlist_id in ^waitlist_query,
-      select: count(s.id)
+        where: s.waitlist_id in ^waitlist_query,
+        select: count(s.id)
     )
   end
 

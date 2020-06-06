@@ -56,7 +56,6 @@ defmodule LucumaWeb.Live.Waitlists.WaitlistView do
     attendance_sms_setting = Waitlists.attendance_sms_setting_for_waitlist(waitlist.id)
     changeset = Waitlists.change_stand_by(%StandBy{})
 
-
     Phoenix.PubSub.subscribe(LucumaWeb.PubSub, self(), topic(waitlist_id))
 
     assigns = [
@@ -113,7 +112,9 @@ defmodule LucumaWeb.Live.Waitlists.WaitlistView do
 
         socket = assign(socket, assigns)
 
-        Phoenix.PubSub.broadcast_from(LucumaWeb.PubSub, self(), topic(waitlist.id), %{event: "save"})
+        Phoenix.PubSub.broadcast_from(LucumaWeb.PubSub, self(), topic(waitlist.id), %{
+          event: "save"
+        })
 
         {:noreply, socket}
 
@@ -141,7 +142,10 @@ defmodule LucumaWeb.Live.Waitlists.WaitlistView do
       average_wait_time: Waitlists.calculate_average_wait_time(waitlist.id)
     ]
 
-    Phoenix.PubSub.broadcast_from(LucumaWeb.PubSub, self(), topic(waitlist.id), %{event: "notify_stand_by"})
+    Phoenix.PubSub.broadcast_from(LucumaWeb.PubSub, self(), topic(waitlist.id), %{
+      event: "notify_stand_by"
+    })
+
     {:noreply, assign(socket, assigns)}
   end
 
@@ -158,7 +162,10 @@ defmodule LucumaWeb.Live.Waitlists.WaitlistView do
       average_wait_time: Waitlists.calculate_average_wait_time(waitlist.id)
     ]
 
-    Phoenix.PubSub.broadcast_from(LucumaWeb.PubSub, self(), topic(waitlist.id), %{event: "mark_as_attended"})
+    Phoenix.PubSub.broadcast_from(LucumaWeb.PubSub, self(), topic(waitlist.id), %{
+      event: "mark_as_attended"
+    })
+
     {:noreply, assign(socket, assigns)}
   end
 
@@ -175,7 +182,10 @@ defmodule LucumaWeb.Live.Waitlists.WaitlistView do
       average_wait_time: Waitlists.calculate_average_wait_time(waitlist.id)
     ]
 
-    Phoenix.PubSub.broadcast_from(LucumaWeb.PubSub, self(), topic(waitlist.id), %{event: "mark_as_no_show"})
+    Phoenix.PubSub.broadcast_from(LucumaWeb.PubSub, self(), topic(waitlist.id), %{
+      event: "mark_as_no_show"
+    })
+
     {:noreply, assign(socket, assigns)}
   end
 
@@ -194,7 +204,6 @@ defmodule LucumaWeb.Live.Waitlists.WaitlistView do
   """
   def handle_info(message, socket) do
     Logger.info("Receiving message from PubSub")
-
 
     waitlist = Waitlists.get_waitlist!(socket.assigns.waitlist.id)
     stand_bys = Waitlists.get_waitlist_stand_bys(socket.assigns.waitlist.id)

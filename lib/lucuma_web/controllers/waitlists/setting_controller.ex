@@ -47,7 +47,7 @@ defmodule LucumaWeb.Waitlists.SettingController do
         attendance_sms_setting = Repo.get_by!(AttendanceSmsSetting, waitlist_id: waitlist.id)
 
         conn
-        |> put_flash( :error, "Your settings are not correct. Please review them.")
+        |> put_flash(:error, "Your settings are not correct. Please review them.")
         |> render(
           "index.html",
           waitlist: waitlist,
@@ -80,7 +80,7 @@ defmodule LucumaWeb.Waitlists.SettingController do
         attendance_sms_setting = Repo.get_by!(AttendanceSmsSetting, waitlist_id: waitlist.id)
 
         conn
-        |> put_flash( :error, "Your settings are not correct. Please review them.")
+        |> put_flash(:error, "Your settings are not correct. Please review them.")
         |> render(
           "index.html",
           waitlist: waitlist,
@@ -94,23 +94,21 @@ defmodule LucumaWeb.Waitlists.SettingController do
     end
   end
 
-  def update(conn, %{ "waitlist" => waitlist_params } = params) do
+  def update(conn, %{"waitlist" => waitlist_params} = params) do
     waitlist = Waitlists.get_waitlist!(params["id"])
 
     case Waitlists.update_waitlist(waitlist, waitlist_params) do
       {:ok, waitlist} ->
         conn
         |> put_flash(:error, "Settings updated successfully.")
-        |> redirect(
-          to: Routes.waitlists_waitlist_setting_path(conn, :index, waitlist.id)
-        )
+        |> redirect(to: Routes.waitlists_waitlist_setting_path(conn, :index, waitlist.id))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         confirmation_sms_setting = Repo.get_by!(ConfirmationSmsSetting, waitlist_id: waitlist.id)
         attendance_sms_setting = Repo.get_by!(AttendanceSmsSetting, waitlist_id: waitlist.id)
 
         conn
-        |> put_flash( :error, "Your settings are not correct. Please review them.")
+        |> put_flash(:error, "Your settings are not correct. Please review them.")
         |> render(
           "index.html",
           waitlist: waitlist,

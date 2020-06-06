@@ -21,9 +21,7 @@ config :lucuma, LucumaWeb.Endpoint,
   ]
 
 config :lucuma, LucumaWeb.Endpoint,
-  pubsub: [adapter: Phoenix.PubSub.PG2,
-    pool_size: 1,
-    name: LucumaWeb.PubSub]
+  pubsub: [adapter: Phoenix.PubSub.PG2, pool_size: 1, name: LucumaWeb.PubSub]
 
 # Configures Elixir's Logger
 config :logger, :console,

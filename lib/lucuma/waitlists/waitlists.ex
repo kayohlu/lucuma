@@ -23,7 +23,7 @@ defmodule Lucuma.Waitlists do
   end
 
   def trial_remainder(%Business{} = business) do
-    [trial_limit - Analytics.total_waitlisted(business), 0] |> Enum.max
+    [trial_limit - Analytics.total_waitlisted(business), 0] |> Enum.max()
   end
 
   def business_waitlists(business_id) do
@@ -45,7 +45,6 @@ defmodule Lucuma.Waitlists do
   def delete_waitlist(%Waitlist{} = waitlist) do
     Repo.delete(waitlist)
   end
-
 
   def get_waitlist!(id) do
     # This method does two queries because of the preload.
