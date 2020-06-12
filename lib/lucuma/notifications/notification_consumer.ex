@@ -122,12 +122,15 @@ defmodule Lucuma.Notifications.NotificationConsumer do
   end
 
   @doc """
-  In this function i use the dynamic supervisor to add the notifier taskses
-  to the apps supervision tree because when a shutdown signal is sent i want the
+  In this function I use the dynamic supervisor to add the notifier tasks
+  to the app's supervision tree because when a shutdown signal is sent I want the
   tasks to gracefully shut down.
+  I want them to gracefully shut down because they might be in the middle of processing
+  a notification and I want the processing to complete successfully, or if something
+  goes wrong, mark the notification to be sent again.
 
-  This process here monitors the notifier tasks to so they can me marked as completed
-  or not, and handled appropriately.
+  This process monitors the notifier tasks too so that they can me marked as completed
+  or not and handled appropriately.
   """
   defp process_event(event) do
     {:ok, child_pid} =
@@ -136,6 +139,8 @@ defmodule Lucuma.Notifications.NotificationConsumer do
         {Lucuma.Notifications.NotifierTask, event}
       )
 
+    # Monitor the process so this process is notified of failures in the
+    # NotifierTask
     monitor_reference = Process.monitor(child_pid)
 
     Logger.info(
