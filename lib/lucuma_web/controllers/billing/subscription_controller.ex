@@ -2,12 +2,9 @@ defmodule LucumaWeb.Billing.SubscriptionController do
   @moduledoc """
   This controller is used to handle subscriptions when they have registered..
   """
-
   use LucumaWeb, :controller
 
   alias Lucuma.Billing
-  alias Lucuma.Billing.PaymentPlan
-  alias Lucuma.Billing.SubscriptionForm
 
   def delete(conn, %{"id" => stripe_payment_plan_id} = params) do
     flash_opts =

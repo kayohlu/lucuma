@@ -58,15 +58,4 @@ defmodule LucumaWeb.Waitlists.StandByController do
         render(conn, "edit.html", stand_by: stand_by, changeset: changeset)
     end
   end
-
-  def delete(conn, %{"id" => id}) do
-    waitlist = Waitlists.get_waitlist!(conn.params["waitlist_id"])
-    stand_by = Waitlists.get_stand_by!(id)
-
-    {:ok, _stand_by} = Waitlists.delete_stand_by(stand_by)
-
-    conn
-    |> put_flash(:info, "Stand by deleted successfully.")
-    |> redirect(to: Routes.stand_by_path(conn, :index))
-  end
 end

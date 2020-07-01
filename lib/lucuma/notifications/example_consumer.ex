@@ -10,7 +10,7 @@ defmodule Lucuma.Notifications.ExampleConsumer do
 
   # client
 
-  def start_link do
+  def start_link(:ok) do
     GenStage.start_link(__MODULE__, :ok)
   end
 
@@ -32,7 +32,9 @@ defmodule Lucuma.Notifications.ExampleConsumer do
     IO.inspect(state)
 
     {:consumer, state,
-     subscribe_to: [{Lucuma.Notifications.Producer, min_demand: 1, max_demand: 2}]}
+     subscribe_to: [
+       {Lucuma.Notifications.ExampleBroadcasterProducer, min_demand: 25, max_demand: 100}
+     ]}
   end
 
   def handle_events(events, from, state) do

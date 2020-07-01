@@ -1,4 +1,4 @@
-defmodule Lucuma.Notifications.NotificationConsumer do
+defmodule Lucuma.Notifications.V1.NotificationConsumer do
   use GenStage
 
   require Logger
@@ -52,9 +52,17 @@ defmodule Lucuma.Notifications.NotificationConsumer do
     Process.flag(:trap_exit, true)
 
     {:consumer, state,
-     subscribe_to: [{Lucuma.Notifications.NotificationProducer, min_demand: 50, max_demand: 100}]}
+     subscribe_to: [{Lucuma.Notifications.NotificationProducer, min_demand: 99, max_demand: 100}]}
   end
 
+  @doc """
+  # This function just spawns off new processes for each event. When it finishes
+  # it asks for more demand and does it all over again.
+  # Since this consumer does not accumalate demand to control the amount of work that
+  # it is doing it will always be asking for more demand once it's finished
+  # spawning new processes meaning we cannot apply any back pressure and prevent
+  # overloading the system with loads of processes
+  """
   def handle_events(events, from, state) do
     Logger.info("#{__MODULE__} Handling #{length(events)} events from producer")
 
@@ -104,7 +112,7 @@ defmodule Lucuma.Notifications.NotificationConsumer do
 
   @doc """
   The task completed unsuccessfully.
-  Some exception was raised and you'll see it in `reason`.
+  Some exception was raised because of `reason`.
   Process crashed?
   We change the status to "for_delivery" so sending can be retried.
   """

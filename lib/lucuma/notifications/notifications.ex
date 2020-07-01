@@ -32,10 +32,53 @@ defmodule Lucuma.Notifications do
         recipient_phone_number: recipient_phone_number
       })
 
-    if {:ok, sms_notification} = result do
-      Lucuma.Notifications.NotificationProducer.send_sms_async()
-    end
+    case result do
+      {:ok, sms_notification} ->
+        {:ok, sms_notification}
+        send_sms_notification
 
-    result
+      {:error, changeset} ->
+        {:error, changeset}
+    end
+  end
+
+  def send_sms_notification do
+    Lucuma.Notifications.V4.NotificationBroadcaster.async_notify()
+
+    {:ok, :queued}
+  end
+
+  @doc """
+  The lock line below allows us to lock those records so another machine running the same process
+  cannot query for the same rows in the db resulting in the same sms_notfications being processed more than once.
+  The "FOR UPDATE SKIP LOCKED" allows us to "skip" the lock when updating said locked records.
+  """
+  def notifications_for_dispatch(limit \\ nil) do
+    {:ok, results} =
+      Repo.transaction(fn ->
+        for_delivery_ids =
+          Repo.all(
+            from sms in SmsNotification,
+              where: sms.status == "for_delivery",
+              lock: "FOR UPDATE SKIP LOCKED",
+              select: sms.id,
+              limit: ^limit
+          )
+
+        {_count, sms_notifications} =
+          Repo.update_all(
+            from(sms in SmsNotification,
+              where: sms.id in ^for_delivery_ids,
+              select: sms
+            ),
+            [set: [status: "queued_for_delivery"]],
+            # returns all fields
+            returning: true
+          )
+
+        sms_notifications
+      end)
+
+    results || []
   end
 end

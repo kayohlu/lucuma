@@ -35,7 +35,7 @@ defmodule Lucuma.Notifications.ExampleProducer do
   """
   def handle_demand(demand, state) do
     IO.puts("Current producer state: #{state}")
-    IO.puts("Producer demand: #{demand}")
+    IO.puts("COnsumer demand: #{demand}")
 
     # Events seem to be a term for the things that will be returned to the demander..
     # The could by anything really..

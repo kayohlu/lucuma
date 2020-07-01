@@ -36,6 +36,7 @@ defmodule Lucuma.Notifications.Notifier do
     |> handle_api_response(sms_notification)
   end
 
+  # TODO: This one will never match says dialyzer
   defp handle_api_response(:ok = result, sms_notification) do
     Notifications.update_sms_notification!(sms_notification, %{status: "delivering"})
   end

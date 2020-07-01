@@ -50,28 +50,6 @@ defmodule LucumaWeb.Waitlists.WaitlistController do
     end
   end
 
-  def delete(conn, %{"id" => waitlist_id} = params) do
-    waitlist = Waitlists.get_waitlist!(waitlist_id)
-
-    case Waitlists.delete_waitlist(waitlist) do
-      {:ok, waitlist} ->
-        conn
-        |> put_flash(
-          :info,
-          "#{waitlist.name} has been successfully deleted. This cannot be undone."
-        )
-        |> redirect(to: Routes.waitlists_waitlist_path(conn, :index))
-
-      {:error, changeset} ->
-        conn
-        |> put_flash(
-          :error,
-          "#{waitlist.name} could not be deleted. Please contact support."
-        )
-        |> redirect(to: Routes.waitlists_setting_path(conn, :index, waitlist.id))
-    end
-  end
-
   def waitlist(conn, %{"waitlist" => waitlist_params} = params) do
     waitlist = Waitlists.get_waitlist!(params["id"])
 

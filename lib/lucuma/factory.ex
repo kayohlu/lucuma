@@ -77,12 +77,6 @@ defmodule Lucuma.Factory do
     |> merge_attributes(attrs)
   end
 
-  def waitlist_factory(attrs) do
-    %Lucuma.Waitlists.Waitlist{
-      name: sequence(:waitlist_name, fn n -> "Waitlist #{n}" end)
-    }
-  end
-
   def sms_notification_factory(attrs) do
     %Lucuma.Notifications.SmsNotification{
       message_content:

@@ -254,6 +254,37 @@ defmodule Lucuma.Waitlists do
     end
   end
 
+  # def create_stand_by(attrs \\ %{}, company, notification_module \\ Notifications) do
+  #     Ecto.Multi.new
+  #     |> Ecto.Multi.insert(:create_stand_by, StandBy.changeset(%StandBy{}, attrs))
+  #     |> Ecto.Multi.run(:create_sms_notification, fn _repo, %{create_stand_by: stand_by} ->
+  #       case notification_module.create_sms_notification(
+  #         stand_by.contact_phone_number,
+  #         generate_sms_notification_body(confirmation_sms_setting),
+  #         stand_by.id
+  #       ) do
+  #     end)
+  #     |> Ecto.Multi.run(:send_sms_notification, notification_module, :send_sms_notification, [])
+  #     |> Ecto.Multi.run(:report_usage, Billing, :report_usage, [company, company.stripe_payment_plan_id])
+  # end
+
+  # def get_confirmation_sms_setting!(waitlist_id) do
+  #   Repo.get_by!(ConfirmationSmsSetting, waitlist_id: waitlist_id)
+  # end
+
+  # defp generate_sms_notification_body(ConfirmationSmsSetting%{} = sms_seting) do
+  #   sms_setting.message_content
+  #   |> String.replace("[[NAME]]", stand_by.name)
+  #   |> String.replace(
+  #             "[[CANCEL_LINK]]",
+  #     Helpers.stand_bys_cancellation_url(
+  #       LucumaWeb.Endpoint,
+  #       :show,
+  #       stand_by.cancellation_uuid
+  #     )
+  #   )
+  # end
+
   @doc """
   Updates a stand_by.
 

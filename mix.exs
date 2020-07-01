@@ -50,7 +50,7 @@ defmodule Lucuma.MixProject do
       {:countries, "~> 1.5.1"},
       {:ex_phone_number, "~> 0.2.0"},
       {:ex_twilio, "~> 0.7.0"},
-      {:gen_stage, "~> 0.14"},
+      {:gen_stage, "~> 1.0"},
       {:ex_machina, "~> 2.3"},
       {:wallaby,
        github: "elixir-wallaby/wallaby", branch: "master", runtime: false, only: [:test, :ci]},

@@ -18,8 +18,8 @@ defmodule Lucuma.Application do
       LucumaWeb.Endpoint,
       # Starts a worker by calling: Lucuma.Worker.start_link(arg)
       # {Lucuma.Worker, arg},
-      {Lucuma.Notifications.NotificationProducer, [0]},
-      {Lucuma.Notifications.NotificationConsumer, []},
+      {Lucuma.Notifications.V4.NotificationBroadcaster, :ok},
+      {Lucuma.Notifications.V4.NotificationConsumer, []},
       {
         DynamicSupervisor,
         strategy: :one_for_one, name: Lucuma.NotifierDynamicSupervisor

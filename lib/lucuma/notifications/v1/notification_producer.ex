@@ -1,4 +1,4 @@
-defmodule Lucuma.Notifications.NotificationProducer do
+defmodule Lucuma.Notifications.V1.NotificationProducer do
   use GenStage
   require Logger
   import Ecto.Query
@@ -62,7 +62,7 @@ defmodule Lucuma.Notifications.NotificationProducer do
   """
   def handle_demand(demand, state) do
     Logger.info("#{__MODULE__} Producer state: #{state}")
-    Logger.info("#{__MODULE__} Producer demand: #{demand}")
+    Logger.info("#{__MODULE__} Consumer demand: #{demand}")
 
     {:noreply, events, demand}
   end
