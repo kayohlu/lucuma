@@ -12,28 +12,40 @@ defmodule Lucuma.Notifications.Notifier do
   end
 
   def send_notification(%SmsNotification{} = sms_notification) do
+    IO.inspect(sms_notification)
     send_notification(Mix.env(), sms_notification)
   end
 
   defp send_notification(:prod, sms_notification) do
-    [twilio_number_data] = ExTwilio.IncomingPhoneNumber.all()
-
-    ExTwilio.Message.create(
-      to: sms_notification.recipient_phone_number,
-      from: twilio_number_data.phone_number,
-      body: sms_notification.message_content,
-      status_callback: Helpers.sms_status_url(LucumaWeb.Endpoint, :create, sms_notification.id)
+    {:ok, response} = Mojito.request(
+      method: :post,
+      url: "https://api.mailjet.com/v4/sms-send",
+      headers: [
+        {"Content-Type", "application/json"},
+        {"Authorization", "Bearer #{System.get_env("MAILJET_SMS_API_KEY")}"}
+      ],
+      body:  %{
+        "Text" => sms_notification.message_content,
+        "To" => sms_notification.recipient_phone_number,
+        "From" => "Atunelogy"} |> Poison.encode!
     )
-    |> handle_api_response(sms_notification)
+    IO.inspect response
   end
 
   defp send_notification(_mix_env, sms_notification) do
-    ExTwilio.Message.create(
-      to: sms_notification.recipient_phone_number,
-      from: System.get_env("TWILIO_DEV_FROM_NUMBER"),
-      body: sms_notification.message_content
+    {:ok, response} = Mojito.request(
+      method: :post,
+      url: "https://api.mailjet.com/v4/sms-send",
+      headers: [
+        {"Content-Type", "application/json"},
+        {"Authorization", "Bearer #{System.get_env("MAILJET_SMS_API_KEY")}"}
+      ],
+      body:  %{
+        "Text" => sms_notification.message_content,
+        "To" => sms_notification.recipient_phone_number,
+        "From" => "Atunelogy"} |> Poison.encode!
     )
-    |> handle_api_response(sms_notification)
+    IO.inspect response
   end
 
   # TODO: This one will never match says dialyzer

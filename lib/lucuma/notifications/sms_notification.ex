@@ -9,6 +9,7 @@ defmodule Lucuma.Notifications.SmsNotification do
     field :retries, :integer, default: 0
 
     belongs_to :stand_by, Lucuma.Waitlists.StandBy
+    belongs_to :business, Lucuma.Accounts.Business
 
     timestamps()
   end
@@ -16,11 +17,12 @@ defmodule Lucuma.Notifications.SmsNotification do
   @doc false
   def changeset(sms_setting, attrs) do
     sms_setting
-    |> cast(attrs, [:message_content, :recipient_phone_number, :stand_by_id, :status, :retries])
+    |> cast(attrs, [:business_id, :message_content, :recipient_phone_number, :stand_by_id, :status, :retries])
     |> validate_required([
       :message_content,
       :recipient_phone_number,
       :stand_by_id,
+      :business_id,
       :status,
       :retries
     ])

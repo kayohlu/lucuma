@@ -133,6 +133,7 @@ defmodule Lucuma.Repo.Migrations.CreateUsers do
 
     create table(:sms_notifications) do
       add :stand_by_id, references(:stand_bys, on_delete: :delete_all)
+      add :business_id, references(:businesses, on_delete: :nothing)
       add :message_content, :string
       add :recipient_phone_number, :string
       add :status, :string

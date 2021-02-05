@@ -17,6 +17,7 @@ defmodule LucumaWeb.Waitlists.StandByController do
 
     case Waitlists.create_stand_by(
            Map.put(stand_by_params, "waitlist_id", waitlist.id),
+           conn.assigns.current_business,
            conn.assigns.current_company
          ) do
       {:ok, stand_by} ->

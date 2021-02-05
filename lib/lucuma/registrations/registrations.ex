@@ -63,7 +63,7 @@ defmodule Lucuma.Registrations do
         end)
         |> Ecto.Multi.insert(:business, fn previous_steps ->
           business_attrs = %{
-            name: "Unnamed Business",
+            name: previous_steps.company.name,
             time_zone: registration_form.time_zone
           }
 

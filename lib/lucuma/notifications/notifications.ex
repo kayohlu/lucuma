@@ -24,14 +24,17 @@ defmodule Lucuma.Notifications do
     |> Repo.update!()
   end
 
-  def send_sms_notification(recipient_phone_number, message_content, stand_by_id) do
+  def send_sms_notification(business_id, recipient_phone_number, message_content, stand_by_id) do
     result =
       create_sms_notification(%{
+        business_id: business_id,
         stand_by_id: stand_by_id,
         message_content: message_content,
         recipient_phone_number: recipient_phone_number
       })
 
+    IO.inspect(result)
+    IO.inspect(business_id)
     case result do
       {:ok, sms_notification} ->
         {:ok, sms_notification}
@@ -68,6 +71,7 @@ defmodule Lucuma.Notifications do
         {_count, sms_notifications} =
           Repo.update_all(
             from(sms in SmsNotification,
+              join: business in Lucuma.Accounts.Business,
               where: sms.id in ^for_delivery_ids,
               select: sms
             ),

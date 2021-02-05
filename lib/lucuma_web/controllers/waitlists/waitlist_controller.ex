@@ -28,6 +28,7 @@ defmodule LucumaWeb.Waitlists.WaitlistController do
         "current_user_id" => conn.assigns.current_user.id,
         "waitlist_id" => id,
         "current_company" => conn.assigns.current_company,
+        "current_business" => conn.assigns.current_business,
         "trial_limit_reached" => conn.assigns.trial_limit_reached
       }
     )

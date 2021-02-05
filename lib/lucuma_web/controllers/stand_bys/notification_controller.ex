@@ -4,7 +4,7 @@ defmodule LucumaWeb.StandBys.NotificationController do
   alias Lucuma.Waitlists
 
   def create(conn, params) do
-    Waitlists.notify_stand_by(params["stand_by_id"])
+    Waitlists.notify_stand_by(conn.assigns.current_business, params["stand_by_id"])
 
     conn
     |> redirect(to: Routes.waitlists_waitlist_path(conn, :index))

@@ -65,7 +65,8 @@ defmodule LucumaWeb.Live.Waitlists.WaitlistView do
       changeset: changeset,
       show_form: false,
       trial_limit_reached: session["trial_limit_reached"],
-      current_company: session["current_company"]
+      current_company: session["current_company"],
+      current_business: session["current_business"]
     ]
 
     {:ok, assign(socket, assigns)}
@@ -91,6 +92,7 @@ defmodule LucumaWeb.Live.Waitlists.WaitlistView do
   def handle_event("save", %{"stand_by" => stand_by_params}, socket) do
     case Waitlists.create_stand_by(
            Map.put(stand_by_params, "waitlist_id", socket.assigns.waitlist.id),
+           socket.assigns.current_business,
            socket.assigns.current_company
          ) do
       {:ok, stand_by} ->
@@ -130,7 +132,7 @@ defmodule LucumaWeb.Live.Waitlists.WaitlistView do
   end
 
   def handle_event("notify_stand_by", %{"stand-by-id" => stand_by_id} = params, socket) do
-    Waitlists.notify_stand_by(stand_by_id)
+    Waitlists.notify_stand_by(socket.assigns.current_business, stand_by_id)
 
     waitlist = Waitlists.get_waitlist!(socket.assigns.waitlist.id)
     stand_bys = Waitlists.get_waitlist_stand_bys(socket.assigns.waitlist.id)

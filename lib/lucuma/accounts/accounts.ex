@@ -19,6 +19,8 @@ defmodule Lucuma.Accounts do
 
   def get_user!(id), do: Repo.get!(User, id)
 
+  def get_business(id), do: Repo.get!(Business, id)
+
   def get_user(id), do: Repo.get(User, id)
 
   def get_current_company(%User{} = user), do: Repo.get(Company, user.company_id)

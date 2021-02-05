@@ -219,7 +219,7 @@ defmodule Lucuma.Waitlists do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_stand_by(attrs \\ %{}, company, notification_module \\ Notifications) do
+  def create_stand_by(attrs \\ %{}, business, company, notification_module \\ Notifications) do
     case %StandBy{} |> StandBy.changeset(attrs) |> Repo.insert() do
       {:ok, stand_by} ->
         confirmation_sms_setting =
@@ -238,7 +238,9 @@ defmodule Lucuma.Waitlists do
               )
             )
 
+          IO.inspect("aboutt to send notification")
           notification_module.send_sms_notification(
+            business.id,
             stand_by.contact_phone_number,
             body,
             stand_by.id
@@ -342,7 +344,7 @@ defmodule Lucuma.Waitlists do
     |> Enum.map(fn {k, v} -> %{name: k, y: length(v)} end)
   end
 
-  def notify_stand_by(stand_by_id, notification_module \\ Notifications) do
+  def notify_stand_by(business, stand_by_id, notification_module \\ Notifications) do
     stand_by = get_stand_by!(stand_by_id)
     attendance_sms_setting = attendance_sms_setting_for_waitlist(stand_by.waitlist_id)
 
@@ -361,7 +363,7 @@ defmodule Lucuma.Waitlists do
           )
         )
 
-      notification_module.send_sms_notification(stand_by.contact_phone_number, body, stand_by.id)
+      notification_module.send_sms_notification(business.id, stand_by.contact_phone_number, body, stand_by.id)
 
       update_stand_by(stand_by, %{notified_at: DateTime.utc_now()})
     end
