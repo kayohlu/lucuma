@@ -59,7 +59,8 @@ defmodule Lucuma.MixProject do
       {:timex, "~> 3.5"},
       {:bamboo, "~> 1.2.0"},
       {:number, "~> 1.0.0"},
-      {:mojito, "~> 0.7.7"}
+      {:mojito, "~> 0.7.7"},
+      {:distillery, "~> 2.1"}
     ]
   end
 

@@ -43,3 +43,5 @@ npm-debug.log
 .env
 /screenshots/
 .DS_Store
+
+.bash_project
