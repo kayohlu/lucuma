@@ -23,6 +23,7 @@ config :lucuma, LucumaWeb.Endpoint,
   url: [host: "localhost", port: {:system, "PORT"}], # This is critical for ensuring web-sockets properly authorize.
   cache_static_manifest: "priv/static/cache_manifest.json",
   server: true,
+  code_reloader: false,
   root: ".",
   version: Application.spec(:phoenix_distillery, :vsn)
 
